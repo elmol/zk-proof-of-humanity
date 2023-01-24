@@ -11,7 +11,7 @@ import "solidity-coverage"
 import { config } from "./package.json"
 import "./tasks/deploy"
 
-dotenvConfig({ path: resolve(__dirname, "../../.env") })
+dotenvConfig({ path: resolve(__dirname, ".env") })
 
 function getNetworks(): NetworksUserConfig {
     if (process.env.ETHEREUM_URL && process.env.ETHEREUM_PRIVATE_KEY) {
