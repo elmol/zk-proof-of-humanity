@@ -17,7 +17,7 @@ This way the user can prove, through the proof generated off-chain using Semapho
 
 Clone the repository:
 ```bash
-git clone https://github.com/elmol/<your-repo>.git
+git clone https://github.com/elmol/zk-proof-of-humanity.git
 ```
 Install the dependencies:
 
