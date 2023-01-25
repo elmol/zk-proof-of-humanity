@@ -60,3 +60,17 @@ This project uses several scripts to help with the development and deployment of
 - deploy: This script deploys the contract to the network
 
 - test: This script runs the tests
+
+
+## Goerli Test Deployment
+
+```
+$ yarn deploy --network goerli
+Pairing library has been deployed to: 0x0e269e16FFc1a77C3d90cCA5A4A2236D08707Ae7
+SemaphoreVerifier contract has been deployed to: 0xB745aBEC9405058EB2EA46e91Fc0C611600d5C35
+Poseidon library has been deployed to: 0x8956aCa1161A042fF56B74E72Fb7e29650d5429e
+IncrementalBinaryTree library has been deployed to: 0x4b27F471297AFb6520fCd17b4FB051dED7Bd5dDB
+Semaphore contract has been deployed to: 0xf44Ebff76F18500b399cCCbf8ae9125CD4d37DF0
+ZKProofOfHumanity contract has been deployed to: 0x5AD776c3a9eF2fcd143D93cb2566249De4EdE21A
+Done in 99.28s.
+```
