@@ -4,15 +4,15 @@ pragma solidity ^0.8.4;
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 
 contract ZKProofOfHumanity {
-    error Feedback__UsernameAlreadyExists();
+    error Feedback__AccountAlreadyExists();
 
     event NewFeedback(bytes32 feedback);
-    event NewUser(uint256 identityCommitment, bytes32 username);
+    event NewUser(uint256 identityCommitment, address account);
 
     ISemaphore public semaphore;
 
     uint256 public groupId;
-    mapping(uint256 => bytes32) public users;
+    mapping(uint256 => address) public humans;
 
     constructor(address semaphoreAddress, uint256 _groupId) {
         semaphore = ISemaphore(semaphoreAddress);
@@ -21,16 +21,16 @@ contract ZKProofOfHumanity {
         semaphore.createGroup(groupId, 20, address(this));
     }
 
-    function joinGroup(uint256 identityCommitment, bytes32 username) external {
-        if (users[identityCommitment] != 0) {
-            revert Feedback__UsernameAlreadyExists();
+    function register(uint256 identityCommitment, address account) external {
+        if (humans[identityCommitment] != address(0)) {
+            revert Feedback__AccountAlreadyExists();
         }
 
         semaphore.addMember(groupId, identityCommitment);
 
-        users[identityCommitment] = username;
+        humans[identityCommitment] = account;
 
-        emit NewUser(identityCommitment, username);
+        emit NewUser(identityCommitment, account);
     }
 
     function sendFeedback(

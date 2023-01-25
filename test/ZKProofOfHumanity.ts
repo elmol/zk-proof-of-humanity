@@ -6,6 +6,7 @@ import { formatBytes32String } from "ethers/lib/utils"
 import { run } from "hardhat"
 import { ZKProofOfHumanity } from "../build/typechain"
 import { config } from "../package.json"
+import { ethers } from "hardhat";
 
 describe("ZKProofOfHumanity", () => {
     let zkPoHContract: ZKProofOfHumanity
@@ -13,10 +14,14 @@ describe("ZKProofOfHumanity", () => {
     const users: any = []
     const groupId = "42"
     const group = new Group(groupId)
+    let owner
 
     before(async () => {
+
+        // contracts deployment
         zkPoHContract = await run("deploy", { logs: false, group: groupId })
 
+        // identity creation
         users.push({
             identity: new Identity(),
             username: formatBytes32String("anon1")
@@ -27,25 +32,27 @@ describe("ZKProofOfHumanity", () => {
             username: formatBytes32String("anon2")
         })
 
+        // local group adding
         group.addMember(users[0].identity.commitment)
         group.addMember(users[1].identity.commitment)
     })
+    
+    describe("# register", () => {
+        
+        it("Should allow accounts to register in zk-poh", async () => {
+            const [owner, anon1, anon2] = await ethers.getSigners();
+            
+            const tx = zkPoHContract.register(group.members[0], anon1.address)
+            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(group.members[0], anon1.address)
 
-    describe("# joinGroup", () => {
-        it("Should allow users to join the group", async () => {
-            for (let i = 0; i < group.members.length; i += 1) {
-                const transaction = zkPoHContract.joinGroup(group.members[i], users[i].username)
-
-                await expect(transaction)
-                    .to.emit(zkPoHContract, "NewUser")
-                    .withArgs(group.members[i], users[i].username)
-            }
+            const tx1 = zkPoHContract.register(group.members[1], anon2.address)
+            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(group.members[1], anon2.address)
         })
 
-        it("Should not allow users to join the group with the same username", async () => {
-            const transaction = zkPoHContract.joinGroup(group.members[0], users[0].username)
-
-            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "Feedback__UsernameAlreadyExists")
+        it("Should not allow users to register in zk-poh twice", async () => {
+            const [owner, anon1] = await ethers.getSigners();
+            const transaction = zkPoHContract.register(group.members[0], anon1.address)
+            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "Feedback__AccountAlreadyExists")
         })
     })
 
