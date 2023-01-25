@@ -14,7 +14,6 @@ describe("ZKProofOfHumanity", () => {
     const users: any = []
     const groupId = "42"
     const group = new Group(groupId)
-    let owner
 
     before(async () => {
         // contracts deployment
@@ -58,29 +57,31 @@ describe("ZKProofOfHumanity", () => {
         })
     })
 
-    describe("# sendFeedback", () => {
+    describe("# verifyProof", () => {
         const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
         const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
-        it("Should allow users to send feedback anonymously", async () => {
-            const feedback = formatBytes32String("Hello World")
+        it("Should allow users to signal anonymously", async () => {
+            const signal = formatBytes32String("Hello World")
+            const externalNullifier = groupId;
 
-            const fullProof = await generateProof(users[1].identity, group, groupId, feedback, {
+            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
             const solidityProof = packToSolidityProof(fullProof.proof)
 
-            const transaction = zkPoHContract.sendFeedback(
-                feedback,
+            const transaction = zkPoHContract.verifyProof(
                 fullProof.publicSignals.merkleTreeRoot,
+                signal,
                 fullProof.publicSignals.nullifierHash,
+                externalNullifier,
                 solidityProof
             )
 
             await expect(transaction)
-                .to.emit(zkPoHContract, "NewFeedback")
-                .withArgs(feedback)
+                .to.emit(zkPoHContract, "HumanProofVerified")
+                .withArgs(signal)
         })
     })
 })

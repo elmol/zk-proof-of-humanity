@@ -6,7 +6,7 @@ import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 contract ZKProofOfHumanity {
     error ZKPoH__AccountAlreadyExists();
 
-    event NewFeedback(bytes32 feedback);
+    event HumanProofVerified(uint256 signal);
     event NewUser(uint256 identityCommitment, address account);
 
     ISemaphore public semaphore;
@@ -33,21 +33,21 @@ contract ZKProofOfHumanity {
         emit NewUser(identityCommitment, account);
     }
 
-    function sendFeedback(
-        bytes32 feedback,
+    function verifyProof(
         uint256 merkleTreeRoot,
+        uint256 signal,
         uint256 nullifierHash,
+        uint256 externalNullifier,
         uint256[8] calldata proof
-    ) external {
+    ) public {
         semaphore.verifyProof(
             groupId,
             merkleTreeRoot,
-            uint256(feedback),
+            signal,
             nullifierHash,
-            groupId,
+            externalNullifier,
             proof
         );
-
-        emit NewFeedback(feedback);
+        emit HumanProofVerified(signal);
     }
 }
