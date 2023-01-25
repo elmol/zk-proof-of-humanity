@@ -52,7 +52,7 @@ describe("ZKProofOfHumanity", () => {
         it("Should not allow users to register in zk-poh twice", async () => {
             const [owner, anon1] = await ethers.getSigners();
             const transaction = zkPoHContract.register(group.members[0], anon1.address)
-            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "Feedback__AccountAlreadyExists")
+            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__AccountAlreadyExists")
         })
     })
 

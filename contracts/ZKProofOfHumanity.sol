@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 
 contract ZKProofOfHumanity {
-    error Feedback__AccountAlreadyExists();
+    error ZKPoH__AccountAlreadyExists();
 
     event NewFeedback(bytes32 feedback);
     event NewUser(uint256 identityCommitment, address account);
@@ -23,7 +23,7 @@ contract ZKProofOfHumanity {
 
     function register(uint256 identityCommitment, address account) external {
         if (humans[identityCommitment] != address(0)) {
-            revert Feedback__AccountAlreadyExists();
+            revert ZKPoH__AccountAlreadyExists();
         }
 
         semaphore.addMember(groupId, identityCommitment);
