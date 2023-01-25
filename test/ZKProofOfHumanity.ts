@@ -6,7 +6,7 @@ import { formatBytes32String } from "ethers/lib/utils"
 import { run } from "hardhat"
 import { ZKProofOfHumanity } from "../build/typechain"
 import { config } from "../package.json"
-import { ethers } from "hardhat";
+import { ethers } from "hardhat"
 
 describe("ZKProofOfHumanity", () => {
     let zkPoHContract: ZKProofOfHumanity
@@ -17,7 +17,6 @@ describe("ZKProofOfHumanity", () => {
     let owner
 
     before(async () => {
-
         // contracts deployment
         zkPoHContract = await run("deploy", { logs: false, group: groupId })
 
@@ -36,21 +35,24 @@ describe("ZKProofOfHumanity", () => {
         group.addMember(users[0].identity.commitment)
         group.addMember(users[1].identity.commitment)
     })
-    
+
     describe("# register", () => {
-        
         it("Should allow accounts to register in zk-poh", async () => {
-            const [owner, anon1, anon2] = await ethers.getSigners();
-            
+            const [owner, anon1, anon2] = await ethers.getSigners()
+
             const tx = zkPoHContract.register(group.members[0], anon1.address)
-            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(group.members[0], anon1.address)
+            await expect(tx)
+                .to.emit(zkPoHContract, "NewUser")
+                .withArgs(group.members[0], anon1.address)
 
             const tx1 = zkPoHContract.register(group.members[1], anon2.address)
-            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(group.members[1], anon2.address)
+            await expect(tx1)
+                .to.emit(zkPoHContract, "NewUser")
+                .withArgs(group.members[1], anon2.address)
         })
 
         it("Should not allow users to register in zk-poh twice", async () => {
-            const [owner, anon1] = await ethers.getSigners();
+            const [owner, anon1] = await ethers.getSigners()
             const transaction = zkPoHContract.register(group.members[0], anon1.address)
             await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__AccountAlreadyExists")
         })
@@ -76,7 +78,9 @@ describe("ZKProofOfHumanity", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.emit(zkPoHContract, "NewFeedback").withArgs(feedback)
+            await expect(transaction)
+                .to.emit(zkPoHContract, "NewFeedback")
+                .withArgs(feedback)
         })
     })
 })

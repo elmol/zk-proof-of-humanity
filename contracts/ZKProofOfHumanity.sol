@@ -39,7 +39,14 @@ contract ZKProofOfHumanity {
         uint256 nullifierHash,
         uint256[8] calldata proof
     ) external {
-        semaphore.verifyProof(groupId, merkleTreeRoot, uint256(feedback), nullifierHash, groupId, proof);
+        semaphore.verifyProof(
+            groupId,
+            merkleTreeRoot,
+            uint256(feedback),
+            nullifierHash,
+            groupId,
+            proof
+        );
 
         emit NewFeedback(feedback);
     }
