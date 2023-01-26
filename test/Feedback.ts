@@ -89,5 +89,59 @@ describe("Feedback", () => {
 
             await expect(transaction).to.be.rejected
         })
+    }),
+
+    describe("# greet", () => {
+        const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
+        const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+
+        it("Should allow humans to greet anonymously", async () => {
+            const greeting = formatBytes32String("Hello World")
+
+            const signal = groupId
+            const externalNullifier = groupId;
+
+            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
+                wasmFilePath,
+                zkeyFilePath
+            })
+            const solidityProof = packToSolidityProof(fullProof.proof)
+
+            const transaction = feedbackContract.greet(
+                greeting,
+                fullProof.publicSignals.merkleTreeRoot,
+                fullProof.publicSignals.nullifierHash,
+                solidityProof
+            )
+
+            await expect(transaction)
+                .to.emit(feedbackContract, "NewGreeting")
+                .withArgs(greeting)
+        })
+
+        it("Should allow humans to greet anonymously twice", async () => {
+            const greeting = formatBytes32String("Hi again")
+
+            const signal = groupId
+            const externalNullifier = groupId;
+
+            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
+                wasmFilePath,
+                zkeyFilePath
+            })
+            const solidityProof = packToSolidityProof(fullProof.proof)
+
+            const transaction = feedbackContract.greet(
+                greeting,
+                fullProof.publicSignals.merkleTreeRoot,
+                fullProof.publicSignals.nullifierHash,
+                solidityProof
+            )
+
+            await expect(transaction)
+                .to.emit(feedbackContract, "NewGreeting")
+                .withArgs(greeting)
+        })
+
     })
 })

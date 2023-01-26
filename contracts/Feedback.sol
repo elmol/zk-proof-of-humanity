@@ -5,6 +5,7 @@ import "./ZKProofOfHumanity.sol";
 
 contract Feedback {
     event NewFeedback(bytes32 feedback);
+    event NewGreeting(bytes32 greeting);
 
     ZKProofOfHumanity public zKProofOfHumanity;
     uint256 public externalNullifier;
@@ -31,4 +32,21 @@ contract Feedback {
 
         emit NewFeedback(feedback);
     }
+
+    function greet(
+        bytes32 greeting,
+        uint256 merkleTreeRoot,
+        uint256 nullifierHash,
+        uint256[8] calldata proof
+    ) public {
+
+        zKProofOfHumanity.verifyHumanity(
+            merkleTreeRoot,
+            nullifierHash,
+            proof
+        );
+
+        emit NewGreeting(greeting);
+    }
+
 }
