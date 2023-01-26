@@ -1,6 +1,6 @@
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { generateProof, packToSolidityProof } from "@semaphore-protocol/proof"
+import { FullProof, generateProof, packToSolidityProof, SolidityProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { formatBytes32String } from "ethers/lib/utils"
 import { run } from "hardhat"
@@ -14,6 +14,9 @@ describe("ZKProofOfHumanity", () => {
     const users: any = []
     const groupId = "42"
     const group = new Group(groupId)
+
+    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
+    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
     before(async () => {
         // contracts deployment
@@ -58,25 +61,21 @@ describe("ZKProofOfHumanity", () => {
     })
 
     describe("# verifyProof", () => {
-        const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-        const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+        let proof: { fullProof: FullProof; solidityProof: SolidityProof }
+        const signal = formatBytes32String("Hello World")
+        const externalNullifier = groupId
+
+        before(async () => {
+            proof = await generateSignalProof(users, group, externalNullifier, signal, wasmFilePath, zkeyFilePath)
+        })
 
         it("Should allow users to signal anonymously", async () => {
-            const signal = formatBytes32String("Hello World")
-            const externalNullifier = groupId;
-
-            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
-                wasmFilePath,
-                zkeyFilePath
-            })
-            const solidityProof = packToSolidityProof(fullProof.proof)
-
             const transaction = zkPoHContract.verifyProof(
-                fullProof.publicSignals.merkleTreeRoot,
+                proof.fullProof.publicSignals.merkleTreeRoot,
                 signal,
-                fullProof.publicSignals.nullifierHash,
+                proof.fullProof.publicSignals.nullifierHash,
                 externalNullifier,
-                solidityProof
+                proof.solidityProof
             )
 
             await expect(transaction)
@@ -85,72 +84,98 @@ describe("ZKProofOfHumanity", () => {
         })
 
         it("Should not allow users to double-signal", async () => {
-            const signal = formatBytes32String("Hello World")
-            const externalNullifier = groupId;
-
-            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
-                wasmFilePath,
-                zkeyFilePath
-            })
-            const solidityProof = packToSolidityProof(fullProof.proof)
-
             const transaction = zkPoHContract.verifyProof(
-                fullProof.publicSignals.merkleTreeRoot,
+                proof.fullProof.publicSignals.merkleTreeRoot,
                 signal,
-                fullProof.publicSignals.nullifierHash,
+                proof.fullProof.publicSignals.nullifierHash,
                 externalNullifier,
-                solidityProof
+                proof.solidityProof
             )
             await expect(transaction).to.be.rejected
         })
     })
 
-
     describe("# verifyHumanity", () => {
-        const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-        const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+        let proof: { fullProof: FullProof; solidityProof: SolidityProof }
+
+        before(async () => {
+            proof = await generateHumanityProof(groupId, users, group, wasmFilePath, zkeyFilePath)
+        })
 
         it("Should allow users to verify humanity anonymously", async () => {
-            const signal = groupId
-            const externalNullifier = groupId;
-
-            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
-                wasmFilePath,
-                zkeyFilePath
-            })
-            const solidityProof = packToSolidityProof(fullProof.proof)
-
-            const transaction = zkPoHContract.verifyHumanity(
-                fullProof.publicSignals.merkleTreeRoot,
-                fullProof.publicSignals.nullifierHash,
-                solidityProof
-            )
-
+            const transaction = verifyHumanity(zkPoHContract, proof)
             await expect(transaction)
                 .to.emit(zkPoHContract, "HumanProofVerified")
-                .withArgs(signal)
+                .withArgs(groupId)
         })
 
         it("Should allow users to verify humanity anonymously twice", async () => {
-            const signal = groupId
-            const externalNullifier = groupId;
-
-            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
-                wasmFilePath,
-                zkeyFilePath
-            })
-            const solidityProof = packToSolidityProof(fullProof.proof)
-
-            const transaction = zkPoHContract.verifyHumanity(
-                fullProof.publicSignals.merkleTreeRoot,
-                fullProof.publicSignals.nullifierHash,
-                solidityProof
-            )
+            const transaction = verifyHumanity(zkPoHContract, proof)
 
             await expect(transaction)
                 .to.emit(zkPoHContract, "HumanProofVerified")
-                .withArgs(signal)
+                .withArgs(groupId)
         })
-    })
 
+        it("Should reject users not register as human", async () => {
+            const userNotRegister = new Identity();
+            group.addMember(userNotRegister.commitment);
+            let proof = await generateHumanityProofByIdentity(groupId,  userNotRegister, group, wasmFilePath, zkeyFilePath);
+
+            const transaction = verifyHumanity(zkPoHContract, proof)
+            await expect(transaction).to.be.rejected
+            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__InvalidProofOfHumanity")
+        });
+
+    })
 })
+
+
+/// HELPERS
+async function generateSignalProof(
+    users: any,
+    group: Group,
+    externalNullifier: string,
+    signal: string,
+    wasmFilePath: string,
+    zkeyFilePath: string
+) {
+    const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
+        wasmFilePath,
+        zkeyFilePath
+    })
+    const solidityProof = packToSolidityProof(fullProof.proof)
+    return { fullProof, solidityProof }
+}
+
+async function generateHumanityProof(
+    groupId: string,
+    users: any,
+    group: Group,
+    wasmFilePath: string,
+    zkeyFilePath: string
+) {
+    const identity = users[1].identity
+    const { fullProof, solidityProof } = await generateHumanityProofByIdentity(groupId, identity, group, wasmFilePath, zkeyFilePath)
+    return { fullProof, solidityProof }
+}
+async function generateHumanityProofByIdentity(groupId: string, identity: any, group: Group, wasmFilePath: string, zkeyFilePath: string) {
+    const signal = groupId
+    const externalNullifier = groupId
+    const fullProof = await generateProof(identity, group, externalNullifier, signal, {
+        wasmFilePath,
+        zkeyFilePath
+    })
+    const solidityProof = packToSolidityProof(fullProof.proof)
+    return { fullProof, solidityProof }
+}
+
+
+function verifyHumanity(zkPoHContract: ZKProofOfHumanity, proof: { fullProof: FullProof; solidityProof: SolidityProof }) {
+    return zkPoHContract.verifyHumanity(
+        proof.fullProof.publicSignals.merkleTreeRoot,
+        proof.fullProof.publicSignals.nullifierHash,
+        proof.solidityProof
+    )
+}
+

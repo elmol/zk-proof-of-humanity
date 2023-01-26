@@ -7,6 +7,7 @@ import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
 
 contract ZKProofOfHumanity {
     error ZKPoH__AccountAlreadyExists();
+    error ZKPoH__InvalidProofOfHumanity();
 
     event HumanProofVerified(uint256 signal);
     event NewUser(uint256 identityCommitment, address account);
@@ -59,7 +60,15 @@ contract ZKProofOfHumanity {
         uint256 nullifierHash,
         uint256[8] calldata proof
     ) public {
-        ISemaphoreVerifier verifier = Semaphore(address(semaphore)).verifier();
+
+        Semaphore semaphoreImpl = Semaphore(address(semaphore));
+        uint256 currentMerkleTreeRoot = semaphoreImpl.getMerkleTreeRoot(groupId);
+
+        if (merkleTreeRoot != currentMerkleTreeRoot) {
+            revert ZKPoH__InvalidProofOfHumanity();
+        }
+
+        ISemaphoreVerifier verifier = semaphoreImpl.verifier();
         uint256 signal = groupId;
         uint256 externalNullifier = groupId;
         verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, TREE_DEPTH);
