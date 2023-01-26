@@ -48,7 +48,7 @@ describe("Feedback", () => {
         const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
         const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
-        it("Should not allow users to send feedback anonymously", async () => {
+        it("Should allow users to send feedback anonymously", async () => {
             const feedback = formatBytes32String("Hello World")
 
             const externalNullifier = await feedbackContract.externalNullifier()
@@ -68,6 +68,26 @@ describe("Feedback", () => {
             await expect(transaction)
                 .to.emit(feedbackContract, "NewFeedback")
                 .withArgs(feedback)
+        })
+
+        it("Should not allow users to send feedback anonymously twice", async () => {
+            const feedback = formatBytes32String("Hello World Twice")
+
+            const externalNullifier = await feedbackContract.externalNullifier()
+            const fullProof = await generateProof(users[1].identity, group, externalNullifier, feedback, {
+                wasmFilePath,
+                zkeyFilePath
+            })
+            const solidityProof = packToSolidityProof(fullProof.proof)
+
+            const transaction = feedbackContract.sendFeedback(
+                feedback,
+                fullProof.publicSignals.merkleTreeRoot,
+                fullProof.publicSignals.nullifierHash,
+                solidityProof
+            )
+
+            await expect(transaction).to.be.rejected
         })
     })
 })
