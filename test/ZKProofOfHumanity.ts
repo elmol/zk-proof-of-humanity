@@ -170,7 +170,6 @@ async function generateHumanityProofByIdentity(groupId: string, identity: any, g
     return { fullProof, solidityProof }
 }
 
-
 function verifyHumanity(zkPoHContract: ZKProofOfHumanity, proof: { fullProof: FullProof; solidityProof: SolidityProof }) {
     return zkPoHContract.verifyHumanity(
         proof.fullProof.publicSignals.merkleTreeRoot,
