@@ -52,6 +52,10 @@ const hardhatConfig: HardhatUserConfig = {
     typechain: {
         outDir: config.paths.build.typechain,
         target: "ethers-v5"
+    },
+    docgen: {
+        exclude: ["./Feedback.sol"],
+        pages: "files"
     }
 }
 
