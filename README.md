@@ -1,5 +1,29 @@
 # ZK Proof of Humanity
 
+<p align="center">
+    <a href="https://github.com/elmol/zk-proof-of-humanity" target="_blank">
+        <img src="https://img.shields.io/badge/project-ZK%20ProofOfHumanity-blue.svg?style=flat-square">
+    </a>
+    <a href="/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/elmol/zk-proof-of-humanity.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/elmol/zk-proof-of-humanity/actions?query=workflow%3Aproduction">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/actions/workflow/status/elmol/zk-proof-of-humanity/production.yml?branch=main&label=test&style=flat-square&logo=github">
+    </a>
+    <a href="https://coveralls.io/github/elmol/zk-proof-of-humanity">
+        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/elmol/zk-proof-of-humanity?style=flat-square&logo=coveralls">
+    </a>
+    <a href="https://eslint.org/">
+        <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint">
+    </a>
+    <a href="https://prettier.io/">
+        <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier">
+    </a>
+    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/elmol/zk-proof-of-humanity?style=flat-square">
+
+</p>
+
+
 ## Project Overview
 
 ZK Proof of Humanity (zkPoH) allows humans, registered in Proof of Humanity, to prove their humanity without doxing.
@@ -60,6 +84,8 @@ This project uses several scripts to help with the development and deployment of
 - deploy: This script deploys the contract to the network
 
 - test: This script runs the tests
+
+- docgen: Generates documentation for the contract
 
 
 ## Goerli Test Deployment
