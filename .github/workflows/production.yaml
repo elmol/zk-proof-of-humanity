@@ -73,5 +73,8 @@ jobs:
             - name: Install dependencies
               run: yarn
 
+            - name: Download Snark Artifacts
+              run: yarn download:snark-artifacts
+
             - name: Test contracts and libraries
               run: yarn test
