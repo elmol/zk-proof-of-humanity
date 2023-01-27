@@ -4,7 +4,12 @@ pragma solidity ^0.8.4;
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/Semaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
-
+/**
+ * @title ZKProofOfHumanity
+ * @notice ZKProofOfHumanity integrates ProofOfHumanity V1 with Semaphore to prove humanity without doxing.
+ * @dev The ZKProofOfHumanity contract has a Sempahore group where PoH accounts may be added as members.
+ * @dev Semaphore verification proof is used to avoid double-signaling, also humanity could be verified without signal.
+ */
 contract ZKProofOfHumanity {
     error ZKPoH__AccountAlreadyExists();
     error ZKPoH__InvalidProofOfHumanity();
@@ -37,6 +42,15 @@ contract ZKProofOfHumanity {
         emit NewUser(identityCommitment, account);
     }
 
+    /**
+     * @dev Saves the nullifier hash to avoid double signaling and emits an event
+     * if the zero-knowledge proof is valid.
+     * @param merkleTreeRoot: Root of the Merkle tree.
+     * @param signal: Semaphore signal.
+     * @param nullifierHash: Nullifier hash.
+     * @param externalNullifier: External nullifier.
+     * @param proof: Zero-knowledge proof.
+     */
     function verifyProof(
         uint256 merkleTreeRoot,
         uint256 signal,
@@ -55,6 +69,12 @@ contract ZKProofOfHumanity {
         emit HumanProofVerified(signal);
     }
 
+    /**
+     * @dev Verifies humanity and emits an event if the zero-knowledge proof is valid.
+     * @param merkleTreeRoot: Root of the Merkle tree.
+     * @param nullifierHash: Nullifier hash.
+     * @param proof: Zero-knowledge proof.
+     */
     function verifyHumanity(
         uint256 merkleTreeRoot,
         uint256 nullifierHash,

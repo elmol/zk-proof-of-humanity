@@ -5,6 +5,7 @@ coverage.json
 typechain
 build
 types
+yarn-error.log
 
 #Hardhat files
 cache

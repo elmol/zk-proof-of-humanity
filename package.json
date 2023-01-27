@@ -14,6 +14,7 @@
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
+        "docgen": "npx hardhat docgen",
         "lint": "solhint 'contracts/**/*.sol'"
     },
     "keywords": [
@@ -47,9 +48,10 @@
         "solhint": "^3.3.6",
         "solhint-plugin-prettier": "^0.0.5",
         "solidity-coverage": "^0.7.21",
-        "typechain": "^8.0.0",
         "ts-node": "^10.8.1",
-        "typescript": "^4.7.3"
+        "typechain": "^8.0.0",
+        "typescript": "^4.7.3",
+        "solidity-docgen": "^0.6.0-beta.34"
     },
     "dependencies": {
         "@semaphore-protocol/contracts": "3.0.0-beta.7"
