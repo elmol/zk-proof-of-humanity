@@ -56,13 +56,12 @@ describe("Feedback", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            const solidityProof = packToSolidityProof(fullProof.proof)
 
             const transaction = feedbackContract.sendFeedback(
                 feedback,
-                fullProof.publicSignals.merkleTreeRoot,
-                fullProof.publicSignals.nullifierHash,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.nullifierHash,
+                fullProof.proof
             )
 
             await expect(transaction)
@@ -78,13 +77,12 @@ describe("Feedback", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            const solidityProof = packToSolidityProof(fullProof.proof)
 
             const transaction = feedbackContract.sendFeedback(
                 feedback,
-                fullProof.publicSignals.merkleTreeRoot,
-                fullProof.publicSignals.nullifierHash,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.nullifierHash,
+                fullProof.proof
             )
 
             await expect(transaction).to.be.rejected
@@ -105,13 +103,12 @@ describe("Feedback", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            const solidityProof = packToSolidityProof(fullProof.proof)
 
             const transaction = feedbackContract.greet(
                 greeting,
-                fullProof.publicSignals.merkleTreeRoot,
-                fullProof.publicSignals.nullifierHash,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.nullifierHash,
+                fullProof.proof
             )
 
             await expect(transaction)
@@ -129,13 +126,12 @@ describe("Feedback", () => {
                 wasmFilePath,
                 zkeyFilePath
             })
-            const solidityProof = packToSolidityProof(fullProof.proof)
 
             const transaction = feedbackContract.greet(
                 greeting,
-                fullProof.publicSignals.merkleTreeRoot,
-                fullProof.publicSignals.nullifierHash,
-                solidityProof
+                fullProof.merkleTreeRoot,
+                fullProof.nullifierHash,
+                fullProof.proof
             )
 
             await expect(transaction)
