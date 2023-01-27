@@ -8,7 +8,7 @@
         <img alt="Github license" src="https://img.shields.io/github/license/elmol/zk-proof-of-humanity.svg?style=flat-square">
     </a>
     <a href="https://github.com/elmol/zk-proof-of-humanity/actions?query=workflow%3Aproduction">
-        <img alt="GitHub Workflow test" src="https://img.shields.io/github/actions/workflow/status/elmol/zk-proof-of-humanity/production.yml?branch=main&label=test&style=flat-square&logo=github">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/actions/workflow/status/elmol/zk-proof-of-humanity/production.yaml?branch=main&label=test&style=flat-square&logo=github">
     </a>
     <a href="https://coveralls.io/github/elmol/zk-proof-of-humanity">
         <img alt="Coveralls" src="https://img.shields.io/coveralls/github/elmol/zk-proof-of-humanity?style=flat-square&logo=coveralls">
