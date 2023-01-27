@@ -22,31 +22,14 @@ contract Feedback {
         uint256 nullifierHash,
         uint256[8] calldata proof
     ) public {
-        zKProofOfHumanity.verifyProof(
-            merkleTreeRoot,
-            uint256(feedback),
-            nullifierHash,
-            externalNullifier,
-            proof
-        );
+        zKProofOfHumanity.verifyProof(merkleTreeRoot, uint256(feedback), nullifierHash, externalNullifier, proof);
 
         emit NewFeedback(feedback);
     }
 
-    function greet(
-        bytes32 greeting,
-        uint256 merkleTreeRoot,
-        uint256 nullifierHash,
-        uint256[8] calldata proof
-    ) public {
-
-        zKProofOfHumanity.verifyHumanity(
-            merkleTreeRoot,
-            nullifierHash,
-            proof
-        );
+    function greet(bytes32 greeting, uint256 merkleTreeRoot, uint256 nullifierHash, uint256[8] calldata proof) public {
+        zKProofOfHumanity.verifyHumanity(merkleTreeRoot, nullifierHash, proof);
 
         emit NewGreeting(greeting);
     }
-
 }

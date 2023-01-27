@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/Semaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
+
 /**
  * @title ZKProofOfHumanity
  * @notice ZKProofOfHumanity integrates ProofOfHumanity V1 with Semaphore to prove humanity without doxing.
@@ -58,18 +59,9 @@ contract ZKProofOfHumanity {
         uint256 externalNullifier,
         uint256[8] calldata proof
     ) public {
-        semaphore.verifyProof(
-            groupId,
-            merkleTreeRoot,
-            signal,
-            nullifierHash,
-            externalNullifier,
-            proof
-        );
+        semaphore.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
         emit HumanProofVerified(signal);
     }
-
-
 
     /**
      * @dev Verifies humanity and emits an event if the zero-knowledge proof is valid.
@@ -77,12 +69,7 @@ contract ZKProofOfHumanity {
      * @param nullifierHash Nullifier hash.
      * @param proof Zero-knowledge proof.
      */
-    function verifyHumanity(
-        uint256 merkleTreeRoot,
-        uint256 nullifierHash,
-        uint256[8] calldata proof
-    ) public {
-
+    function verifyHumanity(uint256 merkleTreeRoot, uint256 nullifierHash, uint256[8] calldata proof) public {
         Semaphore semaphoreImpl = Semaphore(address(semaphore));
         uint256 currentMerkleTreeRoot = semaphoreImpl.getMerkleTreeRoot(groupId);
 

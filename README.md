@@ -23,7 +23,6 @@
 
 </p>
 
-
 ## Project Overview
 
 ZK Proof of Humanity (zkPoH) allows humans, registered in Proof of Humanity, to prove their humanity without doxing.
@@ -32,17 +31,18 @@ The issue being addressed is that when a humans conducts transactions on or off-
 
 ZK Proof of Humanity (zkPoH) uses Semaphore integrated with Proof of Humanity (PoH) to solve this issue.
 
-
-The process starts by the user registering and being accepted as human in PoH protocol, then the user may register in zkPoH. 
-Before generating the off-chain identity using the Semaphore protocol, zkPoH checks if the user is registered in PoH, and adds it to the Semaphore PoH group. 
+The process starts by the user registering and being accepted as human in PoH protocol, then the user may register in zkPoH.
+Before generating the off-chain identity using the Semaphore protocol, zkPoH checks if the user is registered in PoH, and adds it to the Semaphore PoH group.
 This way the user can prove, through the proof generated off-chain using Semaphore, that they are human and unique, avoiding any risk of double-signaling, all this without revealing their original identity and sending signals such as votes or endorsements without the risk of doxing.
 
-## 🛠  Installation and Configuration
+## 🛠 Installation and Configuration
 
 Clone the repository:
+
 ```bash
 git clone https://github.com/elmol/zk-proof-of-humanity.git
 ```
+
 Install the dependencies:
 
 ```bash
@@ -75,18 +75,19 @@ yarn download:snark-artifacts
 
 This project uses several scripts to help with the development and deployment of the contract.
 
-- start: This script runs the project on a local network, This script starts the local node and then compiles the contract and deploys it on the local network.
+-   start: This script runs the project on a local network, This script starts the local node and then compiles the contract and deploys it on the local network.
 
-- compile: This script compiles the contract using the command hardhat compile
+-   compile: This script compiles the contract using the command hardhat compile
 
-- download:snark-artifacts: This script downloads SNARK artifacts
+-   download:snark-artifacts: This script downloads SNARK artifacts
 
-- deploy: This script deploys the contract to the network
+-   deploy: This script deploys the contract to the network
 
-- test: This script runs the tests
+-   test: This script runs the tests
 
-- docgen: Generates documentation for the contract
+-   docgen: Generates documentation for the contract
 
+-   prettier: Runs prettier
 
 ## Goerli Test Deployment
 

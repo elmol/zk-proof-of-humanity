@@ -64,9 +64,7 @@ describe("Feedback", () => {
                 fullProof.proof
             )
 
-            await expect(transaction)
-                .to.emit(feedbackContract, "NewFeedback")
-                .withArgs(feedback)
+            await expect(transaction).to.emit(feedbackContract, "NewFeedback").withArgs(feedback)
         })
 
         it("Should not allow users to send feedback anonymously twice", async () => {
@@ -88,56 +86,50 @@ describe("Feedback", () => {
             await expect(transaction).to.be.rejected
         })
     }),
+        describe("# greet", () => {
+            const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
+            const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
-    describe("# greet", () => {
-        const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-        const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+            it("Should allow humans to greet anonymously", async () => {
+                const greeting = formatBytes32String("Hello World")
 
-        it("Should allow humans to greet anonymously", async () => {
-            const greeting = formatBytes32String("Hello World")
+                const signal = groupId
+                const externalNullifier = groupId
 
-            const signal = groupId
-            const externalNullifier = groupId;
+                const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
+                    wasmFilePath,
+                    zkeyFilePath
+                })
 
-            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
-                wasmFilePath,
-                zkeyFilePath
+                const transaction = feedbackContract.greet(
+                    greeting,
+                    fullProof.merkleTreeRoot,
+                    fullProof.nullifierHash,
+                    fullProof.proof
+                )
+
+                await expect(transaction).to.emit(feedbackContract, "NewGreeting").withArgs(greeting)
             })
 
-            const transaction = feedbackContract.greet(
-                greeting,
-                fullProof.merkleTreeRoot,
-                fullProof.nullifierHash,
-                fullProof.proof
-            )
+            it("Should allow humans to greet anonymously twice", async () => {
+                const greeting = formatBytes32String("Hi again")
 
-            await expect(transaction)
-                .to.emit(feedbackContract, "NewGreeting")
-                .withArgs(greeting)
-        })
+                const signal = groupId
+                const externalNullifier = groupId
 
-        it("Should allow humans to greet anonymously twice", async () => {
-            const greeting = formatBytes32String("Hi again")
+                const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
+                    wasmFilePath,
+                    zkeyFilePath
+                })
 
-            const signal = groupId
-            const externalNullifier = groupId;
+                const transaction = feedbackContract.greet(
+                    greeting,
+                    fullProof.merkleTreeRoot,
+                    fullProof.nullifierHash,
+                    fullProof.proof
+                )
 
-            const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
-                wasmFilePath,
-                zkeyFilePath
+                await expect(transaction).to.emit(feedbackContract, "NewGreeting").withArgs(greeting)
             })
-
-            const transaction = feedbackContract.greet(
-                greeting,
-                fullProof.merkleTreeRoot,
-                fullProof.nullifierHash,
-                fullProof.proof
-            )
-
-            await expect(transaction)
-                .to.emit(feedbackContract, "NewGreeting")
-                .withArgs(greeting)
         })
-
-    })
 })

@@ -43,14 +43,10 @@ describe("ZKProofOfHumanity", () => {
             const [owner, anon1, anon2] = await ethers.getSigners()
 
             const tx = zkPoHContract.register(group.members[0], anon1.address)
-            await expect(tx)
-                .to.emit(zkPoHContract, "NewUser")
-                .withArgs(group.members[0], anon1.address)
+            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(group.members[0], anon1.address)
 
             const tx1 = zkPoHContract.register(group.members[1], anon2.address)
-            await expect(tx1)
-                .to.emit(zkPoHContract, "NewUser")
-                .withArgs(group.members[1], anon2.address)
+            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(group.members[1], anon2.address)
         })
 
         it("Should not allow users to register in zk-poh twice", async () => {
@@ -61,7 +57,7 @@ describe("ZKProofOfHumanity", () => {
     })
 
     describe("# verifyProof", () => {
-        let fullProof: FullProof;
+        let fullProof: FullProof
         const signal = formatBytes32String("Hello World")
         const externalNullifier = groupId
 
@@ -78,9 +74,7 @@ describe("ZKProofOfHumanity", () => {
                 fullProof.proof
             )
 
-            await expect(transaction)
-                .to.emit(zkPoHContract, "HumanProofVerified")
-                .withArgs(signal)
+            await expect(transaction).to.emit(zkPoHContract, "HumanProofVerified").withArgs(signal)
         })
 
         it("Should not allow users to double-signal", async () => {
@@ -96,7 +90,7 @@ describe("ZKProofOfHumanity", () => {
     })
 
     describe("# verifyHumanity", () => {
-        let fullProof: FullProof;
+        let fullProof: FullProof
 
         before(async () => {
             fullProof = await generateHumanityProof(groupId, users, group, wasmFilePath, zkeyFilePath)
@@ -104,32 +98,32 @@ describe("ZKProofOfHumanity", () => {
 
         it("Should allow users to verify humanity anonymously", async () => {
             const transaction = verifyHumanity(zkPoHContract, fullProof)
-            await expect(transaction)
-                .to.emit(zkPoHContract, "HumanProofVerified")
-                .withArgs(groupId)
+            await expect(transaction).to.emit(zkPoHContract, "HumanProofVerified").withArgs(groupId)
         })
 
         it("Should allow users to verify humanity anonymously twice", async () => {
             const transaction = verifyHumanity(zkPoHContract, fullProof)
 
-            await expect(transaction)
-                .to.emit(zkPoHContract, "HumanProofVerified")
-                .withArgs(groupId)
+            await expect(transaction).to.emit(zkPoHContract, "HumanProofVerified").withArgs(groupId)
         })
 
         it("Should reject users not register as human", async () => {
-            const userNotRegister = new Identity();
-            group.addMember(userNotRegister.commitment);
-            let proof = await generateHumanityProofByIdentity(groupId,  userNotRegister, group, wasmFilePath, zkeyFilePath);
+            const userNotRegister = new Identity()
+            group.addMember(userNotRegister.commitment)
+            let proof = await generateHumanityProofByIdentity(
+                groupId,
+                userNotRegister,
+                group,
+                wasmFilePath,
+                zkeyFilePath
+            )
 
             const transaction = verifyHumanity(zkPoHContract, proof)
             await expect(transaction).to.be.rejected
             await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__InvalidProofOfHumanity")
-        });
-
+        })
     })
 })
-
 
 /// HELPERS
 async function generateSignalProof(
@@ -154,10 +148,16 @@ async function generateHumanityProof(
     zkeyFilePath: string
 ) {
     const identity = users[1].identity
-   return  await generateHumanityProofByIdentity(groupId, identity, group, wasmFilePath, zkeyFilePath)
+    return await generateHumanityProofByIdentity(groupId, identity, group, wasmFilePath, zkeyFilePath)
 }
 
-async function generateHumanityProofByIdentity(groupId: string, identity: any, group: Group, wasmFilePath: string, zkeyFilePath: string) {
+async function generateHumanityProofByIdentity(
+    groupId: string,
+    identity: any,
+    group: Group,
+    wasmFilePath: string,
+    zkeyFilePath: string
+) {
     const signal = groupId
     const externalNullifier = groupId
     return await generateProof(identity, group, externalNullifier, signal, {
@@ -166,11 +166,6 @@ async function generateHumanityProofByIdentity(groupId: string, identity: any, g
     })
 }
 
-function verifyHumanity(zkPoHContract: ZKProofOfHumanity, fullProof:FullProof) {
-    return zkPoHContract.verifyHumanity(
-        fullProof.merkleTreeRoot,
-        fullProof.nullifierHash,
-        fullProof.proof
-    )
+function verifyHumanity(zkPoHContract: ZKProofOfHumanity, fullProof: FullProof) {
+    return zkPoHContract.verifyHumanity(fullProof.merkleTreeRoot, fullProof.nullifierHash, fullProof.proof)
 }
-

@@ -15,7 +15,8 @@
         "test:coverage": "hardhat coverage",
         "typechain": "hardhat typechain",
         "docgen": "npx hardhat docgen",
-        "lint": "solhint 'contracts/**/*.sol'"
+        "lint": "solhint 'contracts/**/*.sol'",
+        "prettier": "prettier -c ."
     },
     "keywords": [
         "javascript",
@@ -44,14 +45,15 @@
         "ethers": "^5.4.7",
         "hardhat": "^2.11.0",
         "hardhat-gas-reporter": "^1.0.8",
+        "prettier": "^2.8.3",
         "prettier-plugin-solidity": "^1.0.0-beta.19",
         "solhint": "^3.3.6",
         "solhint-plugin-prettier": "^0.0.5",
         "solidity-coverage": "^0.8.1",
+        "solidity-docgen": "^0.6.0-beta.34",
         "ts-node": "^10.8.1",
         "typechain": "^8.1.0",
-        "typescript": "^4.7.3",
-        "solidity-docgen": "^0.6.0-beta.34"
+        "typescript": "^4.7.3"
     },
     "dependencies": {
         "@semaphore-protocol/contracts": "3.0.0"
