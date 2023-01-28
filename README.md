@@ -1,4 +1,8 @@
-# ZK Proof of Humanity
+<p align="center">
+    <h1 align="center">
+        ZK Proof of Humanity
+    </h1>
+</p>
 
 <p align="center">
     <a href="https://github.com/elmol/zk-proof-of-humanity" target="_blank">

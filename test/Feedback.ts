@@ -1,6 +1,6 @@
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
-import { generateProof, packToSolidityProof } from "@semaphore-protocol/proof"
+import { generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { formatBytes32String } from "ethers/lib/utils"
 import { run } from "hardhat"
@@ -40,8 +40,8 @@ describe("Feedback", () => {
         group.addMember(users[1].identity.commitment)
 
         const [owner, anon1, anon2] = await ethers.getSigners()
-        const tx = zkPoHContract.register(group.members[0], anon1.address)
-        const tx1 = zkPoHContract.register(group.members[1], anon2.address)
+        const tx = zkPoHContract.connect(anon1).register(group.members[0])
+        const tx1 = zkPoHContract.connect(anon2).register(group.members[1])
     })
 
     describe("# sendFeedback", () => {

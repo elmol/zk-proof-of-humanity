@@ -22,7 +22,11 @@ contract ZKProofOfHumanity {
 
     ISemaphore public semaphore;
     uint256 public groupId;
-    mapping(uint256 => address) public humans;
+    //identityCommitment -> humans
+    mapping(uint256 => address) public identities;
+
+    //humans -> is human registered
+    mapping(address => bool) private humans;
 
     constructor(address semaphoreAddress, uint256 _groupId) {
         semaphore = ISemaphore(semaphoreAddress);
@@ -31,16 +35,23 @@ contract ZKProofOfHumanity {
         semaphore.createGroup(groupId, TREE_DEPTH, address(this));
     }
 
-    function register(uint256 identityCommitment, address account) external {
-        if (humans[identityCommitment] != address(0)) {
+    function register(uint256 identityCommitment) external {
+        // checks if the msg sender is already registered
+        if (humans[msg.sender]) {
+            revert ZKPoH__AccountAlreadyExists();
+        }
+
+        // checks if the entity is already registered
+        if (identities[identityCommitment] != address(0)) {
             revert ZKPoH__AccountAlreadyExists();
         }
 
         semaphore.addMember(groupId, identityCommitment);
 
-        humans[identityCommitment] = account;
+        identities[identityCommitment] = msg.sender;
+        humans[msg.sender] = true;
 
-        emit NewUser(identityCommitment, account);
+        emit NewUser(identityCommitment, msg.sender);
     }
 
     /**
