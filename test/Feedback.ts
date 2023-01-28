@@ -4,11 +4,12 @@ import { generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { formatBytes32String } from "ethers/lib/utils"
 import { run } from "hardhat"
-import { ZKProofOfHumanity, Feedback } from "../build/typechain"
+import { ZKProofOfHumanity, Feedback, ProofOfHumanityMock } from "../build/typechain"
 import { config } from "../package.json"
 import { ethers } from "hardhat"
 
 describe("Feedback", () => {
+    let pohContract: ProofOfHumanityMock
     let zkPoHContract: ZKProofOfHumanity
     let feedbackContract: Feedback
 
@@ -19,7 +20,9 @@ describe("Feedback", () => {
 
     before(async () => {
         // contracts deployment
-        zkPoHContract = await run("deploy", { logs: false, group: groupId })
+        const PoHFactory = await ethers.getContractFactory("ProofOfHumanityMock")
+        pohContract = await PoHFactory.deploy()
+        zkPoHContract = await run("deploy", { proofOfHumanity: pohContract.address, logs: false, group: groupId })
 
         const FeedbackFactory = await ethers.getContractFactory("Feedback")
         feedbackContract = await FeedbackFactory.deploy(zkPoHContract.address)
@@ -40,6 +43,8 @@ describe("Feedback", () => {
         group.addMember(users[1].identity.commitment)
 
         const [owner, anon1, anon2] = await ethers.getSigners()
+        await pohContract.addSubmissionManually(anon1.address)
+        await pohContract.addSubmissionManually(anon2.address)
         const tx = zkPoHContract.connect(anon1).register(group.members[0])
         const tx1 = zkPoHContract.connect(anon2).register(group.members[1])
     })

@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/Semaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
+import "./IProofOfHumanity.sol";
 
 /**
  * @title ZKProofOfHumanity
@@ -12,15 +13,19 @@ import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
  * @dev Semaphore verification proof is used to avoid double-signaling, also humanity could be verified without signal.
  */
 contract ZKProofOfHumanity {
+    /* Custom Errors */
     error ZKPoH__AccountAlreadyExists();
     error ZKPoH__InvalidProofOfHumanity();
+    error ZKPoH__AccountNotRegisteredInPoH();
 
+    /* Events */
     event HumanProofVerified(uint256 signal);
     event NewUser(uint256 identityCommitment, address account);
 
+    /* Storage */
     uint256 public constant TREE_DEPTH = 20; // 2^20 humans
-
     ISemaphore public semaphore;
+    IProofOfHumanity poh;
     uint256 public groupId;
     //identityCommitment -> humans
     mapping(uint256 => address) public identities;
@@ -28,14 +33,19 @@ contract ZKProofOfHumanity {
     //humans -> is human registered
     mapping(address => bool) private humans;
 
-    constructor(address semaphoreAddress, uint256 _groupId) {
+    constructor(address semaphoreAddress, address pohAddress, uint256 _groupId) {
         semaphore = ISemaphore(semaphoreAddress);
+        poh = IProofOfHumanity(pohAddress);
         groupId = _groupId;
-
         semaphore.createGroup(groupId, TREE_DEPTH, address(this));
     }
 
     function register(uint256 identityCommitment) external {
+        //checks if  the msg sender is not registered in PoH
+        if (!poh.isRegistered(msg.sender)) {
+            revert ZKPoH__AccountNotRegisteredInPoH();
+        }
+
         // checks if the msg sender is already registered
         if (humans[msg.sender]) {
             revert ZKPoH__AccountAlreadyExists();

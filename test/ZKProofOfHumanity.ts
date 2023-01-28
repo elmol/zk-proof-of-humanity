@@ -4,12 +4,13 @@ import { FullProof, generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { formatBytes32String } from "ethers/lib/utils"
 import { run } from "hardhat"
-import { ZKProofOfHumanity } from "../build/typechain"
+import { ProofOfHumanityMock, ZKProofOfHumanity } from "../build/typechain"
 import { config } from "../package.json"
 import { ethers } from "hardhat"
 
 describe("ZKProofOfHumanity", () => {
     let zkPoHContract: ZKProofOfHumanity
+    let pohContract: ProofOfHumanityMock
 
     const identities: Identity[] = []
     const groupId = "42"
@@ -20,7 +21,9 @@ describe("ZKProofOfHumanity", () => {
 
     before(async () => {
         // contracts deployment
-        zkPoHContract = await run("deploy", { logs: false, group: groupId })
+        const PoHFactory = await ethers.getContractFactory("ProofOfHumanityMock")
+        pohContract = await PoHFactory.deploy()
+        zkPoHContract = await run("deploy", { proofOfHumanity: pohContract.address, logs: false, group: groupId })
 
         // identity creation
         identities.push(new Identity())
@@ -32,29 +35,40 @@ describe("ZKProofOfHumanity", () => {
     })
 
     describe("# register", () => {
-        it("Should allow accounts to register in zk-poh", async () => {
-            const [owner, signer1, signer2] = await ethers.getSigners()
+        it("Should allow humans (registered accounts in poh) to register in zk-poh", async () => {
+            const [owner, human1, human2] = await ethers.getSigners()
 
-            const tx = zkPoHContract.connect(signer1).register(group.members[0])
-            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(group.members[0], signer1.address)
+            await pohContract.addSubmissionManually(human1.address)
+            const tx = zkPoHContract.connect(human1).register(group.members[0])
+            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(group.members[0], human1.address)
 
-            const tx1 = zkPoHContract.connect(signer2).register(group.members[1])
-            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(group.members[1], signer2.address)
+            await pohContract.addSubmissionManually(human2.address)
+            const tx1 = zkPoHContract.connect(human2).register(group.members[1])
+            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(group.members[1], human2.address)
         })
 
         it("Should not allow same identity to register in zk-poh twice", async () => {
-            const [owner, signer1] = await ethers.getSigners()
+            const [owner, human1, human2, human3] = await ethers.getSigners()
+            await pohContract.addSubmissionManually(human3.address)
             const identityCommitment = group.members[0]
-            const transaction = zkPoHContract.register(identityCommitment)
+            const transaction = zkPoHContract.connect(human3).register(identityCommitment)
             await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__AccountAlreadyExists")
         })
 
-        it("Should not allow same account to register in zk-poh twice with different entity", async () => {
-            const [owner, signer1] = await ethers.getSigners()
+        it("Should not allow same human to register in zk-poh twice with different identity", async () => {
+            const [owner, human1] = await ethers.getSigners()
             const identity = new Identity()
             const identityCommitment = identity.commitment
-            const transaction = zkPoHContract.connect(signer1).register(identityCommitment)
+            const transaction = zkPoHContract.connect(human1).register(identityCommitment)
             await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__AccountAlreadyExists")
+        })
+
+        it("Should not allow to register an account if it is not in registered in PoH", async () => {
+            const [owner, human1, human2, human3, notPoHRegisteredSigner] = await ethers.getSigners()
+            const identity = new Identity()
+            const identityCommitment = identity.commitment
+            const transaction = zkPoHContract.connect(notPoHRegisteredSigner).register(identityCommitment)
+            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__AccountNotRegisteredInPoH")
         })
     })
 
