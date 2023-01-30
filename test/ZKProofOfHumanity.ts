@@ -8,16 +8,52 @@ import { ProofOfHumanityMock, ZKProofOfHumanity } from "../build/typechain"
 import { config } from "../package.json"
 import { ethers } from "hardhat"
 
+class ZkPoHApi {
+    public readonly groupId = "42"
+
+    private _identities: Identity[] = []
+    private _group = new Group(this.groupId)
+
+    public readonly wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
+    public readonly zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+
+    public addIdentity(identity: Identity) {
+        this._identities.push(identity)
+        this._group.addMember(identity.commitment)
+    }
+
+    public async generateHumanityProofByIdentity(
+        groupId: string,
+        identity: Identity,
+        group: Group,
+        wasmFilePath: string,
+        zkeyFilePath: string
+    ) {
+        const signal = groupId
+        const externalNullifier = groupId
+        return await generateProof(identity, group, externalNullifier, signal, {
+            wasmFilePath,
+            zkeyFilePath
+        })
+    }
+
+    public get group() {
+        return this._group
+    }
+
+    public get identities() {
+        return this._identities
+    }
+}
+
 describe("ZKProofOfHumanity", () => {
     let zkPoHContract: ZKProofOfHumanity
     let pohContract: ProofOfHumanityMock
 
-    const identities: Identity[] = []
-    const groupId = "42"
-    const group = new Group(groupId)
-
-    const wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
-    const zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
+    const api = new ZkPoHApi()
+    const groupId = api.groupId
+    const wasmFilePath = api.wasmFilePath
+    const zkeyFilePath = api.zkeyFilePath
 
     before(async () => {
         // contracts deployment
@@ -25,13 +61,8 @@ describe("ZKProofOfHumanity", () => {
         pohContract = await PoHFactory.deploy()
         zkPoHContract = await run("deploy", { proofOfHumanity: pohContract.address, logs: false, group: groupId })
 
-        // identity creation
-        identities.push(new Identity())
-        identities.push(new Identity())
-
-        // local group adding
-        group.addMember(identities[0].commitment)
-        group.addMember(identities[1].commitment)
+        api.addIdentity(new Identity())
+        api.addIdentity(new Identity())
     })
 
     describe("# register", () => {
@@ -39,18 +70,18 @@ describe("ZKProofOfHumanity", () => {
             const [owner, human1, human2] = await ethers.getSigners()
 
             await pohContract.addSubmissionManually(human1.address)
-            const tx = zkPoHContract.connect(human1).register(group.members[0])
-            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(group.members[0], human1.address)
+            const tx = zkPoHContract.connect(human1).register(api.group.members[0])
+            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(api.group.members[0], human1.address)
 
             await pohContract.addSubmissionManually(human2.address)
-            const tx1 = zkPoHContract.connect(human2).register(group.members[1])
-            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(group.members[1], human2.address)
+            const tx1 = zkPoHContract.connect(human2).register(api.group.members[1])
+            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(api.group.members[1], human2.address)
         })
 
         it("Should not allow same identity to register in zk-poh twice", async () => {
             const [owner, human1, human2, human3] = await ethers.getSigners()
             await pohContract.addSubmissionManually(human3.address)
-            const identityCommitment = group.members[0]
+            const identityCommitment = api.group.members[0]
             const transaction = zkPoHContract.connect(human3).register(identityCommitment)
             await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__AccountAlreadyExists")
         })
@@ -78,7 +109,7 @@ describe("ZKProofOfHumanity", () => {
         const externalNullifier = groupId
 
         before(async () => {
-            fullProof = await generateProof(identities[1], group, externalNullifier, signal, {
+            fullProof = await generateProof(api.identities[1], api.group, externalNullifier, signal, {
                 wasmFilePath,
                 zkeyFilePath
             })
@@ -112,7 +143,13 @@ describe("ZKProofOfHumanity", () => {
         let fullProof: FullProof
 
         before(async () => {
-            fullProof = await generateHumanityProofByIdentity(groupId, identities[1], group, wasmFilePath, zkeyFilePath)
+            fullProof = await api.generateHumanityProofByIdentity(
+                groupId,
+                api.identities[1],
+                api.group,
+                wasmFilePath,
+                zkeyFilePath
+            )
         })
 
         it("Should allow users to verify humanity anonymously", async () => {
@@ -128,11 +165,11 @@ describe("ZKProofOfHumanity", () => {
 
         it("Should reject users not register as human", async () => {
             const userNotRegister = new Identity()
-            group.addMember(userNotRegister.commitment)
-            let proof = await generateHumanityProofByIdentity(
+            api.group.addMember(userNotRegister.commitment)
+            let proof = await api.generateHumanityProofByIdentity(
                 groupId,
                 userNotRegister,
-                group,
+                api.group,
                 wasmFilePath,
                 zkeyFilePath
             )
@@ -145,21 +182,6 @@ describe("ZKProofOfHumanity", () => {
 })
 
 /// HELPERS
-async function generateHumanityProofByIdentity(
-    groupId: string,
-    identity: Identity,
-    group: Group,
-    wasmFilePath: string,
-    zkeyFilePath: string
-) {
-    const signal = groupId
-    const externalNullifier = groupId
-    return await generateProof(identity, group, externalNullifier, signal, {
-        wasmFilePath,
-        zkeyFilePath
-    })
-}
-
 function verifyHumanity(zkPoHContract: ZKProofOfHumanity, fullProof: FullProof) {
     return zkPoHContract.verifyHumanity(fullProof.merkleTreeRoot, fullProof.nullifierHash, fullProof.proof)
 }
