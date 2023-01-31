@@ -11,6 +11,7 @@ import "solidity-coverage"
 import { config } from "./package.json"
 import "./tasks/deploy"
 import "solidity-docgen"
+import "@nomicfoundation/hardhat-toolbox";
 
 dotenvConfig({ path: resolve(__dirname, ".env") })
 
@@ -56,6 +57,9 @@ const hardhatConfig: HardhatUserConfig = {
     docgen: {
         exclude: ["./Feedback.sol"],
         pages: "files"
+    },
+    etherscan: {
+        apiKey: process.env.ETHERSCAN_API_KEY
     }
 }
 

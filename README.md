@@ -68,6 +68,13 @@ Deploy the contract:
 yarn deploy --semaphore <semaphore-address> --group <group-id> --network goerli
 ```
 
+Verify the contract
+
+```bash
+yarn verify <zk-proof-of-humanity-address> <semaphore-address> <proof-of-humanity-address> <group-id> --network goerli
+```
+
+
 > **Note**  
 > You should download the snark artifacts before run tests
 
@@ -87,6 +94,8 @@ This project uses several scripts to help with the development and deployment of
 
 -   deploy: This script deploys the contract to the network
 
+-   verify: verify the contract
+
 -   test: This script runs the tests
 
 -   docgen: Generates documentation for the contract
@@ -95,13 +104,27 @@ This project uses several scripts to help with the development and deployment of
 
 ## Goerli Test Deployment
 
+Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52` 
+
+
 ```
-$ yarn deploy --network goerli
-Pairing library has been deployed to: 0x0e269e16FFc1a77C3d90cCA5A4A2236D08707Ae7
-SemaphoreVerifier contract has been deployed to: 0xB745aBEC9405058EB2EA46e91Fc0C611600d5C35
-Poseidon library has been deployed to: 0x8956aCa1161A042fF56B74E72Fb7e29650d5429e
-IncrementalBinaryTree library has been deployed to: 0x4b27F471297AFb6520fCd17b4FB051dED7Bd5dDB
-Semaphore contract has been deployed to: 0xf44Ebff76F18500b399cCCbf8ae9125CD4d37DF0
-ZKProofOfHumanity contract has been deployed to: 0x5AD776c3a9eF2fcd143D93cb2566249De4EdE21A
+$ yarn deploy --poh 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 --network goerli
+Pairing library has been deployed to: 0x89722820625d6d87A38ac53c4FDc6E1A7cbF643b
+SemaphoreVerifier contract has been deployed to: 0x8710b17B297592746B2DAb5D480b150DA5eB51A2
+Poseidon library has been deployed to: 0x144104fdacB2BE94f802338252656a3673e56332
+IncrementalBinaryTree library has been deployed to: 0x0bB29Ec74f5e3b2A7c13F8EABEb13fD7e8dB147A
+Semaphore contract has been deployed to: 0x7C0C3758253885Bc00bCB386aF5e059250a9d1Ad
+ZKProofOfHumanity contract has been deployed to: 0xbAcf2f5234C30CD10852c29a1C981F380e056e3f
 Done in 99.28s.
+```
+Verification
+```
+$ yarn hardhat verify --network goerli 0xbAcf2f5234C30CD10852c29a1C981F380e056e3f 0x7C0C3758253885Bc00bCB386aF5e059250a9d1Ad 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 42
+Successfully submitted source code for contract
+contracts/ZKProofOfHumanity.sol:ZKProofOfHumanity at 0xbAcf2f5234C30CD10852c29a1C981F380e056e3f
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract ZKProofOfHumanity on Etherscan.
+https://goerli.etherscan.io/address/0xbAcf2f5234C30CD10852c29a1C981F380e056e3f#code
+Done in 10.51s.
 ```

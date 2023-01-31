@@ -28,7 +28,9 @@
     ],
     "devDependencies": {
         "@nomicfoundation/hardhat-chai-matchers": "^1.0.5",
+        "@nomicfoundation/hardhat-toolbox": "^2.0.1",
         "@nomiclabs/hardhat-ethers": "^2.0.0",
+        "@nomiclabs/hardhat-etherscan": "^3.1.5",
         "@semaphore-protocol/group": "3.0.0",
         "@semaphore-protocol/hardhat": "3.0.0",
         "@semaphore-protocol/identity": "3.0.0",
