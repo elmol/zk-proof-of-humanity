@@ -22,7 +22,7 @@ describe("Feedback", () => {
         // contracts deployment
         const PoHFactory = await ethers.getContractFactory("ProofOfHumanityMock")
         pohContract = await PoHFactory.deploy()
-        zkPoHContract = await run("deploy", { proofOfHumanity: pohContract.address, logs: false, group: groupId })
+        zkPoHContract = await run("deploy", { poh: pohContract.address, logs: false, group: groupId })
 
         const FeedbackFactory = await ethers.getContractFactory("Feedback")
         feedbackContract = await FeedbackFactory.deploy(zkPoHContract.address)

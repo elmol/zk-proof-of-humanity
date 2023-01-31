@@ -11,7 +11,7 @@ import "solidity-coverage"
 import { config } from "./package.json"
 import "./tasks/deploy"
 import "solidity-docgen"
-import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-toolbox"
 
 dotenvConfig({ path: resolve(__dirname, ".env") })
 

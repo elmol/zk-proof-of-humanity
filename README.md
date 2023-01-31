@@ -74,7 +74,6 @@ Verify the contract
 yarn verify <zk-proof-of-humanity-address> <semaphore-address> <proof-of-humanity-address> <group-id> --network goerli
 ```
 
-
 > **Note**  
 > You should download the snark artifacts before run tests
 
@@ -104,8 +103,7 @@ This project uses several scripts to help with the development and deployment of
 
 ## Goerli Test Deployment
 
-Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52` 
-
+Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52`
 
 ```
 $ yarn deploy --poh 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 --network goerli
@@ -117,7 +115,9 @@ Semaphore contract has been deployed to: 0x7C0C3758253885Bc00bCB386aF5e059250a9d
 ZKProofOfHumanity contract has been deployed to: 0xbAcf2f5234C30CD10852c29a1C981F380e056e3f
 Done in 99.28s.
 ```
+
 Verification
+
 ```
 $ yarn hardhat verify --network goerli 0xbAcf2f5234C30CD10852c29a1C981F380e056e3f 0x7C0C3758253885Bc00bCB386aF5e059250a9d1Ad 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 42
 Successfully submitted source code for contract
