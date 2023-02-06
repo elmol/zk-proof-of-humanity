@@ -185,7 +185,7 @@ describe("ZKProofOfHumanity", () => {
 
     describe("# accountsToRemove", () => {
         it("Should return empty if all humans accounts are still registered in PoH ", async () => {
-            const accountsToRemove = await zkPoHContract.accountsToRemove()
+            const accountsToRemove = await zkPoHContract.mismachedAccounts()
             expect(accountsToRemove).to.be.empty
         })
 
@@ -195,7 +195,7 @@ describe("ZKProofOfHumanity", () => {
             expect(await pohContract.isRegistered(human2.address)).to.be.true
             await pohContract.unRegister(human1.address)
             await pohContract.unRegister(human2.address)
-            const accountsToRemove = await zkPoHContract.accountsToRemove()
+            const accountsToRemove = await zkPoHContract.mismachedAccounts()
             expect(accountsToRemove).to.be.deep.equal([human1.address, human2.address])
         })
     })

@@ -116,7 +116,12 @@ contract ZKProofOfHumanity {
         emit HumanProofVerified(signal);
     }
 
-    function accountsToRemove() public view returns (address[] memory) {
+
+    /**
+     * @dev Returns the mismachedAccounts between zkPoH and PoH
+     * @return mismachedAccount mismached accounts between zkPoH and PoH
+     */
+    function mismachedAccounts() public view returns (address[] memory) {
         uint256 length = humansSet.length();
         address[] memory toRemove = new address[](length);
         uint256 lengthToRemove;
