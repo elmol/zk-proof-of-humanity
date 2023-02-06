@@ -5,6 +5,8 @@ import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/Semaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+
 import "./IProofOfHumanity.sol";
 
 /**
@@ -14,9 +16,9 @@ import "./IProofOfHumanity.sol";
  * @dev Semaphore verification proof is used to avoid double-signaling, also humanity could be verified without signal.
  */
 contract ZKProofOfHumanity {
-
-     // Add the library methods
+    // Add the library methods
     using EnumerableMap for EnumerableMap.UintToAddressMap;
+    using EnumerableSet for EnumerableSet.AddressSet;
 
     /* Custom Errors */
     error ZKPoH__AccountAlreadyExists();
@@ -37,6 +39,7 @@ contract ZKProofOfHumanity {
 
     //humans -> is human registered
     mapping(address => bool) private humans;
+    EnumerableSet.AddressSet private humansSet;
 
     constructor(address semaphoreAddress, address pohAddress, uint256 _groupId) {
         semaphore = ISemaphore(semaphoreAddress);
@@ -58,14 +61,15 @@ contract ZKProofOfHumanity {
 
         // checks if the entity is already registered
 
-        (bool isNotRegistered,)=identitiesMap.tryGet(identityCommitment);
-        if(isNotRegistered) {
+        (bool isNotRegistered, ) = identitiesMap.tryGet(identityCommitment);
+        if (isNotRegistered) {
             revert ZKPoH__AccountAlreadyExists();
         }
 
         semaphore.addMember(groupId, identityCommitment);
 
         identitiesMap.set(identityCommitment, msg.sender);
+        humansSet.add(msg.sender);
         humans[msg.sender] = true;
 
         emit NewUser(identityCommitment, msg.sender);
@@ -97,7 +101,7 @@ contract ZKProofOfHumanity {
      * @param nullifierHash Nullifier hash.
      * @param proof Zero-knowledge proof.
      */
-    function verifyHumanity(uint256 merkleTreeRoot, uint256 nullifierHash, uint256[8] calldata proof) public  {
+    function verifyHumanity(uint256 merkleTreeRoot, uint256 nullifierHash, uint256[8] calldata proof) public {
         Semaphore semaphoreImpl = Semaphore(address(semaphore));
         uint256 currentMerkleTreeRoot = semaphoreImpl.getMerkleTreeRoot(groupId);
 
@@ -112,13 +116,27 @@ contract ZKProofOfHumanity {
         emit HumanProofVerified(signal);
     }
 
-
-    function getIdentities() public view returns(uint256[] memory) {
-        uint256 length = identitiesMap.length();
-        uint256[] memory identities = new uint256[](length);
+    function accountsToRemove() public view returns (address[] memory) {
+        uint256 length = humansSet.length();
+        address[] memory toRemove = new address[](length);
+        uint256 lengthToRemove;
         for (uint256 i = 0; i < length; i++) {
-            (identities[i],)=identitiesMap.at(i);
+            address account = humansSet.at(i);
+            if (!poh.isRegistered(account)) {
+                toRemove[i] = account;
+                lengthToRemove++;
+            }
         }
-        return identities;
+
+        return shrinkArray(toRemove, lengthToRemove);
+    }
+
+    function shrinkArray(address[] memory array, uint newLength) internal pure returns (address[] memory) {
+        require(newLength <= array.length, "Array: length after shrinking larger than before");
+        /// @solidity memory-safe-assembly
+        assembly {
+            mstore(array, newLength)
+        }
+        return array;
     }
 }

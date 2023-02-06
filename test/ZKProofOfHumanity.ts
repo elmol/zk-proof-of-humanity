@@ -183,10 +183,20 @@ describe("ZKProofOfHumanity", () => {
         })
     })
 
-    describe("# Identities", () => {
-        it("Should returns the array of zk identity commitments", async () => {
-            const group = await zkPoHContract.getIdentities()
-            expect(group).to.be.deep.equal([api.group.members[0], api.group.members[1]])
+    describe("# accountsToRemove", () => {
+        it("Should return empty if all humans accounts are still registered in PoH ", async () => {
+            const accountsToRemove = await zkPoHContract.accountsToRemove()
+            expect(accountsToRemove).to.be.empty
+        })
+
+        it("Should return an unregistered accounts if was unregistered form PoH ", async () => {
+            const [owner, human1, human2] = await ethers.getSigners()
+            expect(await pohContract.isRegistered(human1.address)).to.be.true
+            expect(await pohContract.isRegistered(human2.address)).to.be.true
+            await pohContract.unRegister(human1.address)
+            await pohContract.unRegister(human2.address)
+            const accountsToRemove = await zkPoHContract.accountsToRemove()
+            expect(accountsToRemove).to.be.deep.equal([human1.address, human2.address])
         })
     })
 })

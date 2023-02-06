@@ -19,5 +19,13 @@ describe("ProofOfHumanityMock", () => {
             await pohContract.addSubmissionManually(human1.address)
             expect(await pohContract.isRegistered(human1.address)).to.be.true
         })
+
+        it("Should unregister a registered account ", async () => {
+            const [owner, human1] = await ethers.getSigners()
+            await pohContract.addSubmissionManually(human1.address)
+            expect(await pohContract.isRegistered(human1.address)).to.be.true
+            await pohContract.unRegister(human1.address)
+            expect(await pohContract.isRegistered(human1.address)).to.be.false
+        })
     })
 })

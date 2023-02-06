@@ -23,4 +23,11 @@ contract ProofOfHumanityMock is IProofOfHumanity {
     function isRegistered(address _submissionID) public view override returns (bool) {
         return humans[_submissionID];
     }
+
+    /** @dev Allow to directly remove submissions to the list.
+     *  @param _submissionID The addresses to remove.
+     */
+    function unRegister(address _submissionID) public {
+        humans[_submissionID] = false;
+    }
 }
