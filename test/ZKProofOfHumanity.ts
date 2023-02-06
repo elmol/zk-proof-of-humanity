@@ -177,6 +177,16 @@ describe("ZKProofOfHumanity", () => {
             const transaction = verifyHumanity(zkPoHContract, proof)
             await expect(transaction).to.be.rejected
             await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__InvalidProofOfHumanity")
+            const indexToRemove = api.group.indexOf(userNotRegister.commitment)
+            //TODO: REVIEW removeMember does not remove the member for the array.
+            api.group.removeMember(indexToRemove)
+        })
+    })
+
+    describe("# Identities", () => {
+        it("Should returns the array of zk identity commitments", async () => {
+            const group = await zkPoHContract.getIdentities()
+            expect(group).to.be.deep.equal([api.group.members[0], api.group.members[1]])
         })
     })
 })
