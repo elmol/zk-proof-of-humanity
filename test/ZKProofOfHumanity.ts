@@ -185,7 +185,7 @@ describe("ZKProofOfHumanity", () => {
 
     describe("# mismatchedAccounts", () => {
         it("Should return empty if all humans accounts are still registered in PoH ", async () => {
-            const mismatchedAccounts = await zkPoHContract.mismachedAccounts()
+            const mismatchedAccounts = await zkPoHContract.mismatchedAccounts()
             expect(mismatchedAccounts).to.be.empty
         })
 
