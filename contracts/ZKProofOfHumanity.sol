@@ -116,7 +116,7 @@ contract ZKProofOfHumanity {
      * @dev Returns the mismachedAccounts between zkPoH and PoH
      * @return mismachedAccount mismached accounts between zkPoH and PoH
      */
-    function mismachedAccounts() public view returns (address[] memory) {
+    function mismatchedAccounts() public view returns (address[] memory) {
         uint256 length = humans.length();
         address[] memory toRemove = new address[](length);
         uint256 lengthToRemove;
@@ -131,8 +131,10 @@ contract ZKProofOfHumanity {
         return shrinkArray(toRemove, lengthToRemove);
     }
 
+    /**
+     * @dev shrink and array, newLenght should be less or equal than the array length
+     */
     function shrinkArray(address[] memory array, uint newLength) internal pure returns (address[] memory) {
-        require(newLength <= array.length, "Array: length after shrinking larger than before");
         /// @solidity memory-safe-assembly
         assembly {
             mstore(array, newLength)
