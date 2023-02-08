@@ -17,7 +17,7 @@
         "docgen": "npx hardhat docgen",
         "lint": "solhint 'contracts/**/*.sol'",
         "prettier": "prettier -c .",
-        "prettier:fix": "prettier -w"
+        "prettier:fix": "prettier -w ."
     },
     "keywords": [
         "javascript",

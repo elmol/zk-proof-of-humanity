@@ -35,11 +35,10 @@ contract ZKProofOfHumanity {
     IProofOfHumanity poh;
     uint256 public groupId;
     //identityCommitment -> humans
-    EnumerableMap.UintToAddressMap private identitiesMap;
+    mapping(uint256 => bool) private identities;
 
     //humans -> is human registered
-    mapping(address => bool) private humans;
-    EnumerableSet.AddressSet private humansSet;
+    EnumerableSet.AddressSet private humans;
 
     constructor(address semaphoreAddress, address pohAddress, uint256 _groupId) {
         semaphore = ISemaphore(semaphoreAddress);
@@ -55,22 +54,19 @@ contract ZKProofOfHumanity {
         }
 
         // checks if the msg sender is already registered
-        if (humans[msg.sender]) {
+        if (humans.contains(msg.sender)) {
             revert ZKPoH__AccountAlreadyExists();
         }
 
         // checks if the entity is already registered
 
-        (bool isNotRegistered, ) = identitiesMap.tryGet(identityCommitment);
-        if (isNotRegistered) {
+        if (identities[identityCommitment]) {
             revert ZKPoH__AccountAlreadyExists();
         }
 
         semaphore.addMember(groupId, identityCommitment);
-
-        identitiesMap.set(identityCommitment, msg.sender);
-        humansSet.add(msg.sender);
-        humans[msg.sender] = true;
+        identities[identityCommitment] = true;
+        humans.add(msg.sender);
 
         emit NewUser(identityCommitment, msg.sender);
     }
@@ -116,17 +112,16 @@ contract ZKProofOfHumanity {
         emit HumanProofVerified(signal);
     }
 
-
     /**
      * @dev Returns the mismachedAccounts between zkPoH and PoH
      * @return mismachedAccount mismached accounts between zkPoH and PoH
      */
     function mismachedAccounts() public view returns (address[] memory) {
-        uint256 length = humansSet.length();
+        uint256 length = humans.length();
         address[] memory toRemove = new address[](length);
         uint256 lengthToRemove;
         for (uint256 i = 0; i < length; i++) {
-            address account = humansSet.at(i);
+            address account = humans.at(i);
             if (!poh.isRegistered(account)) {
                 toRemove[i] = account;
                 lengthToRemove++;
