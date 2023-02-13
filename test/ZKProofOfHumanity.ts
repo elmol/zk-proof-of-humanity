@@ -199,6 +199,52 @@ describe("ZKProofOfHumanity", () => {
             expect(mismatchedAccounts).to.be.deep.equal([human1.address, human2.address])
         })
     })
+
+    describe("# matchAccount", () => {
+        it("should revert when the account is not registered in zkPoH", async () => {
+            const [owner, , , , human4] = await ethers.getSigners()
+            expect(await zkPoHContract.isRegistered(human4.address)).to.be.false
+            const transaction = zkPoHContract.matchAccount(human4.address, [], [])
+            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__NotRegisteredAccount")
+        })
+
+        it("should revert if the account state matches between PoH and ZPoH registries", async () => {
+            const [owner, human1, human2] = await ethers.getSigners()
+            await pohContract.addSubmissionManually(human1.address)
+            expect(await pohContract.isRegistered(human1.address)).to.be.true
+            expect(await zkPoHContract.isRegistered(human1.address)).to.be.true
+            const transaction = zkPoHContract.matchAccount(human1.address, [], [])
+            await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__AccountAlreadyMatch")
+        })
+
+        it("should remove the identity commitment linked to the human account when it's removed", async () => {
+            const [owner, human1, human2] = await ethers.getSigners()
+            const identity = api.identities[0]
+
+            // human1 is registered in both protocols
+            expect(await pohContract.isRegistered(human1.address)).to.be.true
+            expect(await zkPoHContract.isRegistered(human1.address)).to.be.true
+
+            // human1 is unregistered form PoH protocol
+            await pohContract.unRegister(human1.address)
+            expect(await pohContract.isRegistered(human1.address)).to.be.false
+            expect(await zkPoHContract.isRegistered(human1.address)).to.be.true
+
+            // human1 identity is removed from zPoH protocol
+            const index = api.group.indexOf(identity.commitment)
+            const proof = api.group.generateMerkleProof(index)
+            const matchTx = await zkPoHContract.matchAccount(human1.address, proof.siblings, proof.pathIndices)
+            api.group.removeMember(index)
+            await expect(matchTx).to.emit(zkPoHContract, "HumanRemoved").withArgs(identity.commitment, human1.address)
+            expect(await zkPoHContract.isIdentity(human1.address)).to.be.false
+
+            //human1 is registered in both protocols again
+            await pohContract.addSubmissionManually(human1.address)
+            const tx = zkPoHContract.connect(human1).register(identity.commitment)
+            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(identity.commitment, human1.address)
+            api.group.addMember(identity.commitment)
+        })
+    })
 })
 
 /// HELPERS

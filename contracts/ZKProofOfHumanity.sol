@@ -5,7 +5,6 @@ import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/Semaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphoreVerifier.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 import "./IProofOfHumanity.sol";
 
@@ -17,17 +16,19 @@ import "./IProofOfHumanity.sol";
  */
 contract ZKProofOfHumanity {
     // Add the library methods
-    using EnumerableMap for EnumerableMap.UintToAddressMap;
     using EnumerableSet for EnumerableSet.AddressSet;
 
     /* Custom Errors */
     error ZKPoH__AccountAlreadyExists();
     error ZKPoH__InvalidProofOfHumanity();
     error ZKPoH__AccountNotRegisteredInPoH();
+    error ZKPoH__NotRegisteredAccount();
+    error ZKPoH__AccountAlreadyMatch();
 
     /* Events */
     event HumanProofVerified(uint256 signal);
     event NewUser(uint256 identityCommitment, address account);
+    event HumanRemoved(uint256 identityCommitment, address account);
 
     /* Storage */
     uint256 public constant TREE_DEPTH = 20; // 2^20 humans
@@ -39,6 +40,9 @@ contract ZKProofOfHumanity {
 
     //humans -> is human registered
     EnumerableSet.AddressSet private humans;
+
+    //humans -> identityCommitment
+    mapping(address => uint256) private identitiesMap;
 
     constructor(address semaphoreAddress, address pohAddress, uint256 _groupId) {
         semaphore = ISemaphore(semaphoreAddress);
@@ -54,7 +58,7 @@ contract ZKProofOfHumanity {
         }
 
         // checks if the msg sender is already registered
-        if (humans.contains(msg.sender)) {
+        if (isRegistered(msg.sender)) {
             revert ZKPoH__AccountAlreadyExists();
         }
 
@@ -67,8 +71,17 @@ contract ZKProofOfHumanity {
         semaphore.addMember(groupId, identityCommitment);
         identities[identityCommitment] = true;
         humans.add(msg.sender);
+        identitiesMap[msg.sender] = identityCommitment;
 
         emit NewUser(identityCommitment, msg.sender);
+    }
+
+    function isRegistered(address account) public view returns (bool) {
+        return humans.contains(account);
+    }
+
+    function isIdentity(address account) public view returns (bool) {
+        return identitiesMap[account] != 0;
     }
 
     /**
@@ -110,6 +123,24 @@ contract ZKProofOfHumanity {
         uint256 externalNullifier = groupId;
         verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, TREE_DEPTH);
         emit HumanProofVerified(signal);
+    }
+
+    function matchAccount(address account, uint256[] calldata proofSiblings, uint8[] calldata proofPathIndices) public {
+        if (!this.isRegistered(account)) {
+            revert ZKPoH__NotRegisteredAccount();
+        }
+
+        if (poh.isRegistered(account)) {
+            revert ZKPoH__AccountAlreadyMatch();
+        }
+
+        uint256 identity = identitiesMap[account];
+        humans.remove(account);
+        semaphore.removeMember(groupId, identity, proofSiblings, proofPathIndices);
+        identities[identitiesMap[account]] = false;
+        delete identitiesMap[account];
+
+        emit HumanRemoved(identity, account);
     }
 
     /**
