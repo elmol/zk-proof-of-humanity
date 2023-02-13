@@ -28,7 +28,7 @@ contract Feedback {
     }
 
     function greet(bytes32 greeting, uint256 merkleTreeRoot, uint256 nullifierHash, uint256[8] calldata proof) public {
-        zKProofOfHumanity.verifyHumanity(merkleTreeRoot, nullifierHash, proof);
+        zKProofOfHumanity.verifyHumanity(merkleTreeRoot, 42, nullifierHash, 42, proof);
 
         emit NewGreeting(greeting);
     }

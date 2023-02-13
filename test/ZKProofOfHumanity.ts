@@ -248,5 +248,5 @@ describe("ZKProofOfHumanity", () => {
 
 /// HELPERS
 function verifyHumanity(zkPoHContract: ZKProofOfHumanity, fullProof: FullProof) {
-    return zkPoHContract.verifyHumanity(fullProof.merkleTreeRoot, fullProof.nullifierHash, fullProof.proof)
+    return zkPoHContract.verifyHumanity(fullProof.merkleTreeRoot, 42, fullProof.nullifierHash, 42, fullProof.proof)
 }

@@ -109,8 +109,16 @@ contract ZKProofOfHumanity {
      * @param merkleTreeRoot Root of the Merkle tree.
      * @param nullifierHash Nullifier hash.
      * @param proof Zero-knowledge proof.
+     * @dev  Note that a double-signaling check is not included here, and should be carried by the caller.
+     * @dev  Also, the mechanism to verify Semaphore proofs created with old Merkle tree roots (expiraton time) is not included here.
      */
-    function verifyHumanity(uint256 merkleTreeRoot, uint256 nullifierHash, uint256[8] calldata proof) public {
+    function verifyHumanity(
+        uint256 merkleTreeRoot,
+        uint256 signal,
+        uint256 nullifierHash,
+        uint256 externalNullifier,
+        uint256[8] calldata proof
+    ) public {
         Semaphore semaphoreImpl = Semaphore(address(semaphore));
         uint256 currentMerkleTreeRoot = semaphoreImpl.getMerkleTreeRoot(groupId);
 
@@ -119,8 +127,6 @@ contract ZKProofOfHumanity {
         }
 
         ISemaphoreVerifier verifier = semaphoreImpl.verifier();
-        uint256 signal = groupId;
-        uint256 externalNullifier = groupId;
         verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, TREE_DEPTH);
         emit HumanProofVerified(signal);
     }
