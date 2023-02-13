@@ -71,11 +71,11 @@ describe("ZKProofOfHumanity", () => {
 
             await pohContract.addSubmissionManually(human1.address)
             const tx = zkPoHContract.connect(human1).register(api.group.members[0])
-            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(api.group.members[0], human1.address)
+            await expect(tx).to.emit(zkPoHContract, "HumanRegistered").withArgs(api.group.members[0], human1.address)
 
             await pohContract.addSubmissionManually(human2.address)
             const tx1 = zkPoHContract.connect(human2).register(api.group.members[1])
-            await expect(tx1).to.emit(zkPoHContract, "NewUser").withArgs(api.group.members[1], human2.address)
+            await expect(tx1).to.emit(zkPoHContract, "HumanRegistered").withArgs(api.group.members[1], human2.address)
         })
 
         it("Should not allow same identity to register in zk-poh twice", async () => {
@@ -178,7 +178,6 @@ describe("ZKProofOfHumanity", () => {
             await expect(transaction).to.be.rejected
             await expect(transaction).to.be.revertedWithCustomError(zkPoHContract, "ZKPoH__InvalidProofOfHumanity")
             const indexToRemove = api.group.indexOf(userNotRegister.commitment)
-            //TODO: REVIEW removeMember does not remove the member for the array.
             api.group.removeMember(indexToRemove)
         })
     })
@@ -241,7 +240,7 @@ describe("ZKProofOfHumanity", () => {
             //human1 is registered in both protocols again
             await pohContract.addSubmissionManually(human1.address)
             const tx = zkPoHContract.connect(human1).register(identity.commitment)
-            await expect(tx).to.emit(zkPoHContract, "NewUser").withArgs(identity.commitment, human1.address)
+            await expect(tx).to.emit(zkPoHContract, "HumanRegistered").withArgs(identity.commitment, human1.address)
             api.group.addMember(identity.commitment)
         })
     })

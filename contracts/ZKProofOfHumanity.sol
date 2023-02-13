@@ -27,7 +27,7 @@ contract ZKProofOfHumanity {
 
     /* Events */
     event HumanProofVerified(uint256 signal);
-    event NewUser(uint256 identityCommitment, address account);
+    event HumanRegistered(uint256 identityCommitment, address account);
     event HumanRemoved(uint256 identityCommitment, address account);
 
     /* Storage */
@@ -73,7 +73,7 @@ contract ZKProofOfHumanity {
         humans.add(msg.sender);
         identitiesMap[msg.sender] = identityCommitment;
 
-        emit NewUser(identityCommitment, msg.sender);
+        emit HumanRegistered(identityCommitment, msg.sender);
     }
 
     function isRegistered(address account) public view returns (bool) {
