@@ -110,7 +110,7 @@ contract ZKProofOfHumanity {
      * @param nullifierHash Nullifier hash.
      * @param proof Zero-knowledge proof.
      * @dev  Note that a double-signaling check is not included here, and should be carried by the caller.
-     * @dev  Also, the mechanism to verify Semaphore proofs created with old Merkle tree roots (expiraton time) is not included here.
+     * @dev  Also, verification of proofs created with old Merkle tree roots (expiraton time) is not included here.
      */
     function verifyHumanity(
         uint256 merkleTreeRoot,
