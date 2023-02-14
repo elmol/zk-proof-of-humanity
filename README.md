@@ -128,3 +128,28 @@ Successfully verified contract ZKProofOfHumanity on Etherscan.
 https://goerli.etherscan.io/address/0xbAcf2f5234C30CD10852c29a1C981F380e056e3f#code
 Done in 10.51s.
 ```
+
+# Localhost ZkPoH script tests
+
+```
+$ yarn hardhat node
+```
+
+Localhost deployment and human account registration in a PoH mock
+
+```
+$ yarn hardhat run scripts/mock-localhost-deployment.ts --network localhost
+ZKProofOfHumanity contract has been deployed to: 0x0165878A594ca255338adfa4d48449f69242Eb8F
+Human Account PoH Registered: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+Done in 12.21s.
+```
+
+ZKPoH account registration
+
+```
+$ yarn hardhat register --zkpoh 0x0165878A594ca255338adfa4d48449f69242Eb8F --network localhost
+Human registration successfully DONE!
+Account: [ 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 ]
+Identity: [ ["3ff729abbf2207ea0af1f0aa2fa2cfff28f00341e3fb6230f5d6085459cc17","968b860bb3e241572f8565155613100965e21bd353410ecffb18cd96a4951"] ]
+zkPoHAdress: [ 0x0165878A594ca255338adfa4d48449f69242Eb8F ]
+```
