@@ -13,7 +13,6 @@ task("deploy", "Deploy a ZKProofOfHumanity contract")
 
             semaphoreAddress = semaphore.address
         }
-        42
 
         if (!groupId) {
             groupId = process.env.GROUP_ID
