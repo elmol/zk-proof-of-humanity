@@ -1,6 +1,8 @@
+import { BigNumberish, Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { generateProof } from "@semaphore-protocol/proof"
 import { Network, Subgraph } from "@semaphore-protocol/subgraph"
+import { BigNumber } from "ethers"
 import { config } from "../../package.json"
 
 export class ZkPoHApi {
@@ -10,7 +12,11 @@ export class ZkPoHApi {
     constructor(public readonly groupId: string, public readonly network: Network = "goerli") {}
     async generateZKPoHProof(identity: Identity, externalNullifier: string, signal: string) {
         const subgraph = new Subgraph(this.network)
-        const group = await subgraph.getGroup(this.groupId)
+        const { members } = await subgraph.getGroup(this.groupId, { members: true })
+        const group = new Group(this.groupId)
+        members?.forEach((member) => {
+            group.addMember(member)
+        })
         return await generateProof(identity, group, externalNullifier, signal, {
             wasmFilePath: this.wasmFilePath,
             zkeyFilePath: this.zkeyFilePath

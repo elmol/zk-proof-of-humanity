@@ -25,7 +25,7 @@ describe("ZKPoHAPI", () => {
         const identity = await getIdentity(human)
         const groupToMock = new Group("42")
         groupToMock.addMember(identity.commitment)
-        subgraphMock.mock("getGroup", groupToMock)
+        subgraphMock.mock("getGroup", { members: groupToMock.members.map((m) => m.toString()) })
     })
 
     describe("# register", () => {
