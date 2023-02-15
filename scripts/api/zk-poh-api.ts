@@ -14,9 +14,7 @@ export class ZkPoHApi {
         const subgraph = new Subgraph(this.network)
         const { members } = await subgraph.getGroup(this.groupId, { members: true })
         const group = new Group(this.groupId)
-        members?.forEach((member) => {
-            group.addMember(member)
-        })
+        members && group.addMembers(members)
         return await generateProof(identity, group, externalNullifier, signal, {
             wasmFilePath: this.wasmFilePath,
             zkeyFilePath: this.zkeyFilePath
