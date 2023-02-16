@@ -4,16 +4,24 @@ import { getIdentity } from "../scripts/api/zk-poh-api"
 
 task("register", "Register a human account in ZKProofOfHumanity")
     .addOptionalParam("zkpoh", "ZKProofOfHumanity contract address", undefined, types.string)
+    .addOptionalParam("human", "Human account", undefined, types.string)
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
-    .setAction(async ({ logs, zkpoh: zkpohAddress }, { ethers, run }) => {
+    .setAction(async ({ logs, zkpoh: zkpohAddress, human: humanAddress }, { ethers, run }) => {
+        // get contract
         if (!zkpohAddress) {
             zkpohAddress = process.env.ZK_POH_ADDRESS
         }
-
         const ZKProofOfHumanityFactory = await ethers.getContractFactory("ZKProofOfHumanity")
         const zkPoHContract = ZKProofOfHumanityFactory.attach(zkpohAddress)
 
-        const [, human] = await ethers.getSigners()
+        //get human signer
+        let human
+        if (!humanAddress) {
+            ;[, human] = await ethers.getSigners()
+        } else {
+            human = await ethers.getSigner(humanAddress)
+        }
+
         const identity = await getIdentity(human)
 
         const transaction = await zkPoHContract.connect(human).register(identity.commitment)

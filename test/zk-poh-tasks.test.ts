@@ -7,17 +7,16 @@ import { getIdentity } from "../scripts/api/zk-poh-api"
 describe("ZKPoH Script", () => {
     let zkPoHContract: ZKProofOfHumanity
 
-    before(async () => {
+    beforeEach(async () => {
         const { address } = await run("deploy-mock", { logs: false })
         const ZKPoHFactory = await ethers.getContractFactory("ZKProofOfHumanity")
         zkPoHContract = ZKPoHFactory.attach(address)
     })
 
     describe("# register", () => {
-        it("Should allow humans (registered accounts in poh) to register in zk-poh", async () => {
-            const tx = await run("register", { zkpoh: zkPoHContract.address, logs: false })
-
+        it("Should register human account by optional parameter", async () => {
             const [, human] = await ethers.getSigners()
+            const tx = await run("register", { zkpoh: zkPoHContract.address, logs: false, human: human.address })
             const identity = await getIdentity(human)
             await expect(tx).to.emit(zkPoHContract, "HumanRegistered").withArgs(identity.commitment, human.address)
         })
@@ -25,6 +24,7 @@ describe("ZKPoH Script", () => {
 
     describe("# verifyProof", () => {
         it("Should allow users to signal anonymously", async () => {
+            await run("register", { zkpoh: zkPoHContract.address, logs: false })
             const tx = await run("verify-proof", { zkpoh: zkPoHContract.address, logs: false })
 
             const signal = formatBytes32String("Hello World")
