@@ -30,5 +30,18 @@ describe("ZKPoH Script", () => {
             const signal = formatBytes32String("Hello World")
             await expect(tx).to.emit(zkPoHContract, "HumanProofVerified").withArgs(signal)
         })
+
+        it("Should signal with an optional signaling and external nullifier", async () => {
+            await run("register", { zkpoh: zkPoHContract.address, logs: false })
+            const tx = await run("verify-proof", {
+                zkpoh: zkPoHContract.address,
+                signal: "Hi World",
+                externalnullifier: "55",
+                logs: false
+            })
+
+            const signal = formatBytes32String("Hi World")
+            await expect(tx).to.emit(zkPoHContract, "HumanProofVerified").withArgs(signal)
+        })
     })
 })
