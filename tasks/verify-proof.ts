@@ -11,8 +11,10 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
     .addOptionalParam("zkpoh", "ZKProofOfHumanity contract address", undefined, types.string)
     .addOptionalParam("signal", "Signal to broadcast", "Hello World", types.string)
     .addOptionalParam("externalnullifier", "ExternalNullifier - takes group id by default", undefined, types.string)
+    .addOptionalParam("human", "Human account to get the identity", undefined, types.string)
+    .addOptionalParam("anon", "Anonymous account to verify the proof on-chain ", undefined, types.string)
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
-    .setAction(async ({ logs, zkpoh: zkpohAddress, signal, externalnullifier }, { ethers, network }) => {
+    .setAction(async ({ logs, zkpoh: zkpohAddress, signal, externalnullifier, human, anon }, { ethers, network }) => {
         // get contract
         if (!zkpohAddress) {
             zkpohAddress = process.env.ZK_POH_ADDRESS
@@ -20,10 +22,21 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
         const ZKProofOfHumanityFactory = await ethers.getContractFactory("ZKProofOfHumanity")
         const zkPoHContract = ZKProofOfHumanityFactory.attach(zkpohAddress)
 
-        // get signers
-        const [, human, anonymous] = await ethers.getSigners()
+        let humanSigner
+        if(!human) {
+            [, humanSigner] = await ethers.getSigners()
+        } else {
+            humanSigner = await ethers.getSigner(human)
+        }
 
-        const identity = await getIdentity(human)
+        let anonSigner
+        if(!anon) {
+            [, anonSigner] = await ethers.getSigners()
+        } else {
+            anonSigner = await ethers.getSigner(human)
+        }
+
+        const identity = await getIdentity(humanSigner)
 
         // mock subgraph if needed
         const networkName = network.name
@@ -41,7 +54,7 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
 
         //use other account anonymous account
         const transaction = await zkPoHContract
-            .connect(anonymous)
+            .connect(anonSigner)
             .verifyProof(
                 fullProof.merkleTreeRoot,
                 signalFormatted,
