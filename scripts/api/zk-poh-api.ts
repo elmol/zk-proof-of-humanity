@@ -1,8 +1,7 @@
-import { BigNumberish, Group } from "@semaphore-protocol/group"
+import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { generateProof } from "@semaphore-protocol/proof"
 import { Network, Subgraph } from "@semaphore-protocol/subgraph"
-import { BigNumber } from "ethers"
 import { config } from "../../package.json"
 
 export class ZkPoHApi {
