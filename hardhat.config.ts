@@ -9,8 +9,12 @@ import { NetworksUserConfig } from "hardhat/types"
 import { resolve } from "path"
 import "solidity-coverage"
 import { config } from "./package.json"
+
 import "./tasks/deploy"
+import "./tasks/deploy-mock"
 import "./tasks/register"
+import "./tasks/verify-proof"
+
 import "solidity-docgen"
 import "@nomicfoundation/hardhat-toolbox"
 

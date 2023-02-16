@@ -26,5 +26,5 @@ task("register", "Register a human account in ZKProofOfHumanity")
             console.info(`zkPoHAdress: [ ${zkPoHContract.address} ]`)
         }
 
-        return zkPoHContract
+        return transaction
     })
