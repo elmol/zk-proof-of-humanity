@@ -101,7 +101,89 @@ This project uses several scripts to help with the development and deployment of
 
 -   prettier: Runs prettier
 
-## Goerli Test Deployment
+## 👨‍💻 Tasks
+
+The following hardhat tasks were developed to help testing the protocol in goerli network.
+
+> It uses hardhat configured accounts
+
+### Registration Task
+
+Register a human account in ZKProofOfHumanity
+
+```
+$ yarn hardhat register --help
+Usage: hardhat [GLOBAL OPTIONS] register [--human <STRING>] [--logs <BOOLEAN>] [--zkpoh <STRING>]
+
+OPTIONS:
+
+  --human       Human account (default accounts[1])
+  --logs        Print the logs (default: true)
+  --zkpoh       ZKProofOfHumanity contract address (default env ZK_POH_ADDRESS)
+
+register: Register a human account in ZKProofOfHumanity
+```
+
+**Localhost example**
+
+```
+$ yarn hardhat node
+```
+
+Localhost deployment and human account registration in a PoH mock
+
+```
+$ yarn hardhat deploy-mock --network localhost
+yarn run v1.22.19
+ZKProofOfHumanity contract has been deployed to: 0x0165878A594ca255338adfa4d48449f69242Eb8F
+Human Account PoH Registered: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+Done in 4.42s.
+```
+
+ZKPoH account registration
+
+```
+$ yarn hardhat register --zkpoh 0x0165878A594ca255338adfa4d48449f69242Eb8F --network localhost
+👤 Human registration successfully DONE! ✅
+> zkPoHAdress: [ 0x0165878A594ca255338adfa4d48449f69242Eb8F ]
+> Account: [ 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 ]
+> 🔒 Identity: [ ["3ff729abbf2207ea0af1f0aa2fa2cfff28f00341e3fb6230f5d6085459cc17","968b860bb3e241572f8565155613100965e21bd353410ecffb18cd96a4951"] ]
+Done in 3.42s.
+```
+
+### Verification Task
+
+Verify proof of humanity and save nullifier to avoid double-signaling
+
+```
+Usage: hardhat [GLOBAL OPTIONS] verify-proof [--anon <STRING>] [--externalnullifier <STRING>] [--human <STRING>] [--logs <BOOLEAN>] [--signal <STRING>] [--zkpoh <STRING>]
+
+OPTIONS:
+
+  --anon                Anonymous account to verify the proof on-chain (default accounts[2])
+  --externalnullifier   ExternalNullifier - (default groupId)
+  --human               Human account to get the identity (default accounts[1])
+  --logs                Print the logs (default: true)
+  --signal              Signal to broadcast (default: "Hello World")
+  --zkpoh               ZKProofOfHumanity contract address (default env ZK_POH_ADDRESS)
+
+verify-proof: Verify proof of humanity and save nullifier to avoid double-signaling
+```
+
+**Localhost example**
+
+```
+$ yarn run hardhat verify-proof --zkpoh "0x0165878A594ca255338adfa4d48449f69242Eb8F" --signal "Hi ZKPoH" --network localhost
+
+👤 Human verification DONE! ✅
+> zkPoHAdress: [ 0x0165878A594ca255338adfa4d48449f69242Eb8F ]
+> 🔒 Identity: [ ["3ff729abbf2207ea0af1f0aa2fa2cfff28f00341e3fb6230f5d6085459cc17","968b860bb3e241572f8565155613100965e21bd353410ecffb18cd96a4951"] ]
+> ExternalNullifier: [ 42 ]
+> Signal: [ Hi ZKPoH ]
+Done in 14.48s
+```
+
+## 📦 Goerli Deployment
 
 Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52`
 
@@ -127,29 +209,4 @@ for verification on the block explorer. Waiting for verification result...
 Successfully verified contract ZKProofOfHumanity on Etherscan.
 https://goerli.etherscan.io/address/0xbAcf2f5234C30CD10852c29a1C981F380e056e3f#code
 Done in 10.51s.
-```
-
-# Localhost ZkPoH script tests
-
-```
-$ yarn hardhat node
-```
-
-Localhost deployment and human account registration in a PoH mock
-
-```
-$ yarn hardhat run scripts/mock-localhost-deployment.ts --network localhost
-ZKProofOfHumanity contract has been deployed to: 0x0165878A594ca255338adfa4d48449f69242Eb8F
-Human Account PoH Registered: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-Done in 12.21s.
-```
-
-ZKPoH account registration
-
-```
-$ yarn hardhat register --zkpoh 0x0165878A594ca255338adfa4d48449f69242Eb8F --network localhost
-Human registration successfully DONE!
-Account: [ 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 ]
-Identity: [ ["3ff729abbf2207ea0af1f0aa2fa2cfff28f00341e3fb6230f5d6085459cc17","968b860bb3e241572f8565155613100965e21bd353410ecffb18cd96a4951"] ]
-zkPoHAdress: [ 0x0165878A594ca255338adfa4d48449f69242Eb8F ]
 ```

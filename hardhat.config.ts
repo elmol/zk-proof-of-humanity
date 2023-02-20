@@ -22,7 +22,7 @@ dotenvConfig({ path: resolve(__dirname, ".env") })
 
 function getNetworks(): NetworksUserConfig {
     if (process.env.ETHEREUM_URL && process.env.ETHEREUM_PRIVATE_KEY) {
-        const accounts = [`0x${process.env.ETHEREUM_PRIVATE_KEY}`]
+        const accounts = [`0x${process.env.ETHEREUM_PRIVATE_KEY}`, `0x${process.env.ETHEREUM_PRIVATE_KEY_2}`]
 
         return {
             goerli: {
@@ -65,6 +65,9 @@ const hardhatConfig: HardhatUserConfig = {
     },
     etherscan: {
         apiKey: process.env.ETHERSCAN_API_KEY
+    },
+    mocha: {
+        timeout: 100000000
     }
 }
 

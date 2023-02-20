@@ -21,7 +21,7 @@ task("deploy", "Deploy a ZKProofOfHumanity contract")
 
         // random generate groupId
         if (!groupId) {
-            groupId=ethers.BigNumber.from(ethers.utils.randomBytes(32)).toString()
+            groupId = ethers.BigNumber.from(ethers.utils.randomBytes(32)).toString()
         }
 
         const ZKProofOfHumanityFactory = await ethers.getContractFactory("ZKProofOfHumanity")
@@ -31,7 +31,7 @@ task("deploy", "Deploy a ZKProofOfHumanity contract")
 
         if (logs) {
             console.info(`ZKProofOfHumanity contract has been deployed to: ${zkPoHContract.address}`)
-            const [owner] = await ethers.getSigners();
+            const [owner] = await ethers.getSigners()
             console.info(`ZKProofOfHumanity deployed with account: ${owner.address}`)
         }
 

@@ -8,11 +8,21 @@ import { HardhatRuntimeEnvironment } from "hardhat/types"
 import { Identity } from "@semaphore-protocol/identity"
 
 task("verify-proof", "Verify proof of humanity and save nullifier to avoid double-signaling")
-    .addOptionalParam("zkpoh", "ZKProofOfHumanity contract address", undefined, types.string)
+    .addOptionalParam(
+        "zkpoh",
+        "ZKProofOfHumanity contract address (default env ZK_POH_ADDRESS)",
+        undefined,
+        types.string
+    )
     .addOptionalParam("signal", "Signal to broadcast", "Hello World", types.string)
-    .addOptionalParam("externalnullifier", "ExternalNullifier - takes group id by default", undefined, types.string)
-    .addOptionalParam("human", "Human account to get the identity", undefined, types.string)
-    .addOptionalParam("anon", "Anonymous account to verify the proof on-chain ", undefined, types.string)
+    .addOptionalParam("externalnullifier", "ExternalNullifier - (default groupId)", undefined, types.string)
+    .addOptionalParam("human", "Human account to get the identity (default accounts[1])", undefined, types.string)
+    .addOptionalParam(
+        "anon",
+        "Anonymous account to verify the proof on-chain (default accounts[2])",
+        undefined,
+        types.string
+    )
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs, zkpoh: zkpohAddress, signal, externalnullifier, human, anon }, { ethers, network }) => {
         // get contract
@@ -23,15 +33,15 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
         const zkPoHContract = ZKProofOfHumanityFactory.attach(zkpohAddress)
 
         let humanSigner
-        if(!human) {
-            [, humanSigner] = await ethers.getSigners()
+        if (!human) {
+            ;[, humanSigner] = await ethers.getSigners()
         } else {
             humanSigner = await ethers.getSigner(human)
         }
 
         let anonSigner
-        if(!anon) {
-            [, anonSigner] = await ethers.getSigners()
+        if (!anon) {
+            ;[, , anonSigner] = await ethers.getSigners()
         } else {
             anonSigner = await ethers.getSigner(human)
         }
@@ -52,7 +62,6 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
 
         const fullProof = await api.generateZKPoHProof(identity, externalNullifier, signalFormatted)
 
-        //use other account anonymous account
         const transaction = await zkPoHContract
             .connect(anonSigner)
             .verifyProof(
@@ -66,11 +75,11 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
         await transaction.wait()
 
         if (logs) {
-            console.info(`Human 👤 verification DONE! ✅ `)
-            console.info(`zkPoHAdress: [ ${zkPoHContract.address} ]`)
-            console.info(`Identity: [ ${identity.toString()} ]`)
-            console.info(`ExternalNullifier: [ ${externalNullifier} ]`)
-            console.info(`Signal: [ ${signal} ]`)
+            console.info(`👤 Human verification DONE! ✅ `)
+            console.info(`> zkPoHAdress: [ ${zkPoHContract.address} ]`)
+            console.info(`> 🔒 Identity: [ ${identity.toString()} ]`)
+            console.info(`> ExternalNullifier: [ ${externalNullifier} ]`)
+            console.info(`> Signal: [ ${signal} ]`)
         }
 
         return transaction
