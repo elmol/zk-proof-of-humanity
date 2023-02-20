@@ -3,7 +3,7 @@ import { task, types } from "hardhat/config"
 task("deploy", "Deploy a ZKProofOfHumanity contract")
     .addParam("poh", "ProofOfHumanity contract address", undefined, types.string)
     .addOptionalParam("semaphore", "Semaphore contract address", undefined, types.string)
-    .addOptionalParam("group", "Group id", "42", types.string)
+    .addOptionalParam("group", "Group id (default env.GROUP_ID or random if is undefined)", undefined, types.string)
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs, semaphore: semaphoreAddress, poh: pohAddress, group: groupId }, { ethers, run }) => {
         if (!semaphoreAddress) {
@@ -31,6 +31,7 @@ task("deploy", "Deploy a ZKProofOfHumanity contract")
 
         if (logs) {
             console.info(`ZKProofOfHumanity contract has been deployed to: ${zkPoHContract.address}`)
+            console.info(`ZKProofOfHumanity groupId: ${groupId}`)
             const [owner] = await ethers.getSigners()
             console.info(`ZKProofOfHumanity deployed with account: ${owner.address}`)
         }
