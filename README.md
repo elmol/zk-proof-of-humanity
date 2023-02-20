@@ -185,7 +185,11 @@ Done in 14.48s
 
 ## 📦 Goerli Deployment
 
+### Proof of Humanity
+
 Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52`
+
+DApp: https://proof-of-humanity-web-elmol.vercel.app/
 
 ### Deployment
 
@@ -214,9 +218,11 @@ https://goerli.etherscan.io/address/0x3813D200087aB055850E0CFF31Be161280E6a88c#c
 Done in 11.33s
 ```
 
-### Task usage example in Goerli
+### Tasks usage example in Goerli
 
 **Registration**
+
+Registration of the human https://proof-of-humanity-web-elmol.vercel.app/profile/0x45756fed107d0aea575a2dc0d49a1c5156b0b796
 
 ```
  $ yarn run hardhat register --zkpoh "0x3813D200087aB055850E0CFF31Be161280E6a88c" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" --network goerli
@@ -238,7 +244,7 @@ $ yarn run hardhat verify-proof --zkpoh "0x3813D200087aB055850E0CFF31Be161280E6a
 
 👤 Human verification DONE! ✅
 > zkPoHAdress: [ 0x3813D200087aB055850E0CFF31Be161280E6a88c ]
-> 🔒 Identity: [ ["eafdc2b5235d558498588c7597be2b68617ca2b9880a4810995210c35ddb2a","46d7713969894a9c7566f39edea132e006ef4ef0187774e1320b0fe546bfdd"] ]
+> 🔒 Identity: [ <<secret>> ]
 > ExternalNullifier: [ 1 ]
 > Signal: [ Hi ZKPoH ]
 Done in 32.51s.
