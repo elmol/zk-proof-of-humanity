@@ -69,6 +69,9 @@ describe("ZKProofOfHumanity", () => {
         it("Should allow humans (registered accounts in poh) to register in zk-poh", async () => {
             const [owner, human1, human2] = await ethers.getSigners()
 
+            const pohAddress = await zkPoHContract.poh()
+            expect(pohAddress).to.equal(pohContract.address)
+
             await pohContract.addSubmissionManually(human1.address)
             const tx = zkPoHContract.connect(human1).register(api.group.members[0])
             await expect(tx).to.emit(zkPoHContract, "HumanRegistered").withArgs(api.group.members[0], human1.address)

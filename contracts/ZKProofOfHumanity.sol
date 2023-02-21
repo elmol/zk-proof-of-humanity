@@ -33,7 +33,7 @@ contract ZKProofOfHumanity {
     /* Storage */
     uint256 public constant TREE_DEPTH = 20; // 2^20 humans
     ISemaphore public semaphore;
-    IProofOfHumanity poh;
+    IProofOfHumanity public poh;
     uint256 public groupId;
     //identityCommitment -> humans
     mapping(uint256 => bool) private identities;
@@ -99,7 +99,7 @@ contract ZKProofOfHumanity {
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof
-    ) public {
+    ) external {
         semaphore.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
         emit HumanProofVerified(signal);
     }
@@ -132,7 +132,11 @@ contract ZKProofOfHumanity {
         return currentMerkleTreeRoot;
     }
 
-    function matchAccount(address account, uint256[] calldata proofSiblings, uint8[] calldata proofPathIndices) public {
+    function matchAccount(
+        address account,
+        uint256[] calldata proofSiblings,
+        uint8[] calldata proofPathIndices
+    ) external {
         if (!this.isRegistered(account)) {
             revert ZKPoH__NotRegisteredAccount();
         }
@@ -154,7 +158,7 @@ contract ZKProofOfHumanity {
      * @dev Returns the mismachedAccounts between zkPoH and PoH
      * @return mismachedAccount mismached accounts between zkPoH and PoH
      */
-    function mismatchedAccounts() public view returns (address[] memory) {
+    function mismatchedAccounts() external view returns (address[] memory) {
         uint256 length = humans.length();
         address[] memory toRemove = new address[](length);
         uint256 lengthToRemove;
