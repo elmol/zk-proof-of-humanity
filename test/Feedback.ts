@@ -98,10 +98,8 @@ describe("Feedback", () => {
             it("Should allow humans to greet anonymously", async () => {
                 const greeting = formatBytes32String("Hello World")
 
-                const signal = groupId
                 const externalNullifier = groupId
-
-                const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
+                const fullProof = await generateProof(users[1].identity, group, externalNullifier, greeting, {
                     wasmFilePath,
                     zkeyFilePath
                 })
@@ -119,10 +117,8 @@ describe("Feedback", () => {
             it("Should allow humans to greet anonymously twice", async () => {
                 const greeting = formatBytes32String("Hi again")
 
-                const signal = groupId
                 const externalNullifier = groupId
-
-                const fullProof = await generateProof(users[1].identity, group, externalNullifier, signal, {
+                const fullProof = await generateProof(users[1].identity, group, externalNullifier, greeting, {
                     wasmFilePath,
                     zkeyFilePath
                 })
@@ -135,6 +131,26 @@ describe("Feedback", () => {
                 )
 
                 await expect(transaction).to.emit(feedbackContract, "NewGreeting").withArgs(greeting)
+            })
+
+            it("Should not allow to impersonate an other humans to greet", async () => {
+                const greeting = formatBytes32String("Hi I'm the real human")
+
+                const externalNullifier = groupId
+                const fullProof = await generateProof(users[1].identity, group, externalNullifier, greeting, {
+                    wasmFilePath,
+                    zkeyFilePath
+                })
+
+                const otherGreeting = formatBytes32String("Hi, I'm another human")
+                const transaction = feedbackContract.greet(
+                    otherGreeting,
+                    fullProof.merkleTreeRoot,
+                    fullProof.nullifierHash,
+                    fullProof.proof
+                )
+
+                await expect(transaction).to.be.rejected
             })
         })
 })
