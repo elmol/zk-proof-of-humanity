@@ -160,6 +160,11 @@ describe("ZKProofOfHumanity", () => {
             expect(await verifyHumanity(zkPoHContract, fullProof)).equal(fullProof.merkleTreeRoot)
         })
 
+        it("Should revert if the proof is invalid", async () => {
+            fullProof.proof[4] = fullProof.proof[1] // invalidate proof
+            await expect(verifyHumanity(zkPoHContract, fullProof)).to.be.rejected
+        })
+
         it("Should reject users not register as human", async () => {
             const userNotRegister = new Identity()
             api.group.addMember(userNotRegister.commitment)
