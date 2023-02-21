@@ -31,10 +31,10 @@ contract ZKProofOfHumanity {
     event HumanRemoved(uint256 identityCommitment, address account);
 
     /* Storage */
-    uint256 public constant TREE_DEPTH = 20; // 2^20 humans
     ISemaphore public semaphore;
     IProofOfHumanity public poh;
     uint256 public groupId;
+    uint256 public depth;
     //identityCommitment -> humans
     mapping(uint256 => bool) private identities;
 
@@ -44,11 +44,12 @@ contract ZKProofOfHumanity {
     //humans -> identityCommitment
     mapping(address => uint256) private identitiesMap;
 
-    constructor(address semaphoreAddress, address pohAddress, uint256 _groupId) {
+    constructor(address semaphoreAddress, address pohAddress, uint256 _groupId, uint256 _depth) {
         semaphore = ISemaphore(semaphoreAddress);
         poh = IProofOfHumanity(pohAddress);
         groupId = _groupId;
-        semaphore.createGroup(groupId, TREE_DEPTH, address(this));
+        depth = _depth;
+        semaphore.createGroup(groupId, _depth, address(this));
     }
 
     function register(uint256 identityCommitment) external {
@@ -128,7 +129,7 @@ contract ZKProofOfHumanity {
         }
 
         ISemaphoreVerifier verifier = semaphoreImpl.verifier();
-        verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, TREE_DEPTH);
+        verifier.verifyProof(merkleTreeRoot, nullifierHash, signal, externalNullifier, proof, depth);
         return currentMerkleTreeRoot;
     }
 

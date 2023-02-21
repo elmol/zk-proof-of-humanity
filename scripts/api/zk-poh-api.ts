@@ -8,11 +8,15 @@ export class ZkPoHApi {
     public readonly wasmFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.wasm`
     public readonly zkeyFilePath = `${config.paths.build["snark-artifacts"]}/semaphore.zkey`
 
-    constructor(public readonly groupId: string, public readonly network: Network = "goerli") {}
+    constructor(
+        public readonly groupId: string,
+        public readonly depth: number = 20,
+        public readonly network: Network = "goerli"
+    ) {}
     async generateZKPoHProof(identity: Identity, externalNullifier: string, signal: string) {
         const subgraph = new Subgraph(this.network)
         const { members } = await subgraph.getGroup(this.groupId, { members: true })
-        const group = new Group(this.groupId)
+        const group = new Group(this.groupId, this.depth)
         members && group.addMembers(members)
         return await generateProof(identity, group, externalNullifier, signal, {
             wasmFilePath: this.wasmFilePath,
