@@ -153,14 +153,11 @@ describe("ZKProofOfHumanity", () => {
         })
 
         it("Should allow users to verify humanity anonymously", async () => {
-            const transaction = verifyHumanity(zkPoHContract, fullProof)
-            await expect(transaction).to.emit(zkPoHContract, "HumanProofVerified").withArgs(groupId)
+            expect(await verifyHumanity(zkPoHContract, fullProof)).equal(fullProof.merkleTreeRoot)
         })
 
         it("Should allow users to verify humanity anonymously twice", async () => {
-            const transaction = verifyHumanity(zkPoHContract, fullProof)
-
-            await expect(transaction).to.emit(zkPoHContract, "HumanProofVerified").withArgs(groupId)
+            expect(await verifyHumanity(zkPoHContract, fullProof)).equal(fullProof.merkleTreeRoot)
         })
 
         it("Should reject users not register as human", async () => {
@@ -247,6 +244,12 @@ describe("ZKProofOfHumanity", () => {
 })
 
 /// HELPERS
-function verifyHumanity(zkPoHContract: ZKProofOfHumanity, fullProof: FullProof) {
-    return zkPoHContract.verifyHumanity(fullProof.merkleTreeRoot, 42, fullProof.nullifierHash, 42, fullProof.proof)
+async function verifyHumanity(zkPoHContract: ZKProofOfHumanity, fullProof: FullProof) {
+    return await zkPoHContract.verifyHumanity(
+        fullProof.merkleTreeRoot,
+        42,
+        fullProof.nullifierHash,
+        42,
+        fullProof.proof
+    )
 }

@@ -64,15 +64,14 @@ describe("ZKPoHAPI", () => {
             const identity = await getIdentity(human)
 
             const fullProof = await api.generateZKPoHProof(identity, externalNullifier, signal)
-            const transaction = zkPoHContract.verifyHumanity(
+            const currentMerkleTreeRoot = await zkPoHContract.verifyHumanity(
                 fullProof.merkleTreeRoot,
                 signal,
                 fullProof.nullifierHash,
                 externalNullifier,
                 fullProof.proof
             )
-
-            await expect(transaction).to.emit(zkPoHContract, "HumanProofVerified").withArgs(signal)
+            expect(currentMerkleTreeRoot).equal(fullProof.merkleTreeRoot)
         })
     })
 })
