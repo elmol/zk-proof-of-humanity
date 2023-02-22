@@ -19,22 +19,40 @@ error ZKPoH__AccountAlreadyExists()
 error ZKPoH__InvalidProofOfHumanity()
 ```
 
+### ZKPoH__AccountNotRegisteredInPoH
+
+```solidity
+error ZKPoH__AccountNotRegisteredInPoH()
+```
+
+### ZKPoH__NotRegisteredAccount
+
+```solidity
+error ZKPoH__NotRegisteredAccount()
+```
+
+### ZKPoH__AccountAlreadyMatch
+
+```solidity
+error ZKPoH__AccountAlreadyMatch()
+```
+
 ### HumanProofVerified
 
 ```solidity
 event HumanProofVerified(uint256 signal)
 ```
 
-### NewUser
+### HumanRegistered
 
 ```solidity
-event NewUser(uint256 identityCommitment, address account)
+event HumanRegistered(uint256 identityCommitment, address account)
 ```
 
-### TREE_DEPTH
+### HumanRemoved
 
 ```solidity
-uint256 TREE_DEPTH
+event HumanRemoved(uint256 identityCommitment, address account)
 ```
 
 ### semaphore
@@ -43,34 +61,52 @@ uint256 TREE_DEPTH
 contract ISemaphore semaphore
 ```
 
+### poh
+
+```solidity
+contract IProofOfHumanity poh
+```
+
 ### groupId
 
 ```solidity
 uint256 groupId
 ```
 
-### humans
+### depth
 
 ```solidity
-mapping(uint256 => address) humans
+uint256 depth
 ```
 
 ### constructor
 
 ```solidity
-constructor(address semaphoreAddress, uint256 _groupId) public
+constructor(address semaphoreAddress, address pohAddress, uint256 _groupId, uint256 _depth) public
 ```
 
 ### register
 
 ```solidity
-function register(uint256 identityCommitment, address account) external
+function register(uint256 identityCommitment) external
+```
+
+### isRegistered
+
+```solidity
+function isRegistered(address account) public view returns (bool)
+```
+
+### isIdentity
+
+```solidity
+function isIdentity(address account) public view returns (bool)
 ```
 
 ### verifyProof
 
 ```solidity
-function verifyProof(uint256 merkleTreeRoot, uint256 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] proof) public
+function verifyProof(uint256 merkleTreeRoot, uint256 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] proof) external
 ```
 
 _Saves the nullifier hash to avoid double signaling and emits an event
@@ -89,16 +125,54 @@ if the zero-knowledge proof is valid._
 ### verifyHumanity
 
 ```solidity
-function verifyHumanity(uint256 merkleTreeRoot, uint256 nullifierHash, uint256[8] proof) public
+function verifyHumanity(uint256 merkleTreeRoot, uint256 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] proof) external view returns (uint256)
 ```
 
-_Verifies humanity and emits an event if the zero-knowledge proof is valid._
+_Verifies humanity and emits an event if the zero-knowledge proof is valid.
+ Note that a double-signaling check is not included here, and should be carried by the caller.
+ Also, verification of proofs created with old Merkle tree roots (expiraton time) is not included here._
 
 #### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | merkleTreeRoot | uint256 | Root of the Merkle tree. |
+| signal | uint256 |  |
 | nullifierHash | uint256 | Nullifier hash. |
+| externalNullifier | uint256 |  |
 | proof | uint256[8] | Zero-knowledge proof. |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint256 | currentMerkleTreeRoot |
+
+### matchAccount
+
+```solidity
+function matchAccount(address account, uint256[] proofSiblings, uint8[] proofPathIndices) external
+```
+
+### mismatchedAccounts
+
+```solidity
+function mismatchedAccounts() external view returns (address[])
+```
+
+_Returns the mismachedAccounts between zkPoH and PoH_
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | address[] | mismachedAccount mismached accounts between zkPoH and PoH |
+
+### shrinkArray
+
+```solidity
+function shrinkArray(address[] array, uint256 newLength) internal pure returns (address[])
+```
+
+_shrink and array, newLenght should be less or equal than the array length_
 

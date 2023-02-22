@@ -60,7 +60,7 @@ const hardhatConfig: HardhatUserConfig = {
         target: "ethers-v5"
     },
     docgen: {
-        exclude: ["./Feedback.sol"],
+        exclude: ["./Feedback.sol", "./IProofOfHumanity.sol", "./ProofOfHumanityMock.sol"],
         pages: "files"
     },
     etherscan: {
