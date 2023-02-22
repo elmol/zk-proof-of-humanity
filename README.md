@@ -251,3 +251,5 @@ Done in 32.51s.
 ```
 
 https://goerli.etherscan.io/tx/0x379579d2c332c15ea1341fc2115269cb1e839401f6fd9cec46ad12c148d45b66
+
+## 💰 Cost Analysis
