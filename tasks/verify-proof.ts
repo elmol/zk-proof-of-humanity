@@ -43,7 +43,7 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
         if (!anon) {
             ;[, , anonSigner] = await ethers.getSigners()
         } else {
-            anonSigner = await ethers.getSigner(human)
+            anonSigner = await ethers.getSigner(anon)
         }
 
         const identity = await getIdentity(humanSigner)

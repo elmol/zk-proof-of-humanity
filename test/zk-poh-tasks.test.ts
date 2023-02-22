@@ -33,13 +33,16 @@ describe("ZKPoH Script", () => {
 
         it("Should signal with an optional signaling and external nullifier", async () => {
             await run("register", { zkpoh: zkPoHContract.address, logs: false })
+            const [, anon1] = await ethers.getSigners()
             const tx = await run("verify-proof", {
                 zkpoh: zkPoHContract.address,
                 signal: "Hi World",
                 externalnullifier: "55",
-                logs: false
+                logs: false,
+                anon: anon1.address
             })
 
+            expect(tx.from).equal(anon1.address)
             const signal = formatBytes32String("Hi World")
             await expect(tx).to.emit(zkPoHContract, "HumanProofVerified").withArgs(signal)
         })
