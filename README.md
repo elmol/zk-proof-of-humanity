@@ -1,6 +1,6 @@
 <p align="center">
     <h1 align="center">
-        ZK Proof of Humanity
+         🎭 ZK Proof of Humanity
     </h1>
 </p>
 
@@ -254,4 +254,5 @@ https://goerli.etherscan.io/tx/0x379579d2c332c15ea1341fc2115269cb1e839401f6fd9ce
 
 ## 💰 Cost Analysis
 
-[gas-report](docs/gas-reporter.out?raw=100)
+-   [Semaphore Gas Report](docs/semaphore-gas-report.out?raw=100)
+-   [zkPoH Gas Report](docs/zkpoh-gas-report.out?raw=100)
