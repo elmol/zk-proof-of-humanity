@@ -91,6 +91,14 @@ constructor(address semaphoreAddress, address pohAddress, uint256 _groupId, uint
 function register(uint256 identityCommitment) external
 ```
 
+_Registers a human account and emits an event_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| identityCommitment | uint256 | identity commitment |
+
 ### isRegistered
 
 ```solidity
@@ -128,7 +136,7 @@ if the zero-knowledge proof is valid._
 function verifyHumanity(uint256 merkleTreeRoot, uint256 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] proof) external view returns (uint256)
 ```
 
-_Verifies humanity and emits an event if the zero-knowledge proof is valid.
+_Verifies humanity if the zero-knowledge proof is valid.
  Note that a double-signaling check is not included here, and should be carried by the caller.
  Also, verification of proofs created with old Merkle tree roots (expiraton time) is not included here._
 
@@ -153,6 +161,16 @@ _Verifies humanity and emits an event if the zero-knowledge proof is valid.
 ```solidity
 function matchAccount(address account, uint256[] proofSiblings, uint8[] proofPathIndices) external
 ```
+
+_Removes human account from zkPoH if is no longer valid in PoH_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| account | address | Human account to remove |
+| proofSiblings | uint256[] |  |
+| proofPathIndices | uint8[] |  |
 
 ### mismatchedAccounts
 

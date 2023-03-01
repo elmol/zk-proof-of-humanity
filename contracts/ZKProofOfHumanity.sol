@@ -52,6 +52,10 @@ contract ZKProofOfHumanity {
         semaphore.createGroup(groupId, _depth, address(this));
     }
 
+    /**
+     * @dev Registers a human account and emits an event
+     * @param identityCommitment identity commitment
+     */
     function register(uint256 identityCommitment) external {
         //checks if  the msg sender is not registered in PoH
         if (!poh.isRegistered(msg.sender)) {
@@ -106,7 +110,7 @@ contract ZKProofOfHumanity {
     }
 
     /**
-     * @dev Verifies humanity and emits an event if the zero-knowledge proof is valid.
+     * @dev Verifies humanity if the zero-knowledge proof is valid.
      * @param merkleTreeRoot Root of the Merkle tree.
      * @param nullifierHash Nullifier hash.
      * @param proof Zero-knowledge proof.
@@ -133,6 +137,12 @@ contract ZKProofOfHumanity {
         return currentMerkleTreeRoot;
     }
 
+    /**
+     * @dev Removes human account from zkPoH if is no longer valid in PoH
+     * @param account Human account to remove
+     * @param proofSiblings: Array of the sibling nodes of the proof of membership.
+     * @param proofPathIndices: Path of the proof of membership.
+     */
     function matchAccount(
         address account,
         uint256[] calldata proofSiblings,
