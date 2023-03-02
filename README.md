@@ -29,8 +29,9 @@
 
 ## Project Overview
 
+<p style="text-align:justify;">
 *ZK Proof of Humanity* allows humans, registered in Proof of Humanity, to prove their humanity without doxing.
-
+</p>
 The issue being addressed is that when a humans conducts transactions on or off-chain using an account registered in Proof of Humanity (PoH), their personal information (biometric data, voice, and video) is exposed (doxed).
 
 ZK Proof of Humanity (zkPoH) uses Semaphore integrated with Proof of Humanity (PoH) to solve this issue.
@@ -40,7 +41,6 @@ Before generating the off-chain identity using the Semaphore protocol, zkPoH che
 This way the user can prove, through the proof generated off-chain using Semaphore, that they are human and unique, avoiding any risk of double-signaling, all this without revealing their original identity and sending signals such as votes or endorsements without the risk of doxing.
 
 ![process](https://user-images.githubusercontent.com/5402004/222273896-9421c0c3-5007-4e9f-a877-b7b921ebca4a.png)
-
 
 ## 🛠 Installation and Configuration
 
