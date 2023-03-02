@@ -29,18 +29,19 @@
 
 ## Project Overview
 
-<p style="text-align:justify;">
-*ZK Proof of Humanity* allows humans, registered in Proof of Humanity, to prove their humanity without doxing.
+<p style="text-align:center;">
+<b>ZK Proof of Humanity</b> allows humans, registered in <b>Proof of Humanity</b>, to prove their humanity without doxing.
 </p>
-The issue being addressed is that when a humans conducts transactions on or off-chain using an account registered in Proof of Humanity (PoH), their personal information (biometric data, voice, and video) is exposed (doxed).
 
-ZK Proof of Humanity (zkPoH) uses Semaphore integrated with Proof of Humanity (PoH) to solve this issue.
+The issue being addressed is that when a humans conducts transactions on or off-chain using an account registered in [Proof of Humanity](https://blog.kleros.io/proof-of-humanity-a-building-block-for-the-internet-of-the-future/), their personal information (biometric data, voice, and video) is exposed (doxed).
 
-The process starts by the user registering and being accepted as human in PoH protocol, then the user may register in zkPoH.
-Before generating the off-chain identity using the Semaphore protocol, zkPoH checks if the user is registered in PoH, and adds it to the Semaphore PoH group.
-This way the user can prove, through the proof generated off-chain using Semaphore, that they are human and unique, avoiding any risk of double-signaling, all this without revealing their original identity and sending signals such as votes or endorsements without the risk of doxing.
+ZK Proof of Humanity (zkPoH) uses [Semaphore](https://semaphore.appliedzkp.org/) integrated with Proof of Humanity (PoH) to solve this issue.
+
+It consists of a smart contract that allows subscribing as a member to a Semaphore group only if the subscriber is registered in PoH. In this way, any member of this group can emit signals (votes, approvals, etc.) without revealing their identity and ensuring that they are registered in PoH as a human.
 
 ![process](https://user-images.githubusercontent.com/5402004/222273896-9421c0c3-5007-4e9f-a877-b7b921ebca4a.png)
+
+When a human subscribes to zkPoH, they must send the [identity commitment](https://https://semaphore.appliedzkp.org/docs/glossary#identity-commitment) with the account that is registered in Proof of Humanity. The protocol only allows subscribing to valid accounts in PoH that are not already registered in zkPoH. Once the human is registered in zkPoH, they can generate proofs and emit signals, [like the Semaphore protocol](https://semaphore.appliedzkp.org/docs/guides/proofs#verify-a-proof-on-chain), without exposing their identity. To generate the identity, [the deterministic method](https://semaphore.appliedzkp.org/docs/guides/identities#create-deterministic-identities) is used which signs a message with the account registered in Proof of Humanity
 
 ## 🛠 Installation and Configuration
 
