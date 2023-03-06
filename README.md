@@ -197,10 +197,11 @@ Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52`
 
 ```
 $ yarn deploy --poh 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 --semaphore 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 --network goerli
-ZKProofOfHumanity contract has been deployed to: 0x3813D200087aB055850E0CFF31Be161280E6a88c
-ZKProofOfHumanity groupId: 7523080083455154518145106003120918809044440191248508385464348112321586185494
+ZKProofOfHumanity contract has been deployed to: 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8
+ZKProofOfHumanity groupId: 91946953324073098644290635453078965791470981970818658206759845612371607109613
+ZKProofOfHumanity depth: 20
 ZKProofOfHumanity deployed with account: 0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C
-Done in 74.07s.
+Done in 29.88s
 ```
 
 ### Verification
@@ -210,14 +211,14 @@ yarn hardhat verify --network goerli <zkpoh-address> <semaphore-address> <poh-ad
 ```
 
 ```
-$ yarn hardhat verify --network goerli 0x3813D200087aB055850E0CFF31Be161280E6a88c 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 7523080083455154518145106003120918809044440191248508385464348112321586185494
+$ yarn hardhat verify --network goerli 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 91946953324073098644290635453078965791470981970818658206759845612371607109613 20
 Successfully submitted source code for contract
-contracts/ZKProofOfHumanity.sol:ZKProofOfHumanity at 0x3813D200087aB055850E0CFF31Be161280E6a88c
+contracts/ZKProofOfHumanity.sol:ZKProofOfHumanity at 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8
 for verification on the block explorer. Waiting for verification result...
 
 Successfully verified contract ZKProofOfHumanity on Etherscan.
-https://goerli.etherscan.io/address/0x3813D200087aB055850E0CFF31Be161280E6a88c#code
-Done in 11.33s
+https://goerli.etherscan.io/address/0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8#code
+Done in 11.87s.
 ```
 
 ### Tasks usage example in Goerli
@@ -227,32 +228,32 @@ Done in 11.33s
 Registration of the human https://proof-of-humanity-web-elmol.vercel.app/profile/0x45756fed107d0aea575a2dc0d49a1c5156b0b796
 
 ```
- $ yarn run hardhat register --zkpoh "0x3813D200087aB055850E0CFF31Be161280E6a88c" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" --network goerli
+ $ yarn run hardhat register --zkpoh "0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" --network goerli
 
- 👤 Human registration successfully DONE! ✅
-> zkPoHAdress: [ 0x3813D200087aB055850E0CFF31Be161280E6a88c ]
+👤 Human registration successfully DONE! ✅
+> zkPoHAdress: [ 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8 ]
 > Account: [ 0x45756fED107d0aEA575a2dc0d49a1c5156b0b796 ]
-> 🔒 Identity: [<<secret>>]
-Done in 31.91s.
+> 🔒 Identity: [ <<secret>> ]
+Done in 36.42s.
 
 ```
 
-https://goerli.etherscan.io/tx/0xad97956b9ddce43cc80584a81b8c398e41c9fc29927323dfbfc5fd66be2c6494
+https://goerli.etherscan.io/tx/0xa006ad1dc1891ebf6d11a15b4ba7c317acfb365e15f86dfb642f6035443bed36
 
 **Verification and signal broadcasting**
 
 ```
-$ yarn run hardhat verify-proof --zkpoh "0x3813D200087aB055850E0CFF31Be161280E6a88c" --signal "Hi ZKPoH" --externalnullifier "1" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" ----anon "0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C"  --network goerli
+$ yarn run hardhat verify-proof --zkpoh "0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8" --signal "Hi ZKPoH" --externalnullifier "1" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" ----anon "0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C"  --network goerli
 
 👤 Human verification DONE! ✅
-> zkPoHAdress: [ 0x3813D200087aB055850E0CFF31Be161280E6a88c ]
+> zkPoHAdress: [ 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8 ]
 > 🔒 Identity: [ <<secret>> ]
 > ExternalNullifier: [ 1 ]
 > Signal: [ Hi ZKPoH ]
-Done in 32.51s.
+Done in 15.92s.
 ```
 
-https://goerli.etherscan.io/tx/0x379579d2c332c15ea1341fc2115269cb1e839401f6fd9cec46ad12c148d45b66
+https://goerli.etherscan.io/tx/0x550acb367d2caa095c5625f6cc54ffa7c5261b412fa400a388f682c01fbf2ff7
 
 ## 💰 Cost Analysis
 
