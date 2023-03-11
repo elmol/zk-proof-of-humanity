@@ -750,15 +750,15 @@
     "@noble/hashes" "~1.1.1"
     "@scure/base" "~1.1.0"
 
-"@semaphore-protocol/contracts@3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/contracts/-/contracts-3.2.1.tgz#d3a5148b0836e422d7e54d3fe68635d9acbf60b6"
-  integrity sha512-kRfJfeq4vYIGFX+Y0C5pyFu21tbUB+cl0Q+YH41WtxFLu32RS7cXiE8ftqAtKTLnhngpZf67Pj6fwsQ7jbCn9g==
+"@semaphore-protocol/contracts@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/contracts/-/contracts-3.2.2.tgz#03e71a4fd6edc7c867090d934f9e8d6d0aaa1f5e"
+  integrity sha512-jp9oqPZoeL6w6Nw5iS1wO4upWbnF0CK5yKMRepcQUD0cHYo4LfvfWlT/iUtIW2HHdVlziIq3gJaZrsNnpQ3hZg==
   dependencies:
     "@openzeppelin/contracts" "4.7.3"
     "@zk-kit/incremental-merkle-tree.sol" "1.3.3"
 
-"@semaphore-protocol/data@^3.2.0":
+"@semaphore-protocol/data@^3.2.2":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@semaphore-protocol/data/-/data-3.2.2.tgz#ec16026db9fa545987b21d9306494ddb02df9ed6"
   integrity sha512-bdrIQtr8yMLW+0tVUZMdrks4hqNCppLL+Z/PY0bjEU7MzX8WVuoQgfONxRSYTdfkT+eTYQWe1S0AZsmcHMGMPg==
@@ -767,10 +767,10 @@
     "@ethersproject/providers" "^5.7.0"
     axios "^0.27.2"
 
-"@semaphore-protocol/group@3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/group/-/group-3.2.1.tgz#f6340b0d6f11fd33bc02fad93b4f3411291d1f07"
-  integrity sha512-MDbz+EYo5lwTtm5Oa/SaEsg40RFk3HM7p6m0HdnjeRphXL+ahBafIpgRZPSx2622xcQpK5qJk0Tq+9EOSvO3cw==
+"@semaphore-protocol/group@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/group/-/group-3.2.2.tgz#cdda3a3706183ea1f2cd1775a9b12d3affa87ec2"
+  integrity sha512-3d6vWe6eF5oF1yaMwWljeLrun6H9VeChTF93G7sIIM4VUCENJJB8gdGcav/MUBG7N702ExWUJE4Qke+8klFvGQ==
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
     "@ethersproject/bytes" "^5.7.0"
@@ -778,21 +778,21 @@
     "@zk-kit/incremental-merkle-tree" "1.0.0"
     poseidon-lite "^0.1.0"
 
-"@semaphore-protocol/hardhat@3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/hardhat/-/hardhat-3.2.1.tgz#179015c0dfd95c47c520cebe11a4215f0124c3b9"
-  integrity sha512-Q2w2u4MlXWSIKfumadmkQvIoEgjc+iS2ZXkR4q4qRZWcmqkVCEsrdywbWjnwgASvoaIwkwNCucAIXfK+bOT91A==
+"@semaphore-protocol/hardhat@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/hardhat/-/hardhat-3.2.2.tgz#24485b40e8a3bdfbee90a75e950c906773363b99"
+  integrity sha512-0W7oAeDZZlYF06ummdodME9ESaHNnZy31CK/8mU/L2V7qwyYktoWAGkc3hi+huNV4oZpcvnCLgQqfAiED0kJYw==
   dependencies:
     "@nomiclabs/hardhat-ethers" "^2.1.1"
-    "@semaphore-protocol/contracts" "3.2.1"
+    "@semaphore-protocol/contracts" "3.2.2"
     circomlibjs "^0.0.8"
     ethers "^5.7.1"
     hardhat-dependency-compiler "^1.1.3"
 
-"@semaphore-protocol/identity@3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/identity/-/identity-3.2.1.tgz#99af408b3baa67aa277fb4cb3b021f9a9e9b4d87"
-  integrity sha512-cdVuBrDHGMS3XN+OQ5f+RoVEib5roZ1Xui+x7d01uAXPqt07SmYRoWmoY+vesPI652B7s109kkWwHPeZrRcKuQ==
+"@semaphore-protocol/identity@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/identity/-/identity-3.2.2.tgz#9389c7e7ef31698e16ed73c42acc64fbb1537a23"
+  integrity sha512-glZ/MIV+NiL/XawXKl3AOPluvZp00TCQtofYsGzci5jQM/u2e6gJz32bsrirS/SSt00xi7XK7gqT/FcarRDwJg==
   dependencies:
     "@ethersproject/bignumber" "^5.5.0"
     "@ethersproject/keccak256" "^5.7.0"
@@ -801,10 +801,10 @@
     js-sha512 "^0.8.0"
     poseidon-lite "^0.1.0"
 
-"@semaphore-protocol/proof@3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/proof/-/proof-3.2.1.tgz#a048b33de737752d10652a6e5a77949b3d154c4b"
-  integrity sha512-CWeVmfRJ0TgWCVTonGyJrUtv8GeeUJNdz/Ps8aOdo3laA90zW5D7jQQ+RMqIESE4WUgDVxt37o6eCK1hQ7RhTw==
+"@semaphore-protocol/proof@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/proof/-/proof-3.2.2.tgz#61d81356ebe0e31b2e2215a970f271c368528161"
+  integrity sha512-Fjup17knue/MNQ3hgRlgB7+Eej0eLZqHThDy3L8b9SX2Z2YRf4jfW05+Znq84OSP33i+QutofGdd7g3GSGChKA==
   dependencies:
     "@ethersproject/bignumber" "^5.5.0"
     "@ethersproject/bytes" "^5.7.0"
