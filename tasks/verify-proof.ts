@@ -1,7 +1,7 @@
 import { formatBytes32String, hexStripZeros } from "ethers/lib/utils"
 import { task, types } from "hardhat/config"
 import { getIdentity, ZkPoHApi } from "../scripts/api/zk-poh-api"
-import * as subgraphModule from "@semaphore-protocol/subgraph"
+import * as subgraphModule from "@semaphore-protocol/data"
 import { ImportMock } from "ts-mock-imports"
 import { Group } from "@semaphore-protocol/group"
 import { HardhatRuntimeEnvironment } from "hardhat/types"
@@ -85,7 +85,7 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
         return transaction
     })
 function mockSubgraph(identity: Identity) {
-    const subgraphMock = ImportMock.mockClass(subgraphModule, "Subgraph")
+    const subgraphMock = ImportMock.mockClass(subgraphModule, "SemaphoreSubgraph")
     const groupToMock = new Group("42")
     groupToMock.addMember(identity.commitment)
     subgraphMock.mock("getGroup", groupToMock)

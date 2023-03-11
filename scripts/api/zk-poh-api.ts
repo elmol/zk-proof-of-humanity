@@ -1,7 +1,7 @@
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { generateProof } from "@semaphore-protocol/proof"
-import { Network, Subgraph } from "@semaphore-protocol/subgraph"
+import { Network, SemaphoreSubgraph } from "@semaphore-protocol/data"
 import { config } from "../../package.json"
 
 export class ZkPoHApi {
@@ -14,7 +14,7 @@ export class ZkPoHApi {
         public readonly network: Network = "goerli"
     ) {}
     async generateZKPoHProof(identity: Identity, externalNullifier: string, signal: string) {
-        const subgraph = new Subgraph(this.network)
+        const subgraph = new SemaphoreSubgraph(this.network)
         const { members } = await subgraph.getGroup(this.groupId, { members: true })
         const group = new Group(this.groupId, this.depth)
         members && group.addMembers(members)

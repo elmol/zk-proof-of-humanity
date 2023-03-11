@@ -142,9 +142,9 @@
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
 
-"@ethersproject/contracts@5.7.0":
+"@ethersproject/contracts@5.7.0", "@ethersproject/contracts@^5.7.0":
   version "5.7.0"
-  resolved "https://registry.npmjs.org/@ethersproject/contracts/-/contracts-5.7.0.tgz"
+  resolved "https://registry.yarnpkg.com/@ethersproject/contracts/-/contracts-5.7.0.tgz#c305e775abd07e48aa590e1a877ed5c316f8bd1e"
   integrity sha512-5GJbzEU3X+d33CdfPhcyS+z8MzsTrBGk/sc+G+59+tPa9yFkl6HQ9D6L0QMgNTA9q8dT0XKxxkyp883XsQvbbg==
   dependencies:
     "@ethersproject/abi" "^5.7.0"
@@ -245,9 +245,9 @@
   dependencies:
     "@ethersproject/logger" "^5.7.0"
 
-"@ethersproject/providers@5.7.2":
+"@ethersproject/providers@5.7.2", "@ethersproject/providers@^5.7.0":
   version "5.7.2"
-  resolved "https://registry.npmjs.org/@ethersproject/providers/-/providers-5.7.2.tgz"
+  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.7.2.tgz#f8b1a4f275d7ce58cf0a2eec222269a08beb18cb"
   integrity sha512-g34EWZ1WWAVgr4aptGlVBF8mhl3VWjv+8hoAnzStu8Ah22VHBsuGzP17eb6xDVRzw895G4W7vvx60lFFur/1Rg==
   dependencies:
     "@ethersproject/abstract-provider" "^5.7.0"
@@ -758,6 +758,15 @@
     "@openzeppelin/contracts" "4.7.3"
     "@zk-kit/incremental-merkle-tree.sol" "1.3.3"
 
+"@semaphore-protocol/data@^3.2.0":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/data/-/data-3.2.2.tgz#ec16026db9fa545987b21d9306494ddb02df9ed6"
+  integrity sha512-bdrIQtr8yMLW+0tVUZMdrks4hqNCppLL+Z/PY0bjEU7MzX8WVuoQgfONxRSYTdfkT+eTYQWe1S0AZsmcHMGMPg==
+  dependencies:
+    "@ethersproject/contracts" "^5.7.0"
+    "@ethersproject/providers" "^5.7.0"
+    axios "^0.27.2"
+
 "@semaphore-protocol/group@3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@semaphore-protocol/group/-/group-3.2.1.tgz#f6340b0d6f11fd33bc02fad93b4f3411291d1f07"
@@ -803,13 +812,6 @@
     "@ethersproject/strings" "^5.5.0"
     "@zk-kit/incremental-merkle-tree" "0.4.3"
     snarkjs "0.4.13"
-
-"@semaphore-protocol/subgraph@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/subgraph/-/subgraph-3.1.0.tgz#1b79605a6300d1e3e46a7e114ecf02321342c5dc"
-  integrity sha512-BCcxehw0adgglTNXpikpRHVNrHsMcqFsb4CvJr8Wedl1/X0ugWi/IKprgMV9q1N+OK5dWT4DrT0N8R3FRiJIFA==
-  dependencies:
-    axios "^0.27.2"
 
 "@sentry/core@5.30.0":
   version "5.30.0"

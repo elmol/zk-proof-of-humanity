@@ -1,5 +1,5 @@
 import { Group } from "@semaphore-protocol/group"
-import * as subgraphModule from "@semaphore-protocol/subgraph"
+import * as subgraphModule from "@semaphore-protocol/data"
 import { expect } from "chai"
 import { formatBytes32String } from "ethers/lib/utils"
 import { ethers, run } from "hardhat"
@@ -12,7 +12,7 @@ describe("ZKPoHAPI", () => {
     let pohContract: ProofOfHumanityMock
 
     const api = new ZkPoHApi("42")
-    const subgraphMock = ImportMock.mockClass(subgraphModule, "Subgraph")
+    const subgraphMock = ImportMock.mockClass(subgraphModule, "SemaphoreSubgraph")
 
     before(async () => {
         // contracts deployment
