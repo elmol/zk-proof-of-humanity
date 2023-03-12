@@ -6,26 +6,34 @@ import { ethers, run } from "hardhat"
 import { ImportMock } from "ts-mock-imports"
 import { ProofOfHumanityMock, ZKProofOfHumanity } from "../build/typechain"
 import { getIdentity, ZkPoHApi } from "../scripts/api/zk-poh-api"
+import { SemaphoreEthers } from "@semaphore-protocol/data"
+import * as hre from "hardhat"
 
 describe("ZKPoHAPI", () => {
     let zkPoHContract: ZKProofOfHumanity
     let pohContract: ProofOfHumanityMock
-
-    const api = new ZkPoHApi("42")
-    const subgraphMock = ImportMock.mockClass(subgraphModule, "SemaphoreSubgraph")
+    const groupId = "42"
+    let api: ZkPoHApi
 
     before(async () => {
         // contracts deployment
         const PoHFactory = await ethers.getContractFactory("ProofOfHumanityMock")
         pohContract = await PoHFactory.deploy()
-        zkPoHContract = await run("deploy", { poh: pohContract.address, logs: false, group: api.groupId })
+        zkPoHContract = await run("deploy", { poh: pohContract.address, logs: false, group: groupId })
+        api =
+            hre.network.name == "localhost"
+                ? new ZkPoHApi(groupId, 20, "localhost", await zkPoHContract.semaphore())
+                : new ZkPoHApi(groupId)
 
-        //mock subgraph
-        const [, human] = await ethers.getSigners()
-        const identity = await getIdentity(human)
-        const groupToMock = new Group("42")
-        groupToMock.addMember(identity.commitment)
-        subgraphMock.mock("getGroup", { members: groupToMock.members.map((m) => m.toString()) })
+        if ("hardhat" === hre.network.name) {
+            //mock subgraph
+            const subgraphMock = ImportMock.mockClass(subgraphModule, "SemaphoreSubgraph")
+            const [, human] = await ethers.getSigners()
+            const identity = await getIdentity(human)
+            const groupToMock = new Group("42")
+            groupToMock.addMember(identity.commitment)
+            subgraphMock.mock("getGroup", { members: groupToMock.members.map((m) => m.toString()) })
+        }
     })
 
     describe("# register", () => {

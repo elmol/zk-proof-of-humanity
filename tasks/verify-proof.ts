@@ -50,12 +50,15 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
 
         // mock subgraph if needed
         const networkName = network.name
-        if (networkName === "localhost" || networkName === "hardhat") {
+        if (networkName === "hardhat") {
             mockSubgraph(identity)
         }
 
         const groupId = await zkPoHContract.groupId()
-        const api = new ZkPoHApi(groupId.toString())
+        const api =
+            networkName === "localhost"
+                ? new ZkPoHApi(groupId.toString(), 20, "localhost", await zkPoHContract.semaphore())
+                : new ZkPoHApi(groupId.toString())
 
         const externalNullifier = externalnullifier ? externalnullifier : api.groupId
         const signalFormatted = formatBytes32String(signal)
