@@ -750,48 +750,48 @@
     "@noble/hashes" "~1.1.1"
     "@scure/base" "~1.1.0"
 
-"@semaphore-protocol/contracts@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/contracts/-/contracts-3.2.3.tgz#17bcb47f4576bbe6bd4f264bff2a22d614f6d341"
-  integrity sha512-X2aj9NaoLk08LzMojloePiZStILVE8YtZxNf7IVdV2rW7B+UY3TfNlyZ/aB9X64mdwrcBNC/UU5TuTy9bxsdTg==
+"@semaphore-protocol/contracts@3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/contracts/-/contracts-3.4.0.tgz#44b391d9221a9bdaa7c682a8ebbf8022672e4c25"
+  integrity sha512-3DuAV0oNrnN8uSoH0uK70vAymSEYTNl78hIQlI7tDfPrP+0Czy+hg7P7P8NAqipyP+n0kKtAB5J3kpLuOCvvBQ==
   dependencies:
     "@openzeppelin/contracts" "4.7.3"
     "@zk-kit/incremental-merkle-tree.sol" "1.3.3"
 
-"@semaphore-protocol/data@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/data/-/data-3.2.3.tgz#7168bfdf5692a0727db9dbce507431b84854802a"
-  integrity sha512-ABnH1c4kvvH5G36/actAW8an771r3/7pgqInVCHdSiz+jHohsrjECmW+RUkQrRLduNCnFGpgZ/XAVYuD8NGbPA==
+"@semaphore-protocol/data@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/data/-/data-3.4.0.tgz#18c0218f439408821c8427ef3c0b1ddfe541f2c0"
+  integrity sha512-uFX07IrMxq/2b3OP+KNvyz5d6qd1VPI+pN83147U0DwNGulmusKUfFol/Vxz3UM+TUyGdnorOeSblbEJxuBMNw==
   dependencies:
     "@ethersproject/contracts" "^5.7.0"
     "@ethersproject/providers" "^5.7.0"
     axios "^0.27.2"
 
-"@semaphore-protocol/group@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/group/-/group-3.2.3.tgz#c7e597c55c8eba7080864d972754d422509a2087"
-  integrity sha512-pHeelAE8othQZewOi1mKw7LVoL3pzmh7X5n/HSWLzWvl40z1fEKmDx1zvVIabdLbteyJB/sfm/a+2awV//z3/Q==
+"@semaphore-protocol/group@3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/group/-/group-3.4.0.tgz#48173487e15df3441c02941859822cbfc62b0a51"
+  integrity sha512-6PvcFXqw9HMrpvk6nAtTd/H/DAiOxqiysYmlu8bIVPd0D1Gwd1gWhevMsxpmUpnP/zTqHjjFr5CoBUBSxcHtdg==
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/keccak256" "^5.7.0"
     "@zk-kit/incremental-merkle-tree" "1.0.0"
 
-"@semaphore-protocol/hardhat@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/hardhat/-/hardhat-3.2.3.tgz#d16428ee84aa267da118560584d9d1b7340bd868"
-  integrity sha512-eLXdf6ZjO/L/EmmIJ3a/1oPdUiVYnng9pNMTymWvap6tLhhJeB5wFNdEBqIJMOEqmMSqU/vfEOFKUOxjjrV1cA==
+"@semaphore-protocol/hardhat@3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/hardhat/-/hardhat-3.4.0.tgz#5e88c6f2ac4dad54d6defa3bd533955944d516a8"
+  integrity sha512-KJTSIpmh9tYqsf5gU8sYS/Cu60JedxSkln0dUQszMjXPz9YRoBz2t8gah50m8BdeZpnqBuGCUsv1bYBBZnRaEQ==
   dependencies:
     "@nomiclabs/hardhat-ethers" "^2.1.1"
-    "@semaphore-protocol/contracts" "3.2.3"
+    "@semaphore-protocol/contracts" "3.4.0"
     circomlibjs "^0.0.8"
     ethers "^5.7.1"
     hardhat-dependency-compiler "^1.1.3"
 
-"@semaphore-protocol/identity@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/identity/-/identity-3.2.3.tgz#7ff18fffb1da0edd78a2c92d1ecd0356e06d6d14"
-  integrity sha512-aj4hSaFZbqlBbXwiyuiOcu9mVWmRoYqoBu/ReMegU98AwyUvk52bf8R/ZXMTnyp2IquAG3dWTfDlyRA6351qgQ==
+"@semaphore-protocol/identity@3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/identity/-/identity-3.4.0.tgz#9b9cf2c4128831d1b4e0fe2ccbb2632b0505a4d0"
+  integrity sha512-qjV4yjz7rX+DFbUhuy6WdDCOhq2JK7fmeGm8bVA7HY/ddSBdjXqIt7BwuWMWVzxzaCiDQK5QUa6S4ojgSA3cMg==
   dependencies:
     "@ethersproject/bignumber" "^5.5.0"
     "@ethersproject/keccak256" "^5.7.0"
@@ -799,10 +799,10 @@
     "@ethersproject/strings" "^5.6.1"
     js-sha512 "^0.8.0"
 
-"@semaphore-protocol/proof@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/proof/-/proof-3.2.3.tgz#72a7bc93bb2aa62fa9d024ca8f111262ed9d02f5"
-  integrity sha512-OhEUEMZb8/5/RI04oj/TA+tZq8DStHb6WRAs5S0nJUClYXFbhCLi21iB/9SY+uiS4/g1GenapRRDSAi87dRWdA==
+"@semaphore-protocol/proof@3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/proof/-/proof-3.4.0.tgz#be41d6695e1a63f543c885e9cd0d3ee29222974b"
+  integrity sha512-rWsQ4jRik99h0tMptk1bIlp9UVEAyhl3vHfZb9gSb1EjOMUJhCVc3J8Pb47M0OmZHdCOF/ERq27f5BdYY7D16A==
   dependencies:
     "@ethersproject/bignumber" "^5.5.0"
     "@ethersproject/bytes" "^5.7.0"
