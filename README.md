@@ -197,11 +197,11 @@ Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52`
 
 ```
 $ yarn deploy --poh 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 --semaphore 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 --network goerli
-ZKProofOfHumanity contract has been deployed to: 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8
-ZKProofOfHumanity groupId: 91946953324073098644290635453078965791470981970818658206759845612371607109613
+ZKProofOfHumanity contract has been deployed to: 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f
+ZKProofOfHumanity groupId: 10751501845980352646290421047126323754464353897673667581659089592139261440434
 ZKProofOfHumanity depth: 20
 ZKProofOfHumanity deployed with account: 0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C
-Done in 29.88s
+Done in 17.88s.
 ```
 
 ### Verification
@@ -211,14 +211,14 @@ yarn hardhat verify --network goerli <zkpoh-address> <semaphore-address> <poh-ad
 ```
 
 ```
-$ yarn hardhat verify --network goerli 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 91946953324073098644290635453078965791470981970818658206759845612371607109613 20
+$ yarn hardhat verify --network goerli 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 10751501845980352646290421047126323754464353897673667581659089592139261440434 20
 Successfully submitted source code for contract
-contracts/ZKProofOfHumanity.sol:ZKProofOfHumanity at 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8
+contracts/ZKProofOfHumanity.sol:ZKProofOfHumanity at 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f
 for verification on the block explorer. Waiting for verification result...
 
 Successfully verified contract ZKProofOfHumanity on Etherscan.
-https://goerli.etherscan.io/address/0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8#code
-Done in 11.87s.
+https://goerli.etherscan.io/address/0x611F0278dE9D2Bd4E38F15001B6410B4A915275f#code
+Done in 139.57s.
 ```
 
 ### Tasks usage example in Goerli
@@ -228,32 +228,32 @@ Done in 11.87s.
 Registration of the human https://proof-of-humanity-web-elmol.vercel.app/profile/0x45756fed107d0aea575a2dc0d49a1c5156b0b796
 
 ```
- $ yarn run hardhat register --zkpoh "0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" --network goerli
+$ yarn run hardhat register --zkpoh "0x611F0278dE9D2Bd4E38F15001B6410B4A915275f" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" --network goerli
 
 👤 Human registration successfully DONE! ✅
-> zkPoHAdress: [ 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8 ]
+> zkPoHAdress: [ 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f ]
 > Account: [ 0x45756fED107d0aEA575a2dc0d49a1c5156b0b796 ]
 > 🔒 Identity: [ <<secret>> ]
-Done in 36.42s.
+Done in 16.09s.
 
 ```
 
-https://goerli.etherscan.io/tx/0xa006ad1dc1891ebf6d11a15b4ba7c317acfb365e15f86dfb642f6035443bed36
+https://goerli.etherscan.io/tx/0x41a22af5c4a5c44fc6b6487f45d9d33fb2133427484fe8b205cba71963ac8e46
 
 **Verification and signal broadcasting**
 
 ```
-$ yarn run hardhat verify-proof --zkpoh "0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8" --signal "Hi ZKPoH" --externalnullifier "1" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" ----anon "0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C"  --network goerli
+$ yarn run hardhat verify-proof --zkpoh "0x611F0278dE9D2Bd4E38F15001B6410B4A915275f" --signal "Hi ZKPoH" --externalnullifier "1" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" ----anon "0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C" --network goerli
 
 👤 Human verification DONE! ✅
-> zkPoHAdress: [ 0xadd10dC8637b7136b9F9c71AeCCc92e8be9bE9b8 ]
+> zkPoHAdress: [ 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f ]
 > 🔒 Identity: [ <<secret>> ]
 > ExternalNullifier: [ 1 ]
 > Signal: [ Hi ZKPoH ]
-Done in 15.92s.
+Done in 53.85s.
 ```
 
-https://goerli.etherscan.io/tx/0x550acb367d2caa095c5625f6cc54ffa7c5261b412fa400a388f682c01fbf2ff7
+https://goerli.etherscan.io/tx/0xc83700c09a7654bb0fe9c215aafc8d1be694d125622e0b36809c95612ad9525a
 
 ## 💰 Cost Analysis
 
