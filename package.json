@@ -10,7 +10,7 @@
         "dev:contracts": "yarn workspace zk-poh-contracts dev",
         "lint": "yarn workspaces foreach -pi run lint",
         "prettier": "yarn workspace zk-poh-contracts prettier",
-        "prettier:write": "prettier -w ."
+        "prettier:write": "yarn workspace zk-poh-contracts prettier:fix"
     },
     "keywords": [
         "javascript",
