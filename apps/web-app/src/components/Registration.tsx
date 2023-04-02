@@ -1,17 +1,17 @@
-import LogsContext from "@/context/LogsContext";
-import { useZkProofOfHumanityRegister } from "@/generated/zk-poh-contract";
-import { usePrepareRegister } from "@/hooks/usePrepareRegister";
+import { useContext, useEffect } from "react";
 import { Button } from "@chakra-ui/react";
 import { Identity } from "@semaphore-protocol/identity";
 import { BigNumber } from "ethers";
-import { useContext, useEffect } from "react";
+import LogsContext from "@/context/LogsContext";
+import { useZkProofOfHumanityRegister } from "@/generated/zk-poh-contract";
+import { usePrepareRegister } from "@/hooks/usePrepareRegister";
 
 
 
 export default function Registration({identity}:{identity:Identity}) {
 
   const { setLogs } = useContext(LogsContext)
-  
+
   const { config, error:prepareError } = usePrepareRegister({
     args: [identityCommitment()],
     enabled:identity != undefined,
@@ -31,13 +31,13 @@ export default function Registration({identity}:{identity:Identity}) {
   useEffect(() => {
     setLogs("Register to ZK Proof of Humanity 👆🏽")
   }, [setLogs])
-  
+
   useEffect(() => {
      error && setLogs('💻💥 Error: ' +  error.message )
   }, [setLogs,error])
- 
+
   useEffect(() => {
-    !write && prepareError && setLogs('💻💥 Error: ' +  prepareError.message ) 
+    !write && prepareError && setLogs('💻💥 Error: ' +  prepareError.message )
   }, [setLogs,prepareError,write])
 
 

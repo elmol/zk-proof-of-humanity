@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     hardhat({
       artifacts: 'build/contracts',
-      project: '../zk-proof-of-humanity',
+      project: '../contracts',
       include: ['ZKProofOfHumanity.json'],
       deployments: {
         ZKProofOfHumanity: {

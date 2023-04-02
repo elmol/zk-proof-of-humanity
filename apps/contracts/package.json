@@ -1,5 +1,5 @@
 {
-    "name": "zk-proof-of-humanity",
+    "name": "zk-poh-contracts",
     "description": "Contracts to integrate semaphore with proof of humanity",
     "version": "1.0.0",
     "license": "MIT",
