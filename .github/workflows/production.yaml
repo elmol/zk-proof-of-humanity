@@ -9,6 +9,10 @@ env:
     TREE_DEPTH: 20
     ALL_SNARK_ARTIFACTS: false
 
+defaults:
+  run:
+    working-directory: app/contracts
+
 jobs:
     style:
         runs-on: ubuntu-latest
