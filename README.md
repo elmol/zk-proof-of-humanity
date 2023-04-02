@@ -51,10 +51,10 @@ git clone https://github.com/elmol/zk-proof-of-humanity.git
 ```
 
 # 💼 Smart Contracts
-Select contract directory `app/contracts`
+Select contract directory `apps/contracts`
 
 ```bash
-cd app/contracts
+cd apps/contracts
 ```
 
 ## 🛠 Installation and Configuration

@@ -11,7 +11,7 @@ env:
 
 defaults:
   run:
-    working-directory: app/contracts
+    working-directory: apps/contracts
 
 jobs:
     style:
