@@ -43,14 +43,21 @@ It consists of a smart contract that allows subscribing as a member to a Semapho
 
 When a human subscribes to zkPoH, they must send the [identity commitment](https://https://semaphore.appliedzkp.org/docs/glossary#identity-commitment) with the account that is registered in Proof of Humanity. The protocol only allows subscribing to valid accounts in PoH that are not already registered in zkPoH. Once the human is registered in zkPoH, they can generate proofs and emit signals, [like the Semaphore protocol](https://semaphore.appliedzkp.org/docs/guides/proofs#verify-a-proof-on-chain), without exposing their identity. To generate the identity, [the deterministic method](https://semaphore.appliedzkp.org/docs/guides/identities#create-deterministic-identities) is used which signs a message with the account registered in Proof of Humanity
 
-## 🛠 Installation and Configuration
-
+## 🚀 Repository
 Clone the repository:
 
 ```bash
 git clone https://github.com/elmol/zk-proof-of-humanity.git
 ```
 
+# 💼 Smart Contracts
+Select contract directory `app/contracts`
+
+```bash
+cd app/contracts
+```
+
+## 🛠 Installation and Configuration
 Install the dependencies:
 
 ```bash
