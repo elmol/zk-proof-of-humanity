@@ -288,7 +288,7 @@ https://goerli.etherscan.io/tx/0xc83700c09a7654bb0fe9c215aafc8d1be694d125622e0b3
 
 # 🖥️ Web Application
 
-This is the web app that serves as the frontend user interface for ZK Proof of Humanity](https://github.com/elmol/zk-proof-of-humanity).
+This is the web app that serves as the frontend user interface for ZK Proof of Humanity.
 
 The main objective of this dapp is to provide a user-friendly experience for both registered and non-registered ZK Proof of Humanity users to easily and securely verify their humanity, while maintaining anonymity.
 
@@ -301,10 +301,10 @@ It's a [Next.js](https://nextjs.org/) based project and features a customizable 
 ### Demo
 
 
-Select contract directory `apps/contracts`
+Select contract directory `apps/web-app`
 
 ```bash
-cd apps/contracts
+cd apps/web-app
 ```
 
 ## 🛠 Installation and Configuration
