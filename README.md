@@ -50,6 +50,10 @@ Clone the repository:
 git clone https://github.com/elmol/zk-proof-of-humanity.git
 ```
 
+## 📜 General Scripts
+
+-   `yarn dev` starts the dapp locally: run local network, deploy contracts and start the webapp
+
 # 💼 Smart Contracts
 Select contract directory `apps/contracts`
 
@@ -96,7 +100,7 @@ yarn download:snark-artifacts
 
 This project uses several scripts to help with the development and deployment of the contract.
 
--   start: This script runs the project on a local network, This script starts the local node and then compiles the contract and deploys it on the local network.
+-   dev: This script runs the project on a local network, This script starts the local node and then compiles the contract and deploys it on the local network.
 
 -   compile: This script compiles the contract using the command hardhat compile
 

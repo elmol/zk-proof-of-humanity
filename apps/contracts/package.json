@@ -6,7 +6,7 @@
     "private": true,
     "main": "index.js",
     "scripts": {
-        "start": "hardhat node & yarn compile && yarn deploy --network localhost",
+        "dev": "hardhat node & yarn compile && yarn hardhat deploy-mock --network localhost",
         "compile": "hardhat compile",
         "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
         "deploy": "yarn compile && hardhat deploy",
