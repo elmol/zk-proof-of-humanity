@@ -44,7 +44,12 @@ contract ZKProofOfHumanity {
     //humans -> identityCommitment
     mapping(address => uint256) private identitiesMap;
 
-    constructor(address semaphoreAddress, address pohAddress, uint256 _groupId, uint256 _depth) {
+    constructor(
+        address semaphoreAddress,
+        address pohAddress,
+        uint256 _groupId,
+        uint256 _depth
+    ) {
         semaphore = ISemaphore(semaphoreAddress);
         poh = IProofOfHumanity(pohAddress);
         groupId = _groupId;
@@ -187,7 +192,7 @@ contract ZKProofOfHumanity {
     /**
      * @dev shrink and array, newLenght should be less or equal than the array length
      */
-    function shrinkArray(address[] memory array, uint newLength) internal pure returns (address[] memory) {
+    function shrinkArray(address[] memory array, uint256 newLength) internal pure returns (address[] memory) {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(array, newLength)
