@@ -59,8 +59,11 @@ yarn
 
 ## 📜 General Scripts
 
--   `yarn dev` starts the dapp locally: run local network, deploy contracts and start the webapp
-
+-   `yarn dev` starts the dapp locally: run local network, deploy contracts and start the webapp.
+-   `yarn dev:web-app` starts the web application for your Dapp locally.
+-   `yarn dev:contracts`  runs the project on a local network, This script starts the local node and then compiles the contract and deploys it on the local network.
+-   `yarn prettier` runs prettier.
+-   `yarn prettier:write` fixes any formatting issues in the code.
 
 # 📑 Table of Contents
 
