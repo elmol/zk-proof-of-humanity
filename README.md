@@ -50,6 +50,13 @@ Clone the repository:
 git clone https://github.com/elmol/zk-proof-of-humanity.git
 ```
 
+## 🛠 Installation
+Install the dependencies:
+
+```bash
+yarn
+```
+
 ## 📜 General Scripts
 
 -   `yarn dev` starts the dapp locally: run local network, deploy contracts and start the webapp
@@ -61,12 +68,7 @@ Select contract directory `apps/contracts`
 cd apps/contracts
 ```
 
-## 🛠 Installation and Configuration
-Install the dependencies:
-
-```bash
-yarn
-```
+## 🛠 Configuration
 
 Copy the .env.example file as .env and add your environment variables:
 
@@ -310,16 +312,7 @@ Select contract directory `apps/web-app`
 ```bash
 cd apps/web-app
 ```
-
-## 🛠 Installation and Configuration
-
-Install the dependencies:
-
-```bash
-yarn
-```
-
-### Contract address configuration
+## 🛠 Contract address configuration
 
 - In `wagmi.config.ts` update the contract addresses for each supported network.
 - Run `yarn wagmi generate` to update the configuration.
