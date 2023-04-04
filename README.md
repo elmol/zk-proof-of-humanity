@@ -61,6 +61,29 @@ yarn
 
 -   `yarn dev` starts the dapp locally: run local network, deploy contracts and start the webapp
 
+
+# 📑 Table of Contents
+
+- [💼 Smart Contracts](#---smart-contracts)
+  * [🛠 Configuration](#---configuration)
+  * [📜 Scripts](#---scripts)
+  * [👨‍💻 Tasks](#------tasks)
+    + [Registration Task](#registration-task)
+    + [Verification Task](#verification-task)
+  * [📦 Goerli Deployment](#---goerli-deployment)
+    + [Proof of Humanity](#proof-of-humanity)
+    + [Deployment](#deployment)
+    + [Verification](#verification)
+    + [Tasks usage example in Goerli](#tasks-usage-example-in-goerli)
+  * [💰 Cost Analysis](#---cost-analysis)
+  * [📖 Contract Documentation](#---contract-documentation)
+- [🖥️ Web Application](#----web-application)
+    + [Demo](#demo)
+  * [🛠 Contract address configuration](#---contract-address-configuration)
+  * [📜 Usage](#---usage)
+    + [Start the app](#start-the-app)
+    + [Dev mode](#dev-mode)
+
 # 💼 Smart Contracts
 Select contract directory `apps/contracts`
 
