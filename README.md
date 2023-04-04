@@ -137,6 +137,10 @@ This project uses several scripts to help with the development and deployment of
 
 -   test: This script runs the tests
 
+-   test:report-gas: Runs automated tests for a smart contract project with gas usage reporting enabled.
+
+-   test:coverage: Generates a code coverage report for a smart contract project.
+
 -   docgen: Generates documentation for the contract
 
 -   prettier: Runs prettier
