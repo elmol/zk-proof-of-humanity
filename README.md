@@ -345,7 +345,7 @@ cd apps/web-app
 ## 🛠 Contract address configuration
 
 - In `wagmi.config.ts` update the contract addresses for each supported network.
-- Run `yarn wagmi generate` to update the configuration.
+- Run `yarn generate` to update the configuration.
 
 ## 📜 Usage
 
