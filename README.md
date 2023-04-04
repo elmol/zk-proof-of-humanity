@@ -336,13 +336,15 @@ It's a [Next.js](https://nextjs.org/) based project and features a customizable 
 
 ### Demo
 
+https://user-images.githubusercontent.com/5402004/229678557-2f133fa6-a9af-4ab0-b449-946c8ab5d8ae.mp4
+
+## 🛠 Contract address configuration
 
 Select contract directory `apps/web-app`
 
 ```bash
 cd apps/web-app
 ```
-## 🛠 Contract address configuration
 
 - In `wagmi.config.ts` update the contract addresses for each supported network.
 - Run `yarn generate` to update the configuration.
