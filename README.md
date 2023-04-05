@@ -234,7 +234,8 @@ Done in 14.48s
 
 ### Proof of Humanity
 
-Goerli Proof of Humanity: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52`
+Goerli Proof of Humanity Contract: `0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52`
+Goerli Proof of Humanity test webapp: https://proof-of-humanity-web-elmol.vercel.app/ 
 
 ### Deployment
 
@@ -330,9 +331,11 @@ The main objective of this dapp is to provide a user-friendly experience for bot
 
 It's a [Next.js](https://nextjs.org/) based project and features a customizable ``<Button\>`` react component that guides users through the entire process, from registration to human verification.  This process can be visualized in the accompanying flow graph.
 
-<flow-graph>
-
 > Note: The human verification is conducted using a random `externalNullifier` and the signal `I'm human` 
+
+![button-flow](https://user-images.githubusercontent.com/5402004/229957133-efb42ead-af58-438a-b287-96b9a32472ee.png)
+
+Goerli versel deployment: https://zk-proof-of-humanity.vercel.app/ 
 
 ### Demo
 
