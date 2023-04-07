@@ -25,15 +25,16 @@ type Props = {
   isRegistered: boolean | undefined;
   isRegisteredIdentity: boolean | undefined;
   children: ReactNode;
+  signal:string;
   handleNewIdentity: (credential: { identity: Identity; address: `0x${string}` }) => void;
 };
 
 
 
-export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,children }: Props) {
+export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,children,signal }: Props) {
 
   const externalNullifier =  randomNullifier();
-  const signal = "I'm human";
+  //const signal = "I'm human";
 
   function reconnection(message: string) {
     const component = <WalletSwitchAccount />;
