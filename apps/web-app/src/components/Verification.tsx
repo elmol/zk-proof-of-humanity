@@ -46,6 +46,7 @@ type Props = {
   identity: Identity;
   signal:string;
   externalNullifier:string;
+  verificationMessage:string;
 };
 
 export default function Verification(props: Props) {
@@ -129,7 +130,7 @@ export default function Verification(props: Props) {
        {props.children}
       </Button>
       {transaction && (<><Text align="center">
-         Your humanity was proved 🎉 - {" "}
+         {props.verificationMessage} - {" "}
       <Link color={colors.primary[500]} href={`https://goerli.etherscan.io/tx/${transaction}`} isExternal>
          see it <Icon boxSize={3} as={BsBoxArrowUpRight} />
       </Link>
