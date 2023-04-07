@@ -1,7 +1,7 @@
-import { useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
+import { usePostLikeRead, useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
 import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
-import { Button, Container, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import { Identity } from '@semaphore-protocol/identity'
 import { useState } from 'react'
 import { FaGithub } from "react-icons/fa"
@@ -33,6 +33,11 @@ export default function Main() {
     watch:true
   });
 
+  const {data:message} = usePostLikeRead({
+    functionName: 'message',
+    enabled: address && chain?.name=='localhost'?true:false,
+  });
+
   /////////// IS REGISTERED ENTITY
   const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
   const {data:isRegisteredIdentity}= useZkProofOfHumanityRead({
@@ -48,8 +53,8 @@ export default function Main() {
   }
 
   const signalCasterConfig={
-      signal:'LIKE', 
-      castedMessage:'I liked this message 👍', 
+      signal:'LIKE',
+      castedMessage:'I liked this message 👍',
       helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
     };
 
@@ -100,6 +105,10 @@ export default function Main() {
 
        <Container maxW="sm" flex="1" display="flex" alignItems="center" mb="10%">
          <Stack display="flex" width="100%">
+            <Stack display="flex" width="100%">
+                <Text align="center">{message}</Text>
+                <Divider/>
+            </Stack>
             <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={signalCasterConfig}>I like your message</ZKPoHConnect>
          </Stack>
        </Container>
