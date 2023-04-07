@@ -25,14 +25,17 @@ type Props = {
   isRegistered: boolean | undefined;
   isRegisteredIdentity: boolean | undefined;
   children: ReactNode;
-  signal:string;
-  verificationMessage:string;
+  signalCasterConfig: {
+      signal:string,
+      castedMessage:string,
+      helpText:string
+    }
   handleNewIdentity: (credential: { identity: Identity; address: `0x${string}` }) => void;
 };
 
 
 
-export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,children,signal,verificationMessage}: Props) {
+export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,children,signalCasterConfig}: Props) {
 
   const externalNullifier =  randomNullifier();
 
@@ -57,8 +60,8 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegister
     if (!identity) {
       return;
     }
-    const textArea = "Your identity is registered in ZK Proof of Humanity and generated, so now you can prove your humanity.";
-    const component = <Verification identity={identity} signal={signal} externalNullifier={externalNullifier} verificationMessage={verificationMessage}>{children}</Verification>;
+    const textArea = signalCasterConfig.helpText;
+    const component = <Verification identity={identity} signal={signalCasterConfig.signal} externalNullifier={externalNullifier} verificationMessage={signalCasterConfig.castedMessage}>{children}</Verification>;
     return wrapper(textArea, component);
   }
 

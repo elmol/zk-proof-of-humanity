@@ -47,6 +47,11 @@ export default function Main() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
+  const signalCasterConfig={
+      signal:'LIKE', 
+      castedMessage:'I liked this message 👍', 
+      helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
+    };
 
   const [_identity, setIdentity] = useState<Identity>();
 
@@ -95,7 +100,7 @@ export default function Main() {
 
        <Container maxW="sm" flex="1" display="flex" alignItems="center" mb="10%">
          <Stack display="flex" width="100%">
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signal='LIKE' verificationMessage='I liked this message 👍'>I like your message</ZKPoHConnect>
+            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={signalCasterConfig}>I like your message</ZKPoHConnect>
          </Stack>
        </Container>
      </>
