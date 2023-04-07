@@ -9,7 +9,7 @@ import { fetchSigner } from "@wagmi/core";
 import { ethers } from "ethers";
 import { BigNumber } from "ethers/lib/ethers";
 import { formatBytes32String } from "ethers/lib/utils";
-import { useContext, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import { BsBoxArrowUpRight } from 'react-icons/bs';
 import colors from "@/styles/colors";
@@ -42,6 +42,7 @@ export class ZkPoHApi {
 }
 
 type Props = {
+  children: ReactNode;
   identity: Identity;
   signal:string;
   externalNullifier:string;
@@ -77,10 +78,10 @@ export default function Verification(props: Props) {
   async function verifyHumanity() {
     if (!_identity || !groupId || !depth || !chain || !zkpoh) {
       console.error("invalid input parameters for humanity verification")
-      setLogs('💻💥 Error: Some error occurred, please try again!') 
+      setLogs('💻💥 Error: Some error occurred, please try again!')
       return
     }
-   
+
     setLoading.on();
     setLogs(`Generating humanity proof...`)
     const groupIdString = groupId.toString();
@@ -89,8 +90,8 @@ export default function Verification(props: Props) {
     const signal32Bytes = formatBytes32String(props.signal);
 
     const api = network=="localhost"?new ZkPoHApi(groupIdString,depthNumber, network,semaphoreAddress):new ZkPoHApi(groupIdString,depthNumber);
-    
-    try{ 
+
+    try{
       setLogs(`Verifying your humanity...`)
       const signer = await fetchSigner();
       if(!signer) {
@@ -116,7 +117,7 @@ export default function Verification(props: Props) {
       setTransaction(hash);
     } catch(error:any) {
       console.error(error)
-      setLogs('💻💥 Error: Some error occurred, please try again!') 
+      setLogs('💻💥 Error: Some error occurred, please try again!')
     }
     setLoading.off()
   }
@@ -125,12 +126,12 @@ export default function Verification(props: Props) {
   return (
     <>
       <Button colorScheme="primary" onClick={verifyHumanity} isLoading={_loading} loadingText="Generating Proof">
-        Verify Humanity
+       {props.children}
       </Button>
       {transaction && (<><Text align="center">
          Your humanity was proved 🎉 - {" "}
       <Link color={colors.primary[500]} href={`https://goerli.etherscan.io/tx/${transaction}`} isExternal>
-         see it <Icon boxSize={3} as={BsBoxArrowUpRight} /> 
+         see it <Icon boxSize={3} as={BsBoxArrowUpRight} />
       </Link>
       </Text>
       </>)}

@@ -24,7 +24,7 @@ export default function Main() {
 
   const { chain } = useNetwork()
   const {isHuman} = useIsRegisteredInPoH({address});
-  
+
   /////////// IS REGISTERED ACCOUNT
   const {data:isRegistered}= useZkProofOfHumanityRead({
     functionName: 'isRegistered',
@@ -75,7 +75,7 @@ export default function Main() {
            {isConnected && contract && (
              <Text>
                {" "}
-               | <b>Contract:</b>  <EtherScanLink  address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink> 
+               | <b>Contract:</b>  <EtherScanLink  address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
              </Text>
            )}
           {chain && <Text> | <b>Network:</b> {chain.unsupported?"Wrong Network":chain.name}</Text>}
@@ -95,7 +95,7 @@ export default function Main() {
 
        <Container maxW="sm" flex="1" display="flex" alignItems="center" mb="10%">
          <Stack display="flex" width="100%">
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity}></ZKPoHConnect>
+            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} >I like you message</ZKPoHConnect>
          </Stack>
        </Container>
      </>
@@ -105,7 +105,7 @@ export default function Main() {
 type EtherScanLinkTProps = {
   children: React.ReactNode;
   address: string
-  
+
 }
 
 function EtherScanLink({children,address}:EtherScanLinkTProps ) {
