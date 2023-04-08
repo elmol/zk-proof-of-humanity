@@ -8,6 +8,7 @@ import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import { ZKPoHConnect } from './ZKPoHConnect'
+import { Network, SemaphoreEthers, SemaphoreSubgraph } from '@semaphore-protocol/data'
 
 
 export default function Main() {
@@ -24,6 +25,21 @@ export default function Main() {
 
   const { chain } = useNetwork()
   const {isHuman} = useIsRegisteredInPoH({address});
+
+  /////////// IS REGISTERED ACCOUNT
+  const {data:groupId}= useZkProofOfHumanityRead({
+    functionName: 'groupId',
+    watch:true
+  });
+
+
+    /////////// IS REGISTERED ACCOUNT
+    const {data:semaphoreAddress}= useZkProofOfHumanityRead({
+        functionName: 'semaphore',
+        watch:true
+      });
+
+
 
   /////////// IS REGISTERED ACCOUNT
   const {data:isRegistered}= useZkProofOfHumanityRead({
@@ -63,6 +79,32 @@ export default function Main() {
     helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
   }
   const [_identity, setIdentity] = useState<Identity>();
+  const [likeCount, setLikeCount] = useState(0);
+
+  useEffect(() => {
+      async function fetchData() {
+          if (!chain) return;
+          if (!contract) return;
+          const network = chain.network as Network | "localhost";
+          console.log(contract.address);
+         console.log("groupId:",groupId);
+         let semaphoreEthers;
+          if ("localhost" == network) {
+              semaphoreEthers = new SemaphoreEthers("http://localhost:8545", {
+                  address: semaphoreAddress,
+              });
+          } else {
+             semaphoreEthers = new SemaphoreEthers(network);
+          }
+          if (groupId) {
+              const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
+              console.log(verifiedProofs);
+              setLikeCount(verifiedProofs.length);
+          }
+          return;
+      }
+      fetchData();
+  }, [chain, contract, groupId, semaphoreAddress]);
 
    return (
      <>
@@ -118,6 +160,7 @@ export default function Main() {
             </NoSSR>
             <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={ { externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
+          <Text><b>Likes:</b> {likeCount}</Text>
          </Stack>
        </Container>
      </>
