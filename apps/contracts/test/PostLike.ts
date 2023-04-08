@@ -10,6 +10,7 @@ describe("PostLike", () => {
 
     const users: any = []
     const groupId = "42"
+    const externalNullifer = randomNullifier()
     const group = new Group(groupId)
 
     before(async () => {
@@ -19,12 +20,21 @@ describe("PostLike", () => {
         zkPoHContract = await run("deploy", { poh: pohContract.address, logs: false, group: groupId })
 
         const ContractFactory = await ethers.getContractFactory("PostLike")
-        contract = await ContractFactory.deploy(zkPoHContract.address)
+
+        contract = await ContractFactory.deploy(zkPoHContract.address, externalNullifer)
     })
 
     describe("# construction", () => {
         it("Should be constructed with hardcoded message", async () => {
             expect("The house is in order").equal(await contract.message())
         })
+
+        it("Should be constructed with an message ID (externalNullifier)", async () => {
+            expect(externalNullifer).equal(await contract.messageId())
+        })
     })
 })
+
+function randomNullifier() {
+    return ethers.BigNumber.from(ethers.utils.randomBytes(32)).toString()
+}

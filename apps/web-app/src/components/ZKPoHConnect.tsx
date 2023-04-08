@@ -1,6 +1,6 @@
 import { Divider, Text } from "@chakra-ui/react";
 import { Identity } from "@semaphore-protocol/identity";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import NoSSR from "react-no-ssr";
 import { Chain } from "wagmi";
 import { IdentityGeneration } from "./IdentityGeneration";
@@ -26,6 +26,7 @@ type Props = {
   isRegisteredIdentity: boolean | undefined;
   children: ReactNode;
   signalCasterConfig: {
+      externalNullifier:BigNumber | undefined,
       signal:string,
       castedMessage:string,
       helpText:string
@@ -36,8 +37,6 @@ type Props = {
 
 
 export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,children,signalCasterConfig}: Props) {
-
-  const externalNullifier =  randomNullifier();
 
   function reconnection(message: string) {
     const component = <WalletSwitchAccount />;
@@ -61,7 +60,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegister
       return;
     }
     const textArea = signalCasterConfig.helpText;
-    const component = <Verification identity={identity} signal={signalCasterConfig.signal} externalNullifier={externalNullifier} verificationMessage={signalCasterConfig.castedMessage}>{children}</Verification>;
+    const component = <Verification identity={identity} signal={signalCasterConfig.signal} externalNullifier={signalCasterConfig.externalNullifier} verificationMessage={signalCasterConfig.castedMessage}>{children}</Verification>;
     return wrapper(textArea, component);
   }
 
@@ -120,7 +119,3 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegister
     </>
   );
 }
-function randomNullifier() {
-  return ethers.BigNumber.from(ethers.utils.randomBytes(32)).toString();
-}
-

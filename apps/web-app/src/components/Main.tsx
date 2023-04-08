@@ -3,7 +3,7 @@ import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
 import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import { Identity } from '@semaphore-protocol/identity'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
@@ -38,6 +38,11 @@ export default function Main() {
     enabled: address && chain?.name=='localhost'?true:false,
   });
 
+  const {data:messageId} = usePostLikeRead({
+    functionName: 'messageId',
+    enabled: address && chain?.name=='localhost'?true:false,
+  });
+
   /////////// IS REGISTERED ENTITY
   const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
   const {data:isRegisteredIdentity}= useZkProofOfHumanityRead({
@@ -52,12 +57,11 @@ export default function Main() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
-  const signalCasterConfig={
-      signal:'LIKE',
-      castedMessage:'I liked this message 👍',
-      helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
-    };
-
+  const signalCasterConfig= {
+    signal:'LIKE',
+    castedMessage:'I liked this message 👍',
+    helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
+  }
   const [_identity, setIdentity] = useState<Identity>();
 
    return (
@@ -105,11 +109,15 @@ export default function Main() {
 
        <Container maxW="sm" flex="1" display="flex" alignItems="center" mb="10%">
          <Stack display="flex" width="100%">
-            <Stack display="flex" width="100%">
-                <Text align="center">{message}</Text>
-                <Divider/>
-            </Stack>
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={signalCasterConfig}>I like your message</ZKPoHConnect>
+           <NoSSR>
+                <Stack display="flex" width="100%">
+                    <Text align="center">{message}</Text>
+                    <Text align="center">{shortenAddress(messageId?.toString())}</Text>
+                    <Divider/>
+                </Stack>
+            </NoSSR>
+            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={ { externalNullifier: messageId,
+    ...signalCasterConfig}}>I like your message</ZKPoHConnect>
          </Stack>
        </Container>
      </>
