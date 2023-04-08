@@ -99,7 +99,12 @@ export default function Main() {
           if (groupId) {
               const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
               console.log(verifiedProofs);
-              setLikeCount(verifiedProofs.length);
+              const result = verifiedProofs.filter((obj:any) => {
+                return obj.nullifierHash === messageId?.toString()
+              });
+              console.log(result);
+              setLikeCount(result.length);
+             
           }
           return;
       }
