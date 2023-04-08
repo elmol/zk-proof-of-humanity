@@ -45,7 +45,7 @@ type Props = {
   children: ReactNode;
   identity: Identity;
   signal:string;
-  externalNullifier:string;
+  externalNullifier:BigNumber | undefined;
   verificationMessage:string;
 };
 
@@ -98,8 +98,11 @@ export default function Verification(props: Props) {
       if(!signer) {
         throw new Error("could not fetch signer")
       };
+      if(!props.externalNullifier) {
+        throw new Error("externalNullifier not null")
+      };
 
-      const { proof, merkleTreeRoot, nullifierHash } = await api.generateZKPoHProof(_identity, props.externalNullifier, signal32Bytes);
+      const { proof, merkleTreeRoot, nullifierHash } = await api.generateZKPoHProof(_identity, props.externalNullifier.toString(), signal32Bytes);
 
       const tx = await zkpoh.connect(signer).verifyProof(BigNumber.from(merkleTreeRoot), BigNumber.from(signal32Bytes), BigNumber.from(nullifierHash), BigNumber.from(props.externalNullifier), [
         BigNumber.from(proof[0]),
