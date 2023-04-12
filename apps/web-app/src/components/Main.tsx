@@ -1,7 +1,7 @@
 import { usePostLikeRead, useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
 import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
-import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue,Radio,RadioGroup } from '@chakra-ui/react'
 import { Identity } from '@semaphore-protocol/identity'
 import { useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
@@ -9,11 +9,19 @@ import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import { ZKPoHConnect } from './ZKPoHConnect'
 import { Network, SemaphoreEthers, SemaphoreSubgraph } from '@semaphore-protocol/data'
+import { formatBytes32String } from 'ethers/lib/utils.js'
+import { BigNumber } from "ethers/lib/ethers";
+import { BytesLike, Hexable, zeroPad } from "@ethersproject/bytes"
+import { keccak256 } from "@ethersproject/keccak256"
+
+
 
 
 export default function Main() {
 
   const { address, isConnected } = useAccount()
+
+
 
   const { disconnect } = useDisconnect();
   const contract = useZkProofOfHumanity();
@@ -74,12 +82,16 @@ export default function Main() {
   }
 
   const signalCasterConfig= {
-    signal:'LIKE',
+   // signal:'LIKE',
     castedMessage:'I liked this message 👍',
-    helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
+    helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.',
   }
+
+  const valueSignalDefault = 'LIKE';
   const [_identity, setIdentity] = useState<Identity>();
   const [likeCount, setLikeCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalDefault);
 
   useEffect(() => {
       async function fetchData() {
@@ -99,11 +111,14 @@ export default function Main() {
           if (groupId) {
               const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
               console.log(verifiedProofs);
+              
               const result = verifiedProofs.filter((obj:any) => {
-                return obj.nullifierHash === messageId?.toString()
+                  const signal32Bytes = formatBytes32String(valueSignalDefault);
+                  return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               });
               console.log(result);
               setLikeCount(result.length);
+              setTotalCount(verifiedProofs.length)
              
           }
           return;
@@ -163,9 +178,18 @@ export default function Main() {
                     <Divider/>
                 </Stack>
             </NoSSR>
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={ { externalNullifier: messageId,
+
+            <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
+              <Stack direction='column'>
+                <Radio value='LIKE'>I like</Radio>
+                <Radio value='NOTLIKE'>I do not like</Radio>
+              </Stack>
+            </RadioGroup>
+
+
+            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
-          <Text><b>Likes:</b> {likeCount}</Text>
+          <Text><b>Likes/Total:</b> {likeCount}/{totalCount}</Text>
          </Stack>
        </Container>
      </>
