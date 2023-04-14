@@ -1,0 +1,32 @@
+{
+    "name": "@zkpoh/button",
+    "version": "0.1.0",
+    "description": "ZK Proof of Humanity Widget",
+    "license": "MIT",
+    "repository": "https://github.com/elmol/zk-proof-of-humanity",
+    "homepage": "https://github.com/elmol/zk-proof-of-humanity",
+    "main": "dist/cjs/index.js",
+    "module": "dist/es/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "scripts": {
+        "dev": "echo 'running widget'",
+        "build": "rollup -c"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^24.0.1",
+        "@rollup/plugin-node-resolve": "^15.0.2",
+        "@rollup/plugin-typescript": "^11.1.0",
+        "@types/react": "18.0.33",
+        "@types/react-dom": "18.0.11",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "rollup": "^3.20.2",
+        "rollup-plugin-dts": "^5.3.0",
+        "tslib": "^2.5.0",
+        "typescript": "5.0.4"
+    }
+}

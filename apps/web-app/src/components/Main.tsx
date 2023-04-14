@@ -59,12 +59,12 @@ export default function Main() {
 
   const {data:message} = usePostLikeRead({
     functionName: 'message',
-    enabled: address && chain?.name=='localhost'?true:false,
+    enabled: address && chain?.id==1337?true:false,
   });
 
   const {data:messageId} = usePostLikeRead({
     functionName: 'messageId',
-    enabled: address && chain?.name=='localhost'?true:false,
+    enabled: address && chain?.id==1337?true:false,
   });
 
   /////////// IS REGISTERED ENTITY
@@ -111,7 +111,7 @@ export default function Main() {
           if (groupId) {
               const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
               console.log(verifiedProofs);
-              
+
               const result = verifiedProofs.filter((obj:any) => {
                   const signal32Bytes = formatBytes32String(valueSignalDefault);
                   return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
@@ -119,7 +119,7 @@ export default function Main() {
               console.log(result);
               setLikeCount(result.length);
               setTotalCount(verifiedProofs.length)
-             
+
           }
           return;
       }
