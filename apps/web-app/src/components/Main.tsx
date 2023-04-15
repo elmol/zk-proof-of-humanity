@@ -185,7 +185,7 @@ export default function Main() {
             </RadioGroup>)}
 
 
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
+            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman}  isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
           <Text fontSize="xs" align='center'>connection state: {connectionStateType}</Text>
           <Text><b>Likes/Total:</b> {likeCount}/{totalCount}</Text>
