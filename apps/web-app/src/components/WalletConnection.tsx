@@ -1,40 +1,66 @@
 import LogsContext from "@/context/LogsContext";
-import colors from "@/styles/colors";
-import { Button, Icon, Link, Text } from "@chakra-ui/react";
-import { Identity } from "@semaphore-protocol/identity";
+import { Dict } from '@chakra-ui/utils';
 import { BaseButton } from "@zkpoh/button";
-import { verifyMessage } from "ethers/lib/utils";
-import { useContext, useEffect } from "react";
-import { BsBoxArrowUpRight } from "react-icons/bs";
-import { useConnect, useSignMessage } from "wagmi";
+import { ReactNode, useContext, useEffect } from "react";
+import { useConnect } from "wagmi";
 import { goerli, localhost } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import theme from "../styles/index"
+import theme from "../styles/index";
+
+export type WalletConnectState = {
+    logs: string;
+    error?: Error | null
+}
+
+
+export interface WalletConnectProps  {
+    theme?: Dict | undefined;
+    children: ReactNode;
+    onStateChange?: (state:WalletConnectState) => void
+}
+
+function WalletConnect(props:WalletConnectProps) {
+
+    const { connect, error } = useConnect(
+      {
+      chainId: goerli.id,
+      connector: new InjectedConnector({
+        chains: [goerli, localhost],
+      }),
+    });
+
+    useEffect(() => {
+        props.onStateChange && props.onStateChange({ logs: "Connect Wallet to start 👆🏽" });
+    }, [props]);
+
+    useEffect(() => {
+        error && props.onStateChange && props.onStateChange({ error: error, logs: "💻💥 Error: " + error.message });
+    }, [error, props]);
+
+    console.log("*** Rendering Wallet Connect")
+    return (
+      <>
+        <BaseButton theme={theme} onClick={() => connect()}>
+          Connect Wallet
+        </BaseButton>
+      </>
+    );
+}
+
 
 export function WalletConnection() {
   const { setLogs } = useContext(LogsContext);
 
-  const { connect, error } = useConnect(
-    {
-    chainId: goerli.id,
-    connector: new InjectedConnector({
-      chains: [goerli, localhost],
-    }),
-  });
 
-  useEffect(() => {
-    setLogs("Connect Wallet to start 👆🏽")
-  }, [setLogs])
-
-  useEffect(() => {
-    error && setLogs('💻💥 Error: ' +  error.message )
- }, [setLogs,error])
+  function handleStateChange(state:WalletConnectState) {
+    setLogs(state.logs);
+  }
 
   return (
     <>
-      <BaseButton theme={theme} onClick={() => connect()}>
+      <WalletConnect theme={theme} onStateChange={handleStateChange} >
         Connect Wallet
-      </BaseButton>
+      </WalletConnect>
     </>
   );
 }
