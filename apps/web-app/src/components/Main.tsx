@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
-import { ZKPoHConnect } from './ZKPoHConnect'
+import { ConnectionState, ConnectionStateType, ZKPoHConnect } from './ZKPoHConnect'
 
 
 
@@ -22,15 +22,14 @@ export default function Main() {
   const { disconnect } = useDisconnect();
   const contract = useZkProofOfHumanity();
 
-  function handleNewIdentity({identity,address} : {identity: Identity, address:`0x${string}`}):void {
-    setIdentity(identity);
-    setAddressIdentity(address);
-  }
 
-  const [connectionState, setConnectionState] = useState('Not_Initialized')
-
-  function handleChangeState(state:string) {
-    setConnectionState(state);
+  const [connectionStateType, setConnectionStateType] = useState<ConnectionStateType>()
+  function handleChangeState(state:ConnectionState) {
+    setConnectionStateType(state.stateType);
+    if(state.stateType=='IDENTITY_GENERATED'){
+        setIdentity(state.identity,);
+        setAddressIdentity(state.address);
+    }
   }
 
   const { chain } = useNetwork()
@@ -177,7 +176,7 @@ export default function Main() {
                 </Stack>
             </NoSSR>
 
-           {connectionState=='CAST_SIGNAL' &&  (
+           {connectionStateType=='CAST_SIGNAL' &&  (
             <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
               <Stack direction='column'>
                 <Radio value='LIKE'>I like</Radio>
@@ -186,9 +185,9 @@ export default function Main() {
             </RadioGroup>)}
 
 
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} onChangeState={handleChangeState} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
+            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
-          <Text fontSize="xs" align='center'>connection state: {connectionState}</Text>
+          <Text fontSize="xs" align='center'>connection state: {connectionStateType}</Text>
           <Text><b>Likes/Total:</b> {likeCount}/{totalCount}</Text>
          </Stack>
        </Container>

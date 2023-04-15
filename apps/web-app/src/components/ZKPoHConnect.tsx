@@ -12,10 +12,17 @@ import { WalletSwitchChain } from "./WalletSwtichChain";
 import { ReactNode, useCallback, useEffect } from "react";
 
 type ChainState =
-  | (Chain & {
-      unsupported?: boolean | undefined;
+| (Chain & {
+    unsupported?: boolean | undefined;
     })
   | undefined;
+
+export type ConnectionStateType = "CAST_SIGNAL" | "IDENTITY_GENERATION" |"IDENTITY_GENERATED"|"INITIALIZED";
+export type ConnectionState = {
+    stateType:ConnectionStateType
+    identity?: Identity,
+    address?: `0x${string}`
+}
 
 type Props = {
   isConnected: boolean;
@@ -31,24 +38,43 @@ type Props = {
       castedMessage:string,
       helpText:string
     }
-  handleNewIdentity: (credential: { identity: Identity; address: `0x${string}` }) => void;
-  onChangeState: (state:string) => void;
+  onChangeState: (state:ConnectionState) => void;
 };
 
 
 
-export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,onChangeState, children,signalCasterConfig}: Props) {
+export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, onChangeState, children,signalCasterConfig}: Props) {
 
   const isCastSignal = useCallback(() => {
     return isConnected && !chain?.unsupported && !isHuman && identity && isRegisteredIdentity
   },[chain?.unsupported, identity, isConnected, isHuman, isRegisteredIdentity]);
 
+  const isIdentityGeneration = useCallback(() => {
+    return isConnected && !chain?.unsupported && isHuman && !identity
+  },[chain?.unsupported, identity, isConnected, isHuman]);
+
+  const getStateType = useCallback(():ConnectionStateType => {
+     if(isCastSignal()) {
+        return  "CAST_SIGNAL"
+     }
+
+     if(isIdentityGeneration()) {
+        return "IDENTITY_GENERATION"
+     }
+
+     return "INITIALIZED"
+  }, [isCastSignal, isIdentityGeneration]);
+
   useEffect(() => {
-     const state = isCastSignal()?'CAST_SIGNAL':'INITIALIZED'
+     const stateType = getStateType() ;
+     const state:ConnectionState = { stateType: stateType }
      onChangeState(state)
-  }, [isCastSignal, onChangeState])
+  }, [getStateType, onChangeState])
 
-
+  function handleNewIdentity({identity,address} : {identity: Identity, address:`0x${string}`}):void {
+    const state:ConnectionState = {stateType:'IDENTITY_GENERATED', identity, address}
+    onChangeState(state)
+  }
 
   function reconnection(message: string) {
     const component = <WalletSwitchAccount />;
@@ -111,7 +137,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegister
       {isConnected && chain?.unsupported && changeNetwork()}
       {isConnected && !chain?.unsupported && (
         <>
-          {isHuman && !identity && identityGeneration()}
+          {isIdentityGeneration() && identityGeneration()}
           {isHuman && identity && !isRegistered && registration()}
           {isHuman &&
             identity &&
