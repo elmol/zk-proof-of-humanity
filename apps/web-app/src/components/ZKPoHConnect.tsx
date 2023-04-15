@@ -20,6 +20,7 @@ type ChainState =
 export type ConnectionStateType = "CAST_SIGNAL" | "IDENTITY_GENERATION" | "IDENTITY_GENERATED" | "INITIALIZED";
 export type ConnectionState = {
   stateType: ConnectionStateType
+  helpText?: string,
   identity?: Identity,
   address?: `0x${string}`
 }
@@ -54,6 +55,11 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     return isConnected && !chain?.unsupported && isHuman && !identity
   }, [chain?.unsupported, identity, isConnected, isHuman]);
 
+
+  const isConnect = useCallback(() => {
+    return !isConnected
+  }, [isConnected]);
+
   const getStateType = useCallback((): ConnectionStateType => {
     if (isCastSignal()) {
       return "CAST_SIGNAL"
@@ -66,11 +72,21 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     return "INITIALIZED"
   }, [isCastSignal, isIdentityGeneration]);
 
+
+  const getStateHelpText = useCallback((): string => {
+    if(isConnect()){
+      return "To interact with ZK Proof of Humanity, you'll need to connect to a wallet that supports this feature. Please ensure that you are connected to Metamask before proceeding.";
+    }
+    return "Default help text"
+  },[isConnect]);
+
+
   useEffect(() => {
     const stateType = getStateType();
-    const state: ConnectionState = { stateType: stateType }
+    const helpText = getStateHelpText();
+    const state: ConnectionState = { stateType: stateType,helpText:helpText }
     onChangeState(state)
-  }, [getStateType, onChangeState])
+  }, [getStateType, onChangeState,getStateHelpText])
 
   function handleNewIdentity({ identity, address }: { identity: Identity, address: `0x${string}` }): void {
     const state: ConnectionState = { stateType: 'IDENTITY_GENERATED', identity, address }
@@ -84,7 +100,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
   }
 
   function connect() {
-    const textArea = "To interact with ZK Proof of Humanity, you'll need to connect to a wallet that supports this feature. Please ensure that you are connected to Metamask before proceeding.";
+    const textArea = getStateHelpText();
     const component = <WalletConnection />;
     return wrapper(textArea, component);
   }
@@ -155,7 +171,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
             {isCastSignal() && verification()}
           </>
         )}
-        {!isConnected && connect()}
+        {isConnect() && connect()}
       </NoSSR>
     </>
   );

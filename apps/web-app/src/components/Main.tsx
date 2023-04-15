@@ -24,8 +24,10 @@ export default function Main() {
 
 
   const [connectionStateType, setConnectionStateType] = useState<ConnectionStateType>()
+  const [helpText, setHelpText] = useState<string>();
   function handleChangeState(state:ConnectionState) {
     setConnectionStateType(state.stateType);
+    setHelpText(state.helpText);
     if(state.stateType=='IDENTITY_GENERATED'){
         setIdentity(state.identity,);
         setAddressIdentity(state.address);
@@ -176,6 +178,11 @@ export default function Main() {
                 </Stack>
             </NoSSR>
 
+            <Text>{helpText}</Text>
+            <Divider />
+            
+            
+
            {connectionStateType=='CAST_SIGNAL' &&  (
             <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
               <Stack direction='column'>
@@ -183,7 +190,6 @@ export default function Main() {
                 <Radio value='NOTLIKE'>I do not like</Radio>
               </Stack>
             </RadioGroup>)}
-
 
             <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman}  isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
