@@ -124,7 +124,7 @@ export default function Main() {
           return;
       }
       fetchData();
-  }, [chain, contract, groupId, semaphoreAddress]);
+  }, [chain, contract, groupId, messageId, semaphoreAddress]);
 
    return (
      <>
