@@ -1,18 +1,16 @@
 import { usePostLikeRead, useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
 import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
-import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue,Radio,RadioGroup } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Network, SemaphoreEthers } from '@semaphore-protocol/data'
 import { Identity } from '@semaphore-protocol/identity'
+import { BigNumber } from "ethers/lib/ethers"
+import { formatBytes32String } from 'ethers/lib/utils.js'
 import { useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import { ZKPoHConnect } from './ZKPoHConnect'
-import { Network, SemaphoreEthers, SemaphoreSubgraph } from '@semaphore-protocol/data'
-import { formatBytes32String } from 'ethers/lib/utils.js'
-import { BigNumber } from "ethers/lib/ethers";
-import { BytesLike, Hexable, zeroPad } from "@ethersproject/bytes"
-import { keccak256 } from "@ethersproject/keccak256"
 
 
 
@@ -20,8 +18,6 @@ import { keccak256 } from "@ethersproject/keccak256"
 export default function Main() {
 
   const { address, isConnected } = useAccount()
-
-
 
   const { disconnect } = useDisconnect();
   const contract = useZkProofOfHumanity();
@@ -31,20 +27,24 @@ export default function Main() {
     setAddressIdentity(address);
   }
 
+  const [connectionState, setConnectionState] = useState('Not_Initialized')
+
+  function handleChangeState(state:string) {
+    setConnectionState(state);
+  }
+
   const { chain } = useNetwork()
   const {isHuman} = useIsRegisteredInPoH({address});
 
   /////////// IS REGISTERED ACCOUNT
   const {data:groupId}= useZkProofOfHumanityRead({
     functionName: 'groupId',
-    watch:true
   });
 
 
     /////////// IS REGISTERED ACCOUNT
     const {data:semaphoreAddress}= useZkProofOfHumanityRead({
         functionName: 'semaphore',
-        watch:true
       });
 
 
@@ -54,7 +54,6 @@ export default function Main() {
     functionName: 'isRegistered',
     args: [!address?"0x00":address], //TODO review
     enabled: address?true:false,
-    watch:true
   });
 
   const {data:message} = usePostLikeRead({
@@ -73,7 +72,6 @@ export default function Main() {
         functionName: 'isRegistered',
         args: [!_addressIdentity?"0x00":_addressIdentity], //TODO review
         enabled: _addressIdentity?true:false,
-        watch:true
    });
 
   function shortenAddress(address: string | undefined | any) {
@@ -125,7 +123,7 @@ export default function Main() {
       }
       fetchData();
   }, [chain, contract, groupId, messageId, semaphoreAddress]);
-
+   console.log("*** Rendering Main ****")
    return (
      <>
        <NoSSR>
@@ -179,16 +177,18 @@ export default function Main() {
                 </Stack>
             </NoSSR>
 
+           {connectionState=='CAST_SIGNAL' &&  (
             <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
               <Stack direction='column'>
                 <Radio value='LIKE'>I like</Radio>
                 <Radio value='NOTLIKE'>I do not like</Radio>
               </Stack>
-            </RadioGroup>
+            </RadioGroup>)}
 
 
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
+            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity} onChangeState={handleChangeState} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
+          <Text fontSize="xs" align='center'>connection state: {connectionState}</Text>
           <Text><b>Likes/Total:</b> {likeCount}/{totalCount}</Text>
          </Stack>
        </Container>

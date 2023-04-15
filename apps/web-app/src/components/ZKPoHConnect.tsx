@@ -9,7 +9,7 @@ import Verification from "./Verification";
 import { WalletConnection } from "./WalletConnection";
 import { WalletSwitchAccount } from "./WalletSwitchAccount";
 import { WalletSwitchChain } from "./WalletSwtichChain";
-import { ReactNode } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 
 type ChainState =
   | (Chain & {
@@ -32,11 +32,23 @@ type Props = {
       helpText:string
     }
   handleNewIdentity: (credential: { identity: Identity; address: `0x${string}` }) => void;
+  onChangeState: (state:string) => void;
 };
 
 
 
-export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,children,signalCasterConfig}: Props) {
+export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegistered, isRegisteredIdentity, handleNewIdentity,onChangeState, children,signalCasterConfig}: Props) {
+
+  const isCastSignal = useCallback(() => {
+    return isConnected && !chain?.unsupported && !isHuman && identity && isRegisteredIdentity
+  },[chain?.unsupported, identity, isConnected, isHuman, isRegisteredIdentity]);
+
+  useEffect(() => {
+     const state = isCastSignal()?'CAST_SIGNAL':'INITIALIZED'
+     onChangeState(state)
+  }, [isCastSignal, onChangeState])
+
+
 
   function reconnection(message: string) {
     const component = <WalletSwitchAccount />;
@@ -92,6 +104,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegister
     );
   }
 
+  console.log("*** Rendering ZKPoHConnect ****")
   return (
     <>
     <NoSSR>
@@ -111,7 +124,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, identity, isRegister
             identity &&
             !isRegisteredIdentity &&
             reconnection("The private identity is not registered in ZK Proof of Humanity. Please connect with a registered human account to regenerate your private identity and proceed.")}
-          {!isHuman && identity && isRegisteredIdentity && verification()}
+          {isCastSignal() && verification()}
         </>
       )}
       {!isConnected && connect()}
