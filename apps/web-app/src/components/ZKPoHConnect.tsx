@@ -1,4 +1,4 @@
-import { Divider, Text } from "@chakra-ui/react";
+import { Box, Divider, Text, Tooltip } from "@chakra-ui/react";
 import { Identity } from "@semaphore-protocol/identity";
 import { BigNumber, ethers } from "ethers";
 import NoSSR from "react-no-ssr";
@@ -60,6 +60,28 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     return !isConnected
   }, [isConnected]);
 
+  const isChangeNetwork = useCallback(() => {
+    return isConnected && chain?.unsupported
+  }, [chain?.unsupported, isConnected]);
+
+  const isRegistration = useCallback(() => {
+    return isHuman && identity && !isRegistered 
+  }, [identity, isHuman, isRegistered]);
+
+  const isReconnectionBurnerAccount = useCallback(() => {
+    return isConnected && !chain?.unsupported && isHuman && identity && isRegistered 
+  }, [chain?.unsupported, identity, isConnected, isHuman, isRegistered]);
+
+  const isReconnectionHumanAccount = useCallback(() => {
+    return isConnected && !chain?.unsupported && !isHuman && !identity
+  }, [chain?.unsupported, identity, isConnected, isHuman]);
+
+  const isReconnectionHumanRegeneratePrivateIdentity = useCallback(() => {
+    return isConnected && !chain?.unsupported && !isHuman && identity && !isRegisteredIdentity
+  }, [chain?.unsupported, identity, isConnected, isHuman, isRegisteredIdentity]);
+
+
+
   const getStateType = useCallback((): ConnectionStateType => {
     if (isCastSignal()) {
       return "CAST_SIGNAL"
@@ -77,8 +99,29 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     if(isConnect()){
       return "To interact with ZK Proof of Humanity, you'll need to connect to a wallet that supports this feature. Please ensure that you are connected to Metamask before proceeding.";
     }
+    if(isChangeNetwork()){
+      return "You are currently connected to a wrong network. To interact with ZK Proof of Humanity, you'll need to change to supported network. Please switch to Goerli network."
+    }
+    if(isRegistration()){
+      return "You're using a human account registered in Proof of Humanity, but this account is not registered in ZK Proof of Humanity. To continue, please register it."
+    }
+    if(isCastSignal()){
+      return signalCasterConfig.helpText;
+    }
+    if(isIdentityGeneration()){
+      return "You are currently connected with a human account, but no private identity has been set up for this account yet. Please generate a private identity by signing the provided message.";
+    }
+    if(isReconnectionBurnerAccount()){
+      return "Your human account is registered in ZK Proof of Humanity and you've generated the private identity. Now, connect with a burner account to signal.";
+    }
+    if(isReconnectionHumanAccount()){
+      return "You are not currently connected with an account registered in Proof of Humanity. To generate your identity and proceed, please connect with a human account.";
+    }
+    if(isReconnectionHumanRegeneratePrivateIdentity()){
+      return "The private identity is not registered in ZK Proof of Humanity. Please connect with a registered human account to regenerate your private identity and proceed.";
+    }
     return "Default help text"
-  },[isConnect]);
+  },[isCastSignal, isChangeNetwork, isConnect, isIdentityGeneration, isReconnectionBurnerAccount, isReconnectionHumanAccount, isReconnectionHumanRegeneratePrivateIdentity, isRegistration, signalCasterConfig.helpText]);
 
 
   useEffect(() => {
@@ -94,9 +137,10 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     setIdentity(identity);
   }
 
-  function reconnection(message: string) {
+  function reconnection() {
     const component = <WalletSwitchAccount />;
-    return wrapper(message, component);
+    const textArea = getStateHelpText();
+    return wrapper(textArea, component);
   }
 
   function connect() {
@@ -106,7 +150,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
   }
 
   function changeNetwork() {
-    const textArea = "You are currently connected to a wrong network. To interact with ZK Proof of Humanity, you'll need to change to supported network. Please switch to Goerli network.";
+    const textArea = getStateHelpText();
     const component = <WalletSwitchChain />;
     return wrapper(textArea, component);
   }
@@ -115,7 +159,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     if (!identity) {
       return;
     }
-    const textArea = signalCasterConfig.helpText;
+    const textArea = getStateHelpText();
     const component = <Verification identity={identity} signal={signalCasterConfig.signal} externalNullifier={signalCasterConfig.externalNullifier} verificationMessage={signalCasterConfig.castedMessage}>{children}</Verification>;
     return wrapper(textArea, component);
   }
@@ -124,50 +168,43 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     if (!identity) {
       return;
     }
-    const textArea = "You're using a human account registered in Proof of Humanity, but this account is not registered in ZK Proof of Humanity. To continue, please register it.";
+    const textArea = getStateHelpText();
     const component = <Registration identity={identity} />;
     return wrapper(textArea, component);
   }
 
   function identityGeneration() {
     const component = <IdentityGeneration handleNewIdentity={handleNewIdentity} />;
-    const textArea =
-      "You are currently connected with a human account, but no private identity has been set up for this account yet. Please generate a private identity by signing the provided message.";
+    const textArea = getStateHelpText();
     return wrapper(textArea, component);
   }
 
   function wrapper(textArea: string, component: JSX.Element) {
+
+
     return (
       <>
-        <Text pt="2" fontSize="md" textAlign="justify">
-          {textArea}
-        </Text>
         <Divider pt="1" borderColor="gray.500" />
-        {component}
+          <Tooltip label={textArea} placement='bottom-start'>
+            <Box alignItems='center' >
+              {component}
+            </Box>
+          </Tooltip>
       </>
     );
   }
-
-  console.log("*** Rendering ZKPoHConnect ****")
   return (
     <>
       <NoSSR>
-        {isConnected && chain?.unsupported && changeNetwork()}
+        {isChangeNetwork() && changeNetwork()}
         {isConnected && !chain?.unsupported && (
           <>
             {isIdentityGeneration() && identityGeneration()}
-            {isHuman && identity && !isRegistered && registration()}
-            {isHuman &&
-              identity &&
-              isRegistered &&
-              reconnection("Your human account is registered in ZK Proof of Humanity and you've generated the private identity. Now, connect with a burner account to signal.")}
-            {!isHuman &&
-              !identity &&
-              reconnection("You are not currently connected with an account registered in Proof of Humanity. To generate your identity and proceed, please connect with a human account.")}
-            {!isHuman &&
-              identity &&
-              !isRegisteredIdentity &&
-              reconnection("The private identity is not registered in ZK Proof of Humanity. Please connect with a registered human account to regenerate your private identity and proceed.")}
+            {isRegistration() && registration()}
+            {isReconnectionBurnerAccount() &&
+              reconnection()}
+            {isReconnectionHumanAccount() &&  reconnection()}
+            {isReconnectionHumanRegeneratePrivateIdentity () && reconnection()}
             {isCastSignal() && verification()}
           </>
         )}
