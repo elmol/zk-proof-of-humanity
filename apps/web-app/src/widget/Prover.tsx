@@ -17,7 +17,7 @@ import { useNetwork } from "wagmi";
 
 import theme from "../styles/index";
 
-import { ButtonActionProps } from "../widget/ButtonAction";
+import { ButtonActionProps } from "./ButtonAction";
 
 
 
