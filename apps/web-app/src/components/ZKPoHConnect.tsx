@@ -5,14 +5,14 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 import { Chain } from "wagmi";
 import { ContextLogger } from "./ContextLogger";
-import { WalletConnection } from "./WalletConnection";
-import { IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher } from "@/widget";
+import { IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher, WalletConnect } from "@/widget";
 
 export const IdentityGeneration = ContextLogger<NewIdentityProps>(IdentityGenerator);
 export const Registration = ContextLogger<RegisterProps>(Register);
 export const Verification = ContextLogger<ProverProps>(Prover);
 export const WalletSwitchAccount = ContextLogger(WalletAccountSwitcher);
 export const WalletSwitchChain = ContextLogger(WalletChainSwitcher);
+export const WalletConnection = ContextLogger(WalletConnect);
 
 type ChainState =
   | (Chain & {

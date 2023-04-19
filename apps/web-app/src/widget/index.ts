@@ -6,3 +6,4 @@ export { Register } from "./Register";
 export type { RegisterProps } from "./Register";
 export { default as WalletAccountSwitcher } from "./WalletAccountSwitcher";
 export { default as WalletChainSwitcher } from "./WalletChainSwitcher";
+export { default as WalletConnect} from "./WalletConnect";
