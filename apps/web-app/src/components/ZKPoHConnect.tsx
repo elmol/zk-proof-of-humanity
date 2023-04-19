@@ -4,12 +4,12 @@ import { BigNumber, ethers } from "ethers";
 import NoSSR from "react-no-ssr";
 import { Chain } from "wagmi";
 import { IdentityGeneration } from "./IdentityGeneration";
-import Registration from "./Registration";
-import Verification from "./Verification";
 import { WalletConnection } from "./WalletConnection";
 import { WalletSwitchAccount } from "./WalletSwitchAccount";
 import { WalletSwitchChain } from "./WalletSwtichChain";
 import { ReactNode, useCallback, useEffect,useState } from "react";
+import { Verification } from "./Verification";
+import { Registration } from "./Registration";
 
 type ChainState =
   | (Chain & {
@@ -65,11 +65,11 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
   }, [chain?.unsupported, isConnected]);
 
   const isRegistration = useCallback(() => {
-    return isHuman && identity && !isRegistered 
+    return isHuman && identity && !isRegistered
   }, [identity, isHuman, isRegistered]);
 
   const isReconnectionBurnerAccount = useCallback(() => {
-    return isConnected && !chain?.unsupported && isHuman && identity && isRegistered 
+    return isConnected && !chain?.unsupported && isHuman && identity && isRegistered
   }, [chain?.unsupported, identity, isConnected, isHuman, isRegistered]);
 
   const isReconnectionHumanAccount = useCallback(() => {

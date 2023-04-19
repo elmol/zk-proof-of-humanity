@@ -1,21 +1,5 @@
-import LogsContext from "@/context/LogsContext";
-import { useContext } from "react";
-import theme from "../styles/index";
 
 import WalletChainSwitcher from "@/widget/WalletChainSwitcher";
-import { ButtonActionState } from "../widget/ButtonAction";
+import { ContextLogger } from "./ContextLogger";
 
-
-
-export function WalletSwitchChain() {
-    const { setLogs } = useContext(LogsContext);
-    function handleStateChange(state: ButtonActionState) {
-        setLogs(state.logs);
-    }
-
-    return (
-        <>
-            <WalletChainSwitcher theme={theme} onStateChange={handleStateChange} />
-        </>
-    );
-}
+export const WalletSwitchChain = ContextLogger(WalletChainSwitcher);
