@@ -108,7 +108,7 @@ export default function Main() {
           } else {
              semaphoreEthers = new SemaphoreEthers(network);
           }
-          if (groupId) {
+          if (groupId && network == "localhost") {
               const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
               console.log(verifiedProofs);
 
@@ -181,8 +181,8 @@ export default function Main() {
 
             <Text>{helpText}</Text>
             <Divider />
-            
-            
+
+
 
            {connectionStateType=='CAST_SIGNAL' &&  (
             <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
