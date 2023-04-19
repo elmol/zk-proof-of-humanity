@@ -1,18 +1,26 @@
 import LogsContext from "@/context/LogsContext";
 import { useZkProofOfHumanity, useZkProofOfHumanityRead } from "@/generated/zk-poh-contract";
-import { Button, useBoolean, Text, Link, Icon } from "@chakra-ui/react";
+import colors from "@/styles/colors";
+import { Button, ChakraProvider, Icon, Link, Text, useBoolean } from "@chakra-ui/react";
 import { Network, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data";
 import { Group } from "@semaphore-protocol/group";
 import { Identity } from "@semaphore-protocol/identity";
 import { generateProof } from "@semaphore-protocol/proof";
 import { fetchSigner } from "@wagmi/core";
-import { ethers } from "ethers";
 import { BigNumber } from "ethers/lib/ethers";
 import { formatBytes32String } from "ethers/lib/utils";
 import { ReactNode, useContext, useEffect, useState } from "react";
-import { useNetwork } from "wagmi";
 import { BsBoxArrowUpRight } from 'react-icons/bs';
-import colors from "@/styles/colors";
+import { useNetwork } from "wagmi";
+
+
+
+
+import theme from "../styles/index";
+
+import { ButtonActionProps, ButtonActionState } from "./ButtonAction";
+
+
 
 export class ZkPoHApi {
   constructor(
@@ -41,16 +49,18 @@ export class ZkPoHApi {
   }
 }
 
-type Props = {
-  children: ReactNode;
+export interface Props {
   identity: Identity;
   signal:string;
   externalNullifier:BigNumber | undefined;
   verificationMessage:string;
 };
 
-export default function Verification(props: Props) {
-  const { setLogs } = useContext(LogsContext);
+export interface ProverProps extends ButtonActionProps , Props {}
+
+
+
+export default function Prover(props: ProverProps) {
   const _identity = props.identity;
   const [_loading, setLoading] = useBoolean();
 
@@ -71,20 +81,28 @@ export default function Verification(props: Props) {
     functionName: "semaphore",
   });
 
+
   useEffect(() => {
-    setLogs("Prove you humanity 👆🏽");
-  }, [setLogs]);
+    props.onStateChange && props.onStateChange({ logs: "Prove you humanity 👆🏽"});
+}, [props]);
+
+
+
   const [transaction, setTransaction] = useState<string | undefined>()
 
   async function verifyHumanity() {
     if (!_identity || !groupId || !depth || !chain || !zkpoh) {
       console.error("invalid input parameters for humanity verification")
-      setLogs('💻💥 Error: Some error occurred, please try again!')
+      const error:Error = {
+          message: '💻💥 Error: Some error occurred, please try again!',
+          name: "Invalid Input Parameters"
+      }
+      props.onStateChange && props.onStateChange({ error: error, logs: "💻💥 Error: " + error.message });
       return
     }
 
     setLoading.on();
-    setLogs(`Generating humanity proof...`)
+    props.onStateChange && props.onStateChange({ logs: `Generating humanity proof...`});
     const groupIdString = groupId.toString();
     const depthNumber = depth.toNumber();
     const network = chain.network as Network | "localhost";
@@ -93,7 +111,7 @@ export default function Verification(props: Props) {
     const api = network=="localhost"?new ZkPoHApi(groupIdString,depthNumber, network,semaphoreAddress):new ZkPoHApi(groupIdString,depthNumber);
 
     try{
-      setLogs(`Verifying your humanity...`)
+      props.onStateChange && props.onStateChange({ logs: `Verifying your humanity...`});
       const signer = await fetchSigner();
       if(!signer) {
         throw new Error("could not fetch signer")
@@ -116,12 +134,12 @@ export default function Verification(props: Props) {
       ]);
       const receipt = await tx.wait();
       console.log("tx receipt", receipt)
-      setLogs('Your humanity was proved 🎉')
+      props.onStateChange && props.onStateChange({ logs: 'Your humanity was proved 🎉'});
       const hash = receipt.transactionHash
       setTransaction(hash);
     } catch(error:any) {
       console.error(error)
-      setLogs('💻💥 Error: Some error occurred, please try again!')
+      props.onStateChange && props.onStateChange({ error: error, logs: "💻💥 Error: " + error.message });
     }
     setLoading.off()
   }
@@ -129,6 +147,7 @@ export default function Verification(props: Props) {
 
   return (
     <>
+    <ChakraProvider theme={theme}>
       <Button colorScheme="primary" onClick={verifyHumanity} isLoading={_loading} loadingText="Generating Proof">
        {props.children}
       </Button>
@@ -139,6 +158,25 @@ export default function Verification(props: Props) {
       </Link>
       </Text>
       </>)}
+    </ChakraProvider>
     </>
   );
+}
+
+export interface VerificationProps extends Props  {
+    children: ReactNode;
+
+}
+
+export function Verification(props:VerificationProps) {
+    const { setLogs } = useContext(LogsContext);
+    function handleStateChange(state: ButtonActionState) {
+        setLogs(state.logs);
+    }
+
+    return (
+        <>
+            <Prover theme={theme} onStateChange={handleStateChange} {...props} />
+        </>
+    );
 }
