@@ -1,30 +1,53 @@
 import LogsContext from "@/context/LogsContext";
-import { Button } from "@chakra-ui/react";
-import { Identity } from "@semaphore-protocol/identity";
-import { verifyMessage } from "ethers/lib/utils";
 import { useContext, useEffect } from "react";
-import { useConnect, useNetwork, useSignMessage, useSwitchNetwork } from "wagmi";
-import { goerli, localhost } from "wagmi/chains";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { useSwitchNetwork } from "wagmi";
+import theme from "../styles/index";
+
+import { Dict } from "@chakra-ui/utils";
+import { ReactNode } from "react";
+import { BaseButton } from "zkpoh-button";
+
+export type WalletChainSwitcherState = {
+    logs: string;
+    error?: Error | null;
+};
+
+export interface WalletChainSwitcherProps {
+    theme?: Dict | undefined;
+    children?: ReactNode;
+    onStateChange?: (state: WalletChainSwitcherState) => void;
+}
+
+function WalletChainSwitcher(props: WalletChainSwitcherProps) {
+    const { chains, error, isLoading, switchNetwork } = useSwitchNetwork();
+
+    useEffect(() => {
+        props.onStateChange && props.onStateChange({ logs: "Switch network to continue 👆🏽" });
+    }, [props]);
+
+    useEffect(() => {
+        error && props.onStateChange && props.onStateChange({ error: error, logs: "💻💥 Error: " + error.message });
+    }, [error, props]);
+
+    console.log("*** Rendering Wallet Chain Switcher");
+    return (
+        <>
+            <BaseButton theme={props.theme} isLoading={isLoading} onClick={() => switchNetwork?.(chains[0].id)}>
+                {props.children ? props.children : "Switch Network"}
+            </BaseButton>
+        </>
+    );
+}
 
 export function WalletSwitchChain() {
-  const { setLogs } = useContext(LogsContext);
+    const { setLogs } = useContext(LogsContext);
+    function handleStateChange(state: WalletChainSwitcherState) {
+        setLogs(state.logs);
+    }
 
-  const { chains, error, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
-
-  useEffect(() => {
-    setLogs("Switch network to continue 👆🏽")
-  }, [setLogs])
-
-  useEffect(() => {
-    error && setLogs('💻💥 Error: ' +  error.message )
- }, [setLogs,error])
-
-  return (
-    <>
-      <Button colorScheme="primary" isLoading={isLoading} onClick={() => switchNetwork?.(chains[0].id)} loadingText="Check wallet">
-        Switch Network
-      </Button>
-    </>
-  );
+    return (
+        <>
+            <WalletChainSwitcher theme={theme} onStateChange={handleStateChange} />
+        </>
+    );
 }

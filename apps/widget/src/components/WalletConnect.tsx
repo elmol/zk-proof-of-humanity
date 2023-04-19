@@ -12,7 +12,7 @@ export type WalletConnectState = {
 
 export interface WalletConnectProps {
     theme?: Dict | undefined;
-    children: ReactNode;
+    children?: ReactNode;
     onStateChange?: (state:WalletConnectState) => void
 }
 
@@ -39,7 +39,7 @@ function WalletConnect(props:WalletConnectProps) {
     return (
         <>
             <BaseButton theme={props.theme} isLoading={isLoading} onClick={() => connect()}>
-                Connect Wallet
+                {props.children?props.children:'Connect Wallet'}
             </BaseButton>
         </>
     );
