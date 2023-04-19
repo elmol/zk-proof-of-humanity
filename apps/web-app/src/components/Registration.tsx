@@ -1,49 +1,69 @@
-import { useContext, useEffect } from "react";
-import { Button } from "@chakra-ui/react";
-import { Identity } from "@semaphore-protocol/identity";
-import { BigNumber } from "ethers";
 import LogsContext from "@/context/LogsContext";
 import { useZkProofOfHumanityRegister } from "@/generated/zk-poh-contract";
 import { usePrepareRegister } from "@/hooks/usePrepareRegister";
+import { Identity } from "@semaphore-protocol/identity";
+import { BigNumber } from "ethers";
+import { useContext, useEffect } from "react";
 
 
+import theme from "../styles/index";
 
-export default function Registration({identity}:{identity:Identity}) {
+import { BaseButton } from "zkpoh-button";
+import { ButtonActionProps, ButtonActionState } from "./ButtonAction";
 
-  const { setLogs } = useContext(LogsContext)
+
+export interface RegisterProps extends ButtonActionProps {
+    identity:Identity
+}
+
+
+export function Register(props: RegisterProps) {
 
   const { config, error:prepareError } = usePrepareRegister({
     args: [identityCommitment()],
-    enabled:identity != undefined,
+    enabled: props.identity != undefined,
   });
 
   const {write,error,isLoading} = useZkProofOfHumanityRegister({
     ...config,
     onSuccess(data) {
-      setLogs(`You have been registered 🎉 Signal anonymously!`)
+      props.onStateChange && props.onStateChange({ logs: `You have been registered 🎉 Signal anonymously!` });
     },
   })
 
   function identityCommitment(): BigNumber {
-    return identity?.commitment ? BigNumber.from(identity.commitment) : BigNumber.from(0);
+    return props.identity?.commitment ? BigNumber.from(props.identity.commitment) : BigNumber.from(0);
   }
 
   useEffect(() => {
-    setLogs("Register to ZK Proof of Humanity 👆🏽")
-  }, [setLogs])
+    props.onStateChange && props.onStateChange({ logs: "Register to ZK Proof of Humanity 👆🏽" });
+  }, [props])
 
   useEffect(() => {
-     error && setLogs('💻💥 Error: ' +  error.message )
-  }, [setLogs,error])
+    error && props.onStateChange && props.onStateChange({ error: error, logs: "💻💥 Error: " + error.message });
+}, [error, props]);
 
   useEffect(() => {
-    !write && prepareError && setLogs('💻💥 Error: ' +  prepareError.message )
-  }, [setLogs,prepareError,write])
+    !write && prepareError && props.onStateChange && props.onStateChange({ error: prepareError, logs: "💻💥 Error: " + prepareError.message });
+  }, [props,prepareError,write])
 
 
   return (
     <>
-      {write && <Button colorScheme="primary" isLoading={isLoading} onClick={write} loadingText='Check wallet' >Register</Button>}
+      {write && <BaseButton theme={props.theme} isLoading={isLoading} onClick={write}>Register</BaseButton>}
     </>
   );
+}
+
+export default function Registration({identity}:{identity:Identity}) {
+    const { setLogs } = useContext(LogsContext);
+    function handleStateChange(state: ButtonActionState) {
+        setLogs(state.logs);
+    }
+
+    return (
+        <>
+            <Register theme={theme} onStateChange={handleStateChange} identity={identity} />
+        </>
+    );
 }
