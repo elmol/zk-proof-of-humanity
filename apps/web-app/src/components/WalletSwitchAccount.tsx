@@ -4,22 +4,10 @@ import { useContext, useEffect } from "react";
 
 import theme from "../styles/index";
 
-import { Dict } from "@chakra-ui/utils";
-import { ReactNode } from "react";
 import { BaseButton } from "zkpoh-button";
+import { ButtonActionProps, ButtonActionState } from "./ButtonAction";
 
-export type WalletAccountSwitcherState = {
-    logs: string;
-    error?: Error | null;
-};
-
-export interface WalletAccountSwitcherProps {
-    theme?: Dict | undefined;
-    children?: ReactNode;
-    onStateChange?: (state: WalletAccountSwitcherState) => void;
-}
-
-export function WalletAccountSwitcher(props: WalletAccountSwitcherProps) {
+export function WalletAccountSwitcher(props: ButtonActionProps) {
     const [_loading, setLoading] = useBoolean();
 
     useEffect(() => {
@@ -58,7 +46,7 @@ export function WalletAccountSwitcher(props: WalletAccountSwitcherProps) {
 
 export function WalletSwitchAccount() {
     const { setLogs } = useContext(LogsContext);
-    function handleStateChange(state: WalletAccountSwitcherState) {
+    function handleStateChange(state: ButtonActionState) {
         setLogs(state.logs);
     }
 
