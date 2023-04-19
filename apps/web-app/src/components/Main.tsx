@@ -55,6 +55,7 @@ export default function Main() {
     functionName: 'isRegistered',
     args: [!address?"0x00":address], //TODO review
     enabled: address?true:false,
+    watch:true
   });
 
   const {data:message} = usePostLikeRead({
