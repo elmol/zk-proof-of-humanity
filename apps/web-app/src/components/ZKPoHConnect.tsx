@@ -1,15 +1,18 @@
-import { Box, Divider, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Divider, Tooltip } from "@chakra-ui/react";
 import { Identity } from "@semaphore-protocol/identity";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 import { Chain } from "wagmi";
-import { IdentityGeneration } from "./IdentityGeneration";
+import { ContextLogger } from "./ContextLogger";
 import { WalletConnection } from "./WalletConnection";
-import { WalletSwitchAccount } from "./WalletSwitchAccount";
-import { WalletSwitchChain } from "./WalletSwtichChain";
-import { ReactNode, useCallback, useEffect,useState } from "react";
-import { Verification } from "./Verification";
-import { Registration } from "./Registration";
+import { IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher } from "@/widget";
+
+export const IdentityGeneration = ContextLogger<NewIdentityProps>(IdentityGenerator);
+export const Registration = ContextLogger<RegisterProps>(Register);
+export const Verification = ContextLogger<ProverProps>(Prover);
+export const WalletSwitchAccount = ContextLogger(WalletAccountSwitcher);
+export const WalletSwitchChain = ContextLogger(WalletChainSwitcher);
 
 type ChainState =
   | (Chain & {
