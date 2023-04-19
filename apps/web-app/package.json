@@ -7,6 +7,7 @@
     "build": "yarn build:widget && yarn update && next build",
     "build:widget": "cd ../widget && rm -rf dist && rm -f package.tgz && yarn build && yarn pack",
     "update": "yarn add ../widget/package.tgz",
+    "dev:update": "bash widget-update.sh",
     "start": "next start",
     "lint": "next lint",
     "generate": "wagmi generate"

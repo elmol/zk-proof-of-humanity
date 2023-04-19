@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 export interface ButtonProps {
   theme?: Dict | undefined
   children: ReactNode;
+  isLoading?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined
 
 }
@@ -12,9 +13,8 @@ export interface ButtonProps {
 const BaseButton = (props: ButtonProps) => {
   return (
     <ChakraProvider theme={props.theme}>
-        <Button colorScheme='primary' onClick={props.onClick}>{props.children}</Button>
+        <Button colorScheme='primary' isLoading={props.isLoading} onClick={props.onClick} loadingText="Check wallet">{props.children}</Button>
     </ChakraProvider>
-
   )
 };
 
