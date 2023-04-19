@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "yarn build:widget && next build",
-    "build:widget": "cd ../widget && yarn build",
+    "build": "yarn build:widget && yarn update && next build",
+    "build:widget": "cd ../widget && rm -rf dist && rm -f package.tgz && yarn build && yarn pack",
+    "update": "yarn add ../widget/package.tgz",
     "start": "next start",
     "lint": "next lint",
     "generate": "wagmi generate"
