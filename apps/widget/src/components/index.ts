@@ -6,3 +6,5 @@ export { IdentityGenerator } from "./IdentityGenerator";
 export type { NewIdentityProps } from "./IdentityGenerator";
 export { Register } from "./Register";
 export type { RegisterProps } from "./Register";
+export { Prover } from "./Prover";
+export type { ProverProps } from "./Prover";

@@ -1,6 +1,6 @@
 {
     "name": "zkpoh-button",
-    "version": "0.1.23",
+    "version": "0.1.29",
     "description": "ZK Proof of Humanity Widget",
     "license": "MIT",
     "repository": "https://github.com/elmol/zk-proof-of-humanity",
@@ -15,10 +15,11 @@
     "scripts": {
         "dev": "echo 'running widget'",
         "generate": "wagmi generate",
-        "build": "rollup -c"
+        "build": "rm -rf dist && rollup -c"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^24.0.1",
+        "@rollup/plugin-json": "^6.0.0",
         "@rollup/plugin-node-resolve": "^15.0.2",
         "@rollup/plugin-typescript": "^11.1.0",
         "@types/react": "18.0.33",

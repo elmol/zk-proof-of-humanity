@@ -2,6 +2,8 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
+import json from "@rollup/plugin-json";
+
 
 export default [
     {
@@ -22,8 +24,9 @@ export default [
                 },
             },
         ],
-        plugins: [resolve(), commonjs(), typescript({ tsconfig: "./tsconfig.json" })],
-        external: ["react", "react-dom", "wagmi", "@wagmi/core"],
+        plugins: [resolve(), commonjs(),json(), typescript({ tsconfig: "./tsconfig.json", exclude: './wagmi.config.ts' })],
+        external: ["react", "react-dom", "wagmi", "@wagmi/core","@semaphore-protocol/proof", "@semaphore-protocol/identity", "@semaphore-protocol/group", "@semaphore-protocol/data"],
+
     },
     {
         input: "dist/es/types/index.d.ts",
@@ -38,6 +41,6 @@ export default [
             },
         ],
         plugins: [dts()],
-        external: ["react", "react-dom", "wagmi", "@wagmi/core"],
+        external: ["react", "react-dom", "wagmi", "@wagmi/core","@semaphore-protocol/proof", "@semaphore-protocol/identity", "@semaphore-protocol/group", "@semaphore-protocol/data"],
     },
 ];
