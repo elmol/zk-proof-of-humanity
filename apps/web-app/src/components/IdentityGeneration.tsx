@@ -8,7 +8,7 @@ import { useSignMessage } from "wagmi";
 import theme from "../styles/index";
 
 import { BaseButton } from "zkpoh-button";
-import { ButtonActionProps, ButtonActionState } from "./ButtonAction";
+import { ButtonActionProps, ButtonActionState } from "../widget/ButtonAction";
 
 const message = "zk-proof-of-humanity";
 

@@ -9,7 +9,7 @@ import { useContext, useEffect } from "react";
 import theme from "../styles/index";
 
 import { BaseButton } from "zkpoh-button";
-import { ButtonActionProps, ButtonActionState } from "./ButtonAction";
+import { ButtonActionProps, ButtonActionState } from "../widget/ButtonAction";
 
 
 export interface RegisterProps extends ButtonActionProps {
