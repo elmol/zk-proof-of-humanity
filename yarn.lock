@@ -16872,6 +16872,10 @@ __metadata:
     "@rollup/plugin-commonjs": ^24.0.1
     "@rollup/plugin-node-resolve": ^15.0.2
     "@rollup/plugin-typescript": ^11.1.0
+    "@semaphore-protocol/data": ^3.4.0
+    "@semaphore-protocol/group": ^3.4.0
+    "@semaphore-protocol/identity": ^3.4.0
+    "@semaphore-protocol/proof": ^3.4.0
     "@types/react": 18.0.33
     "@types/react-dom": 18.0.11
     ethers: ^5

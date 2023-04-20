@@ -1,6 +1,6 @@
 {
     "name": "zkpoh-button",
-    "version": "0.1.16",
+    "version": "0.1.17",
     "description": "ZK Proof of Humanity Widget",
     "license": "MIT",
     "repository": "https://github.com/elmol/zk-proof-of-humanity",
@@ -30,5 +30,11 @@
         "tslib": "^2.5.0",
         "typescript": "5.0.4",
         "wagmi": "^0.12.1"
+    },
+    "dependencies": {
+        "@semaphore-protocol/data": "^3.4.0",
+        "@semaphore-protocol/group": "^3.4.0",
+        "@semaphore-protocol/identity": "^3.4.0",
+        "@semaphore-protocol/proof": "^3.4.0"
     }
 }

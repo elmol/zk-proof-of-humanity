@@ -5,8 +5,8 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 import { Chain } from "wagmi";
 import { ContextLogger } from "./ContextLogger";
-import { Prover, ProverProps, Register, RegisterProps,NewIdentityProps,IdentityGenerator } from "@/widget";
-import { WalletAccountSwitcher, WalletChainSwitcher, WalletConnect } from "zkpoh-button";
+import { Prover, ProverProps, Register, RegisterProps } from "@/widget";
+import { WalletAccountSwitcher, WalletChainSwitcher, WalletConnect,NewIdentityProps,IdentityGenerator } from "zkpoh-button";
 
 
 export const IdentityGeneration = ContextLogger<NewIdentityProps>(IdentityGenerator);
