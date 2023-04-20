@@ -16878,6 +16878,7 @@ __metadata:
     "@semaphore-protocol/proof": ^3.4.0
     "@types/react": 18.0.33
     "@types/react-dom": 18.0.11
+    "@wagmi/cli": ^0.1.11
     ethers: ^5
     react: 18.2.0
     react-dom: 18.2.0
