@@ -438,46 +438,6 @@ export function useZkProofOfHumanityMatchAccount<
 }
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link zkProofOfHumanityABI}__ and `functionName` set to `"register"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x611F0278dE9D2Bd4E38F15001B6410B4A915275f)
- * -
- * -
- */
-export function useZkProofOfHumanityRegister<
-  TMode extends WriteContractMode,
-  TChainId extends number = keyof typeof zkProofOfHumanityAddress,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        TMode,
-        PrepareWriteContractResult<
-          typeof zkProofOfHumanityABI,
-          'register'
-        >['abi'],
-        'register'
-      > & { address?: Address; chainId?: TChainId; functionName?: 'register' }
-    : UseContractWriteConfig<TMode, typeof zkProofOfHumanityABI, 'register'> & {
-        abi?: never
-        address?: never
-        chainId?: TChainId
-        functionName?: 'register'
-      } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const chainId = config.chainId ?? chain?.id
-  return useContractWrite<TMode, typeof zkProofOfHumanityABI, 'register'>({
-    abi: zkProofOfHumanityABI,
-    address:
-      zkProofOfHumanityAddress[
-        chainId as keyof typeof zkProofOfHumanityAddress
-      ],
-    functionName: 'register',
-    ...config,
-  } as any)
-}
-
-/**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link zkProofOfHumanityABI}__ and `functionName` set to `"verifyProof"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x611F0278dE9D2Bd4E38F15001B6410B4A915275f)

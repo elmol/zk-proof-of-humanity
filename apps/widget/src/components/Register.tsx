@@ -2,12 +2,12 @@ import { Identity } from "@semaphore-protocol/identity";
 import { BigNumber } from "ethers";
 import { useEffect } from "react";
 
-
-
 import { UsePrepareContractWriteConfig, useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
-import { BaseButton } from "zkpoh-button";
 import { ButtonActionProps } from "./ButtonAction";
-import { zkProofOfHumanityABI, zkProofOfHumanityAddress } from "./contract";
+import BaseButton from "./BaseButton";
+import { zkProofOfHumanityABI, zkProofOfHumanityAddress } from "../generated/contract";
+
+
 
 export function usePrepareRegister(
     config: Omit<

@@ -1,8 +1,8 @@
 import { useBoolean } from "@chakra-ui/react";
 import { useEffect } from "react";
 
-import { BaseButton } from "zkpoh-button";
 import { ButtonActionProps } from "./ButtonAction";
+import BaseButton from "./BaseButton";
 
 export default function WalletAccountSwitcher(props: ButtonActionProps) {
     const [_loading, setLoading] = useBoolean();

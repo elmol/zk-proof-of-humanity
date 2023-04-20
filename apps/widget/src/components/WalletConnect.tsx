@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useConnect } from "wagmi";
 import { goerli, localhost } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import { BaseButton } from "zkpoh-button";
 import { ButtonActionProps } from "./ButtonAction";
+import BaseButton from "./BaseButton";
 
 function WalletConnect(props: ButtonActionProps) {
     const { connect, error, isLoading } = useConnect({

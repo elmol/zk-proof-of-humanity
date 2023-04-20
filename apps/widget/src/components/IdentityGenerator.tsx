@@ -5,8 +5,8 @@ import { useSignMessage } from "wagmi";
 
 
 
-import { BaseButton } from "zkpoh-button";
 import { ButtonActionProps } from "./ButtonAction";
+import BaseButton from "./BaseButton";
 
 const message = "zk-proof-of-humanity";
 

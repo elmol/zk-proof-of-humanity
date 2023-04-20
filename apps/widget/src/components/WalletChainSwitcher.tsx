@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useSwitchNetwork } from "wagmi";
 
-import { BaseButton } from "zkpoh-button";
 import { ButtonActionProps } from "./ButtonAction";
+import BaseButton from "./BaseButton";
 
 export default function WalletChainSwitcher(props: ButtonActionProps) {
     const { chains, error, isLoading, switchNetwork } = useSwitchNetwork();
