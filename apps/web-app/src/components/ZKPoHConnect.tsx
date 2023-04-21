@@ -90,6 +90,7 @@ export function ZKPoHConnect(props: ZPoHConnectProps) {
 
 
 
+
   const getStateType = useCallback((): ConnectionStateType => {
     if (isCastSignal()) {
       return "CAST_SIGNAL"
@@ -131,13 +132,16 @@ export function ZKPoHConnect(props: ZPoHConnectProps) {
     return "Default help text"
   },[isCastSignal, isChangeNetwork, isConnect, isIdentityGeneration, isReconnectionBurnerAccount, isReconnectionHumanAccount, isReconnectionHumanRegeneratePrivateIdentity, isRegistration, signalCasterConfig.helpText]);
 
-
-  useEffect(() => {
+  const getConnectionState = useCallback(():ConnectionState =>{
     const stateType = getStateType();
     const helpText = getStateHelpText();
-    const state: ConnectionState = { stateType: stateType,helpText:helpText }
+    return  { stateType: stateType,helpText:helpText }
+  },[getStateHelpText, getStateType])
+
+  useEffect(() => {
+    const state = getConnectionState();
     onChangeState(state)
-  }, [getStateType, onChangeState,getStateHelpText])
+  }, [getConnectionState, onChangeState])
 
   function handleNewIdentity({ identity, address }: { identity: Identity, address: `0x${string}` }): void {
     const state: ConnectionState = { stateType: 'IDENTITY_GENERATED', identity, address }
