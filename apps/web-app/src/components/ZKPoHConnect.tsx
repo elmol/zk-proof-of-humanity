@@ -42,6 +42,14 @@ export interface ZPoHConnectProps  {
 
 
 
+const CONNECT_HELP_TEXT = "To interact with ZK Proof of Humanity, you'll need to connect to a wallet that supports this feature. Please ensure that you are connected to Metamask before proceeding.";
+const CHANGE_NETWORK_HELP_TEXT = "You are currently connected to a wrong network. To interact with ZK Proof of Humanity, you'll need to change to supported network. Please switch to Goerli network.";
+const REGISTRATION_HELP_TEXT = "You're using a human account registered in Proof of Humanity, but this account is not registered in ZK Proof of Humanity. To continue, please register it.";
+const IDENTITY_GENERATION_HELP_TEXT = "You are currently connected with a human account, but no private identity has been set up for this account yet. Please generate a private identity by signing the provided message.";
+const BURNER_ACCOUNT_RECONNECTION = "Your human account is registered in ZK Proof of Humanity and you've generated the private identity. Now, connect with a burner account to signal.";
+const HUMAN_ACCOUNT_HELP_TEXT = "You are not currently connected with an account registered in Proof of Humanity. To generate your identity and proceed, please connect with a human account.";
+const IDENTITY_REGENERATION_HELP_TEXT = "The private identity is not registered in ZK Proof of Humanity. Please connect with a registered human account to regenerate your private identity and proceed.";
+const DEFAULT_HELP_TEXT = "Default help text";
 export function ZKPoHConnect(props: ZPoHConnectProps) {
 
     const { isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, children, signalCasterConfig, onLog: onStateChange, theme} = props;
@@ -92,51 +100,42 @@ export function ZKPoHConnect(props: ZPoHConnectProps) {
 
 
   const getStateType = useCallback((): ConnectionStateType => {
-    if (isCastSignal()) {
-      return "CAST_SIGNAL"
-    }
-
-    if (isIdentityGeneration()) {
-      return "IDENTITY_GENERATION"
-    }
-
     return "INITIALIZED"
   }, [isCastSignal, isIdentityGeneration]);
 
-
-  const getStateHelpText = useCallback((): string => {
-    if(isConnect()){
-      return "To interact with ZK Proof of Humanity, you'll need to connect to a wallet that supports this feature. Please ensure that you are connected to Metamask before proceeding.";
-    }
-    if(isChangeNetwork()){
-      return "You are currently connected to a wrong network. To interact with ZK Proof of Humanity, you'll need to change to supported network. Please switch to Goerli network."
-    }
-    if(isRegistration()){
-      return "You're using a human account registered in Proof of Humanity, but this account is not registered in ZK Proof of Humanity. To continue, please register it."
-    }
-    if(isCastSignal()){
-      return signalCasterConfig.helpText;
-    }
-    if(isIdentityGeneration()){
-      return "You are currently connected with a human account, but no private identity has been set up for this account yet. Please generate a private identity by signing the provided message.";
-    }
-    if(isReconnectionBurnerAccount()){
-      return "Your human account is registered in ZK Proof of Humanity and you've generated the private identity. Now, connect with a burner account to signal.";
-    }
-    if(isReconnectionHumanAccount()){
-      return "You are not currently connected with an account registered in Proof of Humanity. To generate your identity and proceed, please connect with a human account.";
-    }
-    if(isReconnectionHumanRegeneratePrivateIdentity()){
-      return "The private identity is not registered in ZK Proof of Humanity. Please connect with a registered human account to regenerate your private identity and proceed.";
-    }
-    return "Default help text"
-  },[isCastSignal, isChangeNetwork, isConnect, isIdentityGeneration, isReconnectionBurnerAccount, isReconnectionHumanAccount, isReconnectionHumanRegeneratePrivateIdentity, isRegistration, signalCasterConfig.helpText]);
-
   const getConnectionState = useCallback(():ConnectionState =>{
     const stateType = getStateType();
-    const helpText = getStateHelpText();
-    return  { stateType: stateType,helpText:helpText }
-  },[getStateHelpText, getStateType])
+    if (isConnect()) {
+        return { stateType: stateType, helpText: CONNECT_HELP_TEXT };
+    }
+    if (isChangeNetwork()) {
+        return { stateType: stateType, helpText: CHANGE_NETWORK_HELP_TEXT };
+    }
+    if (isRegistration()) {
+        return { stateType: stateType, helpText: REGISTRATION_HELP_TEXT };
+    }
+    if (isCastSignal()) {
+        return { stateType: 'CAST_SIGNAL', helpText: signalCasterConfig.helpText };
+    }
+    if (isIdentityGeneration()) {
+        return { stateType: 'IDENTITY_GENERATION', helpText: IDENTITY_GENERATION_HELP_TEXT };
+    }
+    if (isReconnectionBurnerAccount()) {
+        return { stateType: stateType, helpText: BURNER_ACCOUNT_RECONNECTION };
+    }
+    if (isReconnectionHumanAccount()) {
+        return { stateType: stateType, helpText: HUMAN_ACCOUNT_HELP_TEXT };
+    }
+    if (isReconnectionHumanRegeneratePrivateIdentity()) {
+        return { stateType: stateType, helpText: IDENTITY_REGENERATION_HELP_TEXT };
+    }
+    return { stateType: stateType, helpText: DEFAULT_HELP_TEXT };
+
+  },[getStateType, isCastSignal, isChangeNetwork, isConnect, isIdentityGeneration, isReconnectionBurnerAccount, isReconnectionHumanAccount, isReconnectionHumanRegeneratePrivateIdentity, isRegistration, signalCasterConfig.helpText])
+
+  const getStateHelpText = useCallback((): string => {
+     return getConnectionState().helpText || DEFAULT_HELP_TEXT
+  },[getConnectionState])
 
   useEffect(() => {
     const state = getConnectionState();
