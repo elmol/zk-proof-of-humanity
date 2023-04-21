@@ -54,8 +54,6 @@ export interface ZKPoHConnectProps  {
   onLog?: (state: ButtonActionState) => void,
 };
 
-
-
 export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
     const { isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, children, signalCasterConfig, onLog: onStateChange, theme} = props;
@@ -77,7 +75,6 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
     return isConnected && !chain?.unsupported && isHuman && !identity
   }, [chain?.unsupported, identity, isConnected, isHuman]);
 
-
   const isConnect = useCallback(() => {
     return !isConnected
   }, [isConnected]);
@@ -87,8 +84,8 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
   }, [chain?.unsupported, isConnected]);
 
   const isRegistration = useCallback(() => {
-    return isHuman && identity && !isRegistered
-  }, [identity, isHuman, isRegistered]);
+    return isConnected && !chain?.unsupported && isHuman && identity && !isRegistered
+  }, [chain?.unsupported, identity, isConnected, isHuman, isRegistered]);
 
   const isReconnectionBurnerAccount = useCallback(() => {
     return isConnected && !chain?.unsupported && isHuman && identity && isRegistered
@@ -176,95 +173,39 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
   },[IdentityGeneration, Registration, Verification, WalletConnection, WalletSwitchAccount, WalletSwitchChain, children, identity, isCastSignal, isChangeNetwork, isConnect, isIdentityGeneration, isReconnectionBurnerAccount, isReconnectionHumanAccount, isReconnectionHumanRegeneratePrivateIdentity, isRegistration, onChangeState, signalCasterConfig.castedMessage, signalCasterConfig.externalNullifier, signalCasterConfig.helpText, signalCasterConfig.signal])
 
-  const getStateHelpText = useCallback((): string => {
-     return getConnectionState().helpText || DEFAULT_HELP_TEXT
-  },[getConnectionState])
-
   useEffect(() => {
     const state = getConnectionState();
     onChangeState(state)
   }, [getConnectionState, onChangeState])
 
-  function reconnection() {
-    const component = getConnectionState().component;
-    const textArea = getStateHelpText();
-    return wrapper(textArea, component);
-  }
-
-  function connect() {
-    const textArea = getStateHelpText();
-    const component = getConnectionState().component;
-    return wrapper(textArea, component);
-  }
-
-  function changeNetwork() {
-    const textArea = getStateHelpText();
-    const component = getConnectionState().component;
-    return wrapper(textArea, component);
-  }
-
-  function verification() {
-    if (!identity) {
-      return;
-    }
-    const textArea = getStateHelpText();
-    const component = getConnectionState().component;
-    return wrapper(textArea, component);
-  }
-
-  function registration() {
-    if (!identity) {
-      return;
-    }
-    const textArea = getStateHelpText();
-    const component = getConnectionState().component;
-    return wrapper(textArea, component);
-  }
-
-  function identityGeneration() {
-    const component = getConnectionState().component;
-    const textArea = getStateHelpText();
-    return wrapper(textArea, component);
-  }
-
-
- function logger<T extends ButtonActionProps>(Component: ComponentType<T>) {
-     return function ExtendedComponent(innerProps: T) {
-         function handleStateChange(state: ButtonActionState) {
-             onStateChange && onStateChange(state);
-         }
-         return <Component {...innerProps} theme={theme} onStateChange={handleStateChange} />;
-     };
- }
-
-
-  function wrapper(textArea: string, component: JSX.Element) {
-    return (
-        <>
-            <Tooltip label={textArea} placement="bottom-start">
-                <Box alignItems="center">{component}</Box>
-            </Tooltip>
-        </>
-    );
-  }
-
-  return (
-    <>
-      <NoSSR>
-        {isChangeNetwork() && changeNetwork()}
-        {isConnected && !chain?.unsupported && (
+  function buttonComponent() {
+      const {component, helpText } = getConnectionState();
+      return (
           <>
-            {isIdentityGeneration() && identityGeneration()}
-            {isRegistration() && registration()}
-            {isReconnectionBurnerAccount() &&
-              reconnection()}
-            {isReconnectionHumanAccount() &&  reconnection()}
-            {isReconnectionHumanRegeneratePrivateIdentity () && reconnection()}
-            {isCastSignal() && verification()}
+              <Tooltip label={helpText || DEFAULT_HELP_TEXT} placement="bottom-start">
+                  <Box alignItems="center">{component}</Box>
+              </Tooltip>
           </>
-        )}
-        {isConnect() && connect()}
-      </NoSSR>
-    </>
+      );
+  }
+
+  function logger<T extends ButtonActionProps>(Component: ComponentType<T>) {
+      return function ExtendedComponent(innerProps: T) {
+          function handleStateChange(state: ButtonActionState) {
+              onStateChange && onStateChange(state);
+          }
+          return <Component {...innerProps} theme={theme} onStateChange={handleStateChange} />;
+      };
+  }
+
+  const {component, helpText } = getConnectionState();
+  return (
+      <>
+          <NoSSR>
+              <Tooltip label={helpText || DEFAULT_HELP_TEXT} placement="bottom-start">
+                  <Box alignItems="center">{component}</Box>
+              </Tooltip>
+          </NoSSR>
+      </>
   );
 }
