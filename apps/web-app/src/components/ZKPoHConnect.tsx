@@ -65,10 +65,9 @@ interface InputState {
 
 export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
-    const { isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, children, signalCasterConfig, onLog: onStateChange, theme} = props;
+    const { isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, onLog, children, signalCasterConfig, theme} = props;
     const [identity, setIdentity] = useState<Identity>();
     const isSupportedChain =!chain?.unsupported;
-
 
 
   const getConnectionState = useCallback((input:InputState):ZKPoHAction =>{
@@ -76,7 +75,7 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
     function logger<T extends ButtonActionProps>(Component: ComponentType<T>) {
         return function ExtendedComponent(innerProps: T) {
             function handleStateChange(state: ButtonActionState) {
-                onStateChange && onStateChange(state);
+                onLog && onLog(state);
             }
             return <Component {...innerProps} theme={theme} onStateChange={handleStateChange} />;
         };
@@ -143,7 +142,7 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
     // return default stage, never should be returned
     const defaultState:ZKPoHAction  = {stateType: 'INITIALIZED', helpText: DEFAULT_HELP_TEXT,component: <Box>DEFAULT</Box>};
     return defaultState;
-  },[children, identity, onChangeState, onStateChange, signalCasterConfig.castedMessage, signalCasterConfig.externalNullifier, signalCasterConfig.helpText, signalCasterConfig.signal, theme])
+  },[children, identity, onChangeState, onLog, signalCasterConfig.castedMessage, signalCasterConfig.externalNullifier, signalCasterConfig.helpText, signalCasterConfig.signal, theme])
 
   useEffect(() => {
     const isIdentityGenerated = identity?true:false;
