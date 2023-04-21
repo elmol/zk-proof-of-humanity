@@ -1,7 +1,7 @@
 import { usePostLikeRead, useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
 import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
-import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, useColorModeValue,Box, SimpleGrid } from '@chakra-ui/react'
 import { Network, SemaphoreEthers } from '@semaphore-protocol/data'
 import { Identity } from '@semaphore-protocol/identity'
 import { BigNumber } from "ethers/lib/ethers"
@@ -14,6 +14,7 @@ import { ConnectionState, ConnectionStateType, ZKPoHConnect } from './ZKPoHConne
 import { ButtonActionState } from '@/widget/ButtonAction'
 import LogsContext from '@/context/LogsContext'
 import theme from "../styles/index"
+import Card from './Card'
 
 
 export default function Main() {
@@ -133,76 +134,152 @@ export default function Main() {
    console.log("*** Rendering Main ****")
    return (
      <>
-       <NoSSR>
-         <HStack align="center" justify="right" borderBottom="1px solid #8f9097" px={{ base: 4 }}>
-           <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-             <Text textAlign={useBreakpointValue({ base: "center", md: "left" })} fontFamily={"heading"} color={useColorModeValue("gray.800", "white")}>
-               🎭 <b>ZK Proof of Humanity </b>
-               <Link href="https://github.com/elmol/zk-proof-of-humanity" isExternal>
-                  <IconButton aria-label="Github repository" icon={<Icon boxSize={6} as={FaGithub} />} />
-               </Link>
-             </Text>
-           </Flex>
-           <Spacer></Spacer>
-           {_identity && _addressIdentity && (
-             <>
-               <Text >
-                 | <b>🔒 Identity:</b>
-               </Text>
-               <Text fontSize='md'> - <b>Human Address:</b> </Text> <EtherScanLink  address={_addressIdentity}><Text fontSize='md'>{shortenAddress(_addressIdentity)} </Text></EtherScanLink>
-               <Text fontSize='md'> - <b>Identity Commitment:</b> </Text><Text fontSize='md'> {shortenAddress(_identity?.commitment.toString())} </Text>
-             </>
-           )}
-           {isConnected && contract && (
-             <Text>
-               {" "}
-               | <b>Contract:</b>  <EtherScanLink  address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
-             </Text>
-           )}
-          {chain && <Text> | <b>Network:</b> {chain.unsupported?"Wrong Network":chain.name}</Text>}
-           {isConnected && address && (
-             <>
-               <Text>
-                 {" "}
-                 | <b>Connected to </b> <EtherScanLink  address={address}>{shortenAddress(address)}</EtherScanLink> {isHuman ? "🧑" : "🤖"} |{" "}
-               </Text>{" "}
-               <Button colorScheme="primary" size="xs" onClick={() => disconnect()}>
-                 Disconnect
-               </Button>
-             </>
-           )}
-         </HStack>
-       </NoSSR>
 
-       <Container maxW="sm" flex="1" display="flex" alignItems="center" mb="10%">
+<NoSSR>
+
+<Card   bg={"secondaryGray.900"}
+             flexDirection='column'
+             w='99%'
+             p='5px'
+             px='5px'
+             mt='5px'
+             mx='auto'>
+
+  <HStack align="center" justify="right"  px={{ base: 4 }}>
+    <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+      <Text textAlign={useBreakpointValue({ base: "center", md: "left" })} fontFamily={"heading"} color='secondaryGray.100' fontSize='xl' fontWeight='700'>
+        🎭 <b>ZK Proof of Humanity </b>
+        <Link href="https://github.com/elmol/zk-proof-of-humanity" isExternal>
+           <IconButton aria-label="Github repository" icon={<Icon boxSize={6} as={FaGithub} />} />
+        </Link>
+      </Text>
+    </Flex>
+    <Spacer></Spacer>
+    {_identity && _addressIdentity && (
+      <>
+        <Text color='secondaryGray.100' fontSize='md' fontWeight='900' >
+          | <b>🔒 Identity:</b>
+        </Text>
+        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Human Address:</b> </Text> <EtherScanLink  address={_addressIdentity}><Text fontSize='md'>{shortenAddress(_addressIdentity)} </Text></EtherScanLink>
+        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Identity Commitment:</b> </Text><Text fontSize='md'> {shortenAddress(_identity?.commitment.toString())} </Text>
+      </>
+    )}
+    {isConnected && contract && (
+      <Text color='secondaryGray.100' fontWeight='800'>
+        {" "}
+        | <b>Contract:</b>  <EtherScanLink  address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
+      </Text>
+    )}
+   {chain && <Text color='secondaryGray.100' fontWeight='800'> | <b>Network:</b> {chain.unsupported?"Wrong Network":chain.name}</Text>}
+    {isConnected && address && (
+      <>
+        <Text color='secondaryGray.100' fontWeight='800'>
+          {" "}
+          | <b>Connected to </b> <EtherScanLink  address={address}>{shortenAddress(address)}</EtherScanLink> {isHuman ? "🧑" : "🤖"} |{" "}
+        </Text >{" "}
+        <Button colorScheme="primary" size="xs" onClick={() => disconnect()}>
+          Disconnect
+        </Button>
+      </>
+    )}
+  </HStack>
+  </Card>
+</NoSSR>
+
+<Container flex="1" display="flex"   maxW={2800} bg={'gray.200'}>
+   <SimpleGrid columns={{ base: 1, md: 1, lg: 3, '2xl': 3 }} gap='20px' mb='120px'  mt='120px'>
+   <Card  alignItems='left' flexDirection='column' w='100%' mb='0px'>
+     <NoSSR>
          <Stack display="flex" width="100%">
-           <NoSSR>
-                <Stack display="flex" width="100%">
-                    <Text align="center">{message}</Text>
-                    <Text align="center">{shortenAddress(messageId?.toString())}</Text>
-                    <Divider/>
-                </Stack>
-            </NoSSR>
-
-            <Text>{helpText}</Text>
-            <Divider />
-
-
-
-           {connectionStateType=='CAST_SIGNAL' &&  (
-            <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
-              <Stack direction='column'>
-                <Radio value='LIKE'>I like</Radio>
-                <Radio value='NOTLIKE'>I do not like</Radio>
-              </Stack>
-            </RadioGroup>)}
-
-            <ZKPoHConnect theme={theme}chain={chain} isConnected={isConnected} isHuman={isHuman}  isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} onLog={handleLog} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
-    ...signalCasterConfig}}>I like your message</ZKPoHConnect>
-          <Text fontSize="xs" align='center'>connection state: {connectionStateType}</Text>
-          <Text><b>Likes/Total:</b> {likeCount}/{totalCount}</Text>
+         <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%'>
+           Contract information:
+         </Text>
+             <Text>{message}</Text>
+             <Text>{shortenAddress(messageId?.toString())}</Text>
          </Stack>
-       </Container>
+     </NoSSR>
+   </Card>
+     
+
+
+     
+   <Card justifyContent='center' alignItems='left' flexDirection='column' w='100%' mb='0px'>
+
+   <Stack direction='column' h="100%" >
+     <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' mt='0px' lineHeight='100%'>
+           Vote
+     </Text>
+     <Stack display="flex" width="100%">    
+         
+       <Stack display="flex" width="100%" height="100%">
+             <Text>{helpText}</Text>
+           
+       </Stack>
+       {connectionStateType=='CAST_SIGNAL' &&  (
+         <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
+           <Stack direction='column'>
+             <Radio value='LIKE'>I like</Radio>
+             <Radio value='NOTLIKE'>I do not like</Radio>
+           </Stack>
+         </RadioGroup>)}
+
+         
+      
+         </Stack>
+         <Stack alignItems='flex-end' justifyContent='flex-end' h="100%">
+         <ZKPoHConnect theme={theme} chain={chain} isConnected={isConnected} isHuman={isHuman}  isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} onLog={handleLog} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
+    ...signalCasterConfig}}>I like your message</ZKPoHConnect>
+   </Stack>
+       </Stack>
+         </Card>
+         <Card justifyContent='center' alignItems='center' flexDirection='column' w='100%' mb='0px'>
+         <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%'>
+           Result of the vote
+         </Text>
+         <Stack alignItems='center' justifyContent='center' h="100%" w="50%">
+           <Card
+             bg={"secondaryGray.900"}
+             flexDirection='column'
+             w='100%'
+             p='15px'
+             px='20px'
+             mt='15px'
+             mx='auto'>
+                <Flex direction='row' alignItems='center'>
+             <Flex direction='column' py='5px'  w="50%" alignItems='center'>
+               <Flex align='center'>
+                 <Box h='8px' w='8px' bg='green.500' borderRadius='50%' me='4px' />
+                 <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
+                   Like
+                 </Text>
+               </Flex>
+               <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'>
+                 63%
+               </Text>
+             </Flex>
+             <Flex direction='column' py='5px' me='10px' w="50%" alignItems='center'>
+               <Flex align='center'>
+                 <Box h='8px' w='8px' bg='red.600' borderRadius='50%' me='4px' />
+                 <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
+                   Not Like
+                 </Text>
+               </Flex>
+               <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'>
+                 25%
+               </Text>
+             </Flex>
+             </Flex>
+             <Flex direction='column' alignItems='center'>
+               <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'><b>Total vote:</b> {totalCount}</Text>
+             </Flex>
+           </Card>
+
+       </Stack>
+       </Card>
+
+       
+       </SimpleGrid>
+</Container>
      </>
    );
 }

@@ -3,6 +3,7 @@ import styles from "./styles"
 import colors from "./colors"
 import components from "./components"
 
+
 const config = {
     fonts: {
         heading: "Inter, sans-serif",
@@ -10,7 +11,8 @@ const config = {
     },
     colors,
     styles,
-    components
+    components,
+ 
 }
 
 export default extendTheme(config)

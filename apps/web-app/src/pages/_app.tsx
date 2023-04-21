@@ -4,6 +4,7 @@ import type { AppProps } from "next/app"
 import Head from "next/head"
 import { useState } from "react"
 import theme from "../styles/index"
+import Card from "../components/Card"
 
 export default function App({ Component, pageProps }: AppProps) {
     const [_logs, setLogs] = useState<string>("")
@@ -31,17 +32,25 @@ export default function App({ Component, pageProps }: AppProps) {
                                 <Component {...pageProps} />
                             </LogsContext.Provider>
 
-                <HStack
-                    flexBasis="56px"
-                    borderTop="1px solid #8f9097"
-                    backgroundColor="#DAE0FF"
-                    align="center"
+                            <HStack
+                    position="absolute"
+                    right="0"
+                    bottom = "0"
+                    align="initial"
                     justify="center"
-                    spacing="4"
-                    p="4"
+                    spacing="2"
+                    p="1"
                 >
-                    {_logs.endsWith("...") && <Spinner color="primary.400" />}
-                    <Text fontWeight="bold">{_logs || `⭐ ⭐ ⭐ `}</Text>
+                    {_logs.endsWith("...") && <Spinner color="primary.900" />}
+                    <Card   bg={"secondaryGray.900"}
+                    flexDirection='column'
+                    w='100%'
+                    p='15px'
+                    px='20px'
+                    mt='15px'
+                    mx='auto'>
+                    <Text fontSize='sm' color='navy.50' fontWeight='500' >{_logs || `⭐ ⭐ ⭐ `}</Text>
+                     </Card>
                 </HStack>
             </ChakraProvider>
         </>
