@@ -32,7 +32,8 @@ export type ConnectionState = {
   address?: `0x${string}`
 }
 
-export interface ZKPoHAction extends ConnectionState {
+export interface ZKPoHAction {
+    state:ConnectionState
     component: JSX.Element
 }
 
@@ -70,7 +71,7 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
     const isSupportedChain =!chain?.unsupported;
 
 
-  const getConnectionState = useCallback((input:InputState):ZKPoHAction =>{
+  const getAction = useCallback((input:InputState):ZKPoHAction =>{
 
     function logger<T extends ButtonActionProps>(Component: ComponentType<T>) {
         return function ExtendedComponent(innerProps: T) {
@@ -98,66 +99,66 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
     // is not connected return connect button
     const isConnect = !isConnected;
-    const connectState: ZKPoHAction = {stateType: "INITIALIZED", helpText: CONNECT_HELP_TEXT, component: <WalletConnection /> };
+    const connectState: ZKPoHAction = {state: {stateType: "INITIALIZED", helpText: CONNECT_HELP_TEXT}, component: <WalletConnection /> };
     if (isConnect) return connectState;
 
     // is not supported network return network switcher
     const isChangeNetwork = isConnected && !isSupportedChain;
-    const changeNetworkState:ZKPoHAction  = {stateType: 'INITIALIZED', helpText: CHANGE_NETWORK_HELP_TEXT, component: <WalletSwitchChain/>};
+    const changeNetworkState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: CHANGE_NETWORK_HELP_TEXT}, component: <WalletSwitchChain/>};
     if (isChangeNetwork) return changeNetworkState;
 
     // is not connected with a human account and the identity was not generated return human account reconnection
     const isReconnectionHumanAccount = isConnected && isSupportedChain && !isHuman && !isIdentityGenerated;
-    const humanAccountState:ZKPoHAction  = {stateType: 'INITIALIZED', helpText: HUMAN_ACCOUNT_HELP_TEXT, component: <WalletSwitchAccount/>};
+    const humanAccountState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: HUMAN_ACCOUNT_HELP_TEXT}, component: <WalletSwitchAccount/>};
     if (isReconnectionHumanAccount) return humanAccountState;
 
     // is connected with human account but the identity was not generated return identity generator
     const isIdentityGeneration = isConnected && isSupportedChain && isHuman && !isIdentityGenerated;
-    const identityGenerationState:ZKPoHAction  = {stateType: 'IDENTITY_GENERATION', helpText: IDENTITY_GENERATION_HELP_TEXT, component: <IdentityGeneration handleNewIdentity={handleNewIdentity} />};
+    const identityGenerationState:ZKPoHAction  = {state: {stateType: 'IDENTITY_GENERATION', helpText: IDENTITY_GENERATION_HELP_TEXT}, component: <IdentityGeneration handleNewIdentity={handleNewIdentity} />};
     if (isIdentityGeneration) return identityGenerationState;
 
     // is connected with human account the identity was generated but not registered return registration
     const isRegistration = isConnected && isSupportedChain && isHuman && isIdentityGenerated && !isRegistered;
-    const registrationState:ZKPoHAction  = {stateType: 'INITIALIZED', helpText: REGISTRATION_HELP_TEXT, component: identity?<Registration identity={identity} />: <Box>DEFAULT</Box>};
+    const registrationState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: REGISTRATION_HELP_TEXT}, component: identity?<Registration identity={identity} />: <Box>DEFAULT</Box>};
     if (isRegistration) return registrationState;
 
     // is connected with human account and ready to signal return burner account reconnection
     const isReconnectionBurnerAccount = isConnected && isSupportedChain && isHuman && isIdentityGenerated && isRegistered;
-    const burnerAccountState:ZKPoHAction  = { stateType: 'INITIALIZED', helpText: BURNER_ACCOUNT_RECONNECTION, component: <WalletSwitchAccount/>};
+    const burnerAccountState:ZKPoHAction  = { state: {stateType: 'INITIALIZED', helpText: BURNER_ACCOUNT_RECONNECTION}, component: <WalletSwitchAccount/>};
     if (isReconnectionBurnerAccount) return burnerAccountState;
 
     // is not a registered identity generated return regenerate identity
     const isReconnectionHumanRegeneratePrivateIdentity =isConnected && isSupportedChain && !isHuman && isIdentityGenerated && !isRegisteredIdentity;
-    const humanRegenerationState:ZKPoHAction  = { stateType: 'INITIALIZED', helpText: IDENTITY_REGENERATION_HELP_TEXT, component: <WalletSwitchAccount/> };
+    const humanRegenerationState:ZKPoHAction  = { state: {stateType: 'INITIALIZED', helpText: IDENTITY_REGENERATION_HELP_TEXT}, component: <WalletSwitchAccount/> };
     if (isReconnectionHumanRegeneratePrivateIdentity) return humanRegenerationState;
 
     // is ready to cast signal return signal caster
     const isCastSignal = isConnected && isSupportedChain && !isHuman && isIdentityGenerated && isRegisteredIdentity;
     const castSignalState:ZKPoHAction  = {
-        stateType: 'CAST_SIGNAL', helpText: signalCasterConfig.helpText,
+        state: {stateType: 'CAST_SIGNAL', helpText: signalCasterConfig.helpText},
         component: identity?<Verification identity={identity} signal={signalCasterConfig.signal} externalNullifier={signalCasterConfig.externalNullifier} verificationMessage={signalCasterConfig.castedMessage}>{children}</Verification>:<Box>DEFAULT</Box>
       };
     if (isCastSignal) return castSignalState;
 
     // return default stage, never should be returned
-    const defaultState:ZKPoHAction  = {stateType: 'INITIALIZED', helpText: DEFAULT_HELP_TEXT,component: <Box>DEFAULT</Box>};
+    const defaultState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: DEFAULT_HELP_TEXT},component: <Box>DEFAULT</Box>};
     return defaultState;
   },[children, identity, onChangeState, onLog, signalCasterConfig.castedMessage, signalCasterConfig.externalNullifier, signalCasterConfig.helpText, signalCasterConfig.signal, theme])
 
   useEffect(() => {
     const isIdentityGenerated = identity?true:false;
-    const state = getConnectionState({isConnected, isSupportedChain, isHuman , isIdentityGenerated , isRegistered, isRegisteredIdentity});
-    onChangeState(state)
-  }, [getConnectionState, identity, isConnected, isHuman, isRegistered, isRegisteredIdentity, isSupportedChain, onChangeState])
+    const action = getAction({isConnected, isSupportedChain, isHuman , isIdentityGenerated , isRegistered, isRegisteredIdentity});
+    onChangeState(action.state)
+  }, [getAction, identity, isConnected, isHuman, isRegistered, isRegisteredIdentity, isSupportedChain, onChangeState])
 
 
 
   const isIdentityGenerated = identity?true:false;
-  const {component, helpText } = getConnectionState({isConnected, isSupportedChain, isHuman , isIdentityGenerated , isRegistered, isRegisteredIdentity});
+  const {component, state } = getAction({isConnected, isSupportedChain, isHuman , isIdentityGenerated , isRegistered, isRegisteredIdentity});
   return (
       <>
           <NoSSR>
-              <Tooltip label={helpText || DEFAULT_HELP_TEXT} placement="bottom-start">
+              <Tooltip label={state.helpText || DEFAULT_HELP_TEXT} placement="bottom-start">
                   <Box alignItems="center">{component}</Box>
               </Tooltip>
           </NoSSR>
