@@ -8,3 +8,4 @@ export { Register } from "./Register";
 export type { RegisterProps } from "./Register";
 export { Prover } from "./Prover";
 export type { ProverProps } from "./Prover";
+export type {ButtonActionState, ButtonActionProps} from "./ButtonAction"

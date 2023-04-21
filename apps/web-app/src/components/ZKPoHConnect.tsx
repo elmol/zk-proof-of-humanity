@@ -5,8 +5,7 @@ import { BigNumber } from "ethers";
 import { ComponentType, ReactNode, useCallback, useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 import { Chain } from "wagmi";
-import { IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher, WalletConnect } from "zkpoh-button";
-import { ButtonActionProps, ButtonActionState } from "../widget/ButtonAction"; //export
+import { ButtonActionProps, ButtonActionState, IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher, WalletConnect } from "zkpoh-button";
 
 type ChainState =
   | (Chain & {
@@ -15,6 +14,7 @@ type ChainState =
   | undefined;
 
 export type ConnectionStateType = "CAST_SIGNAL" | "IDENTITY_GENERATION" | "IDENTITY_GENERATED" | "INITIALIZED";
+
 export type ConnectionState = {
   stateType: ConnectionStateType
   helpText?: string,
@@ -22,13 +22,13 @@ export type ConnectionState = {
   address?: `0x${string}`
 }
 
-type Props = {
-  isConnected: boolean;
-  chain: ChainState;
-  isHuman: boolean | undefined;
-  isRegistered: boolean | undefined;
-  isRegisteredIdentity: boolean | undefined;
-  children: ReactNode;
+export interface ZPoHConnectProps  {
+  isConnected: boolean,
+  chain: ChainState,
+  isHuman: boolean | undefined,
+  isRegistered: boolean | undefined,
+  isRegisteredIdentity: boolean | undefined,
+  children: ReactNode,
   theme?: Dict | undefined,
   signalCasterConfig: {
     externalNullifier: BigNumber | undefined,
@@ -36,13 +36,15 @@ type Props = {
     castedMessage: string,
     helpText: string
   }
-  onChangeState: (state: ConnectionState) => void;
-  onLog?: (state: ButtonActionState) => void;  // logs / errors
+  onChangeState: (state: ConnectionState) => void,
+  onLog?: (state: ButtonActionState) => void,
 };
 
 
 
-export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, children, signalCasterConfig, onLog: onStateChange, theme}: Props) {
+export function ZKPoHConnect(props: ZPoHConnectProps) {
+
+    const { isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, children, signalCasterConfig, onLog: onStateChange, theme} = props;
 
     const IdentityGeneration = logger<NewIdentityProps>(IdentityGenerator);
     const Registration = logger<RegisterProps>(Register);
@@ -205,6 +207,7 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
         </>
     );
   }
+
   return (
     <>
       <NoSSR>
