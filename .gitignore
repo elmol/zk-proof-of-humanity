@@ -86,8 +86,6 @@ next-env.d.ts
 !.yarn/sdks
 !.yarn/versions
 
-# The Graph
-generated
 
 # Auto Generated PWA files
 **/public/sw.js

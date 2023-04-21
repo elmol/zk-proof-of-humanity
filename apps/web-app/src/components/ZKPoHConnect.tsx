@@ -1,18 +1,12 @@
-import { Box, Divider, Tooltip } from "@chakra-ui/react";
+import { Box, Tooltip } from "@chakra-ui/react";
+import { Dict } from "@chakra-ui/utils";
 import { Identity } from "@semaphore-protocol/identity";
 import { BigNumber } from "ethers";
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ComponentType, ReactNode, useCallback, useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 import { Chain } from "wagmi";
-import { ContextLogger } from "./ContextLogger";
-import { WalletAccountSwitcher, WalletChainSwitcher, WalletConnect,NewIdentityProps,IdentityGenerator, Register, RegisterProps,Prover, ProverProps } from "zkpoh-button";
-
-export const IdentityGeneration = ContextLogger<NewIdentityProps>(IdentityGenerator);
-export const Registration = ContextLogger<RegisterProps>(Register);
-export const Verification = ContextLogger<ProverProps>(Prover);
-export const WalletSwitchAccount = ContextLogger(WalletAccountSwitcher);
-export const WalletSwitchChain = ContextLogger(WalletChainSwitcher);
-export const WalletConnection = ContextLogger(WalletConnect);
+import { IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher, WalletConnect } from "zkpoh-button";
+import { ButtonActionProps, ButtonActionState } from "../widget/ButtonAction"; //export
 
 type ChainState =
   | (Chain & {
@@ -35,6 +29,7 @@ type Props = {
   isRegistered: boolean | undefined;
   isRegisteredIdentity: boolean | undefined;
   children: ReactNode;
+  theme?: Dict | undefined,
   signalCasterConfig: {
     externalNullifier: BigNumber | undefined,
     signal: string,
@@ -42,11 +37,19 @@ type Props = {
     helpText: string
   }
   onChangeState: (state: ConnectionState) => void;
+  onLog?: (state: ButtonActionState) => void;  // logs / errors
 };
 
 
 
-export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, children, signalCasterConfig }: Props) {
+export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, children, signalCasterConfig, onLog: onStateChange, theme}: Props) {
+
+    const IdentityGeneration = logger<NewIdentityProps>(IdentityGenerator);
+    const Registration = logger<RegisterProps>(Register);
+    const Verification = logger<ProverProps>(Prover);
+    const WalletSwitchAccount = logger(WalletAccountSwitcher);
+    const WalletSwitchChain = logger(WalletChainSwitcher);
+    const WalletConnection = logger(WalletConnect);
 
   const [identity, setIdentity] = useState<Identity>();
 
@@ -141,20 +144,20 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
   }
 
   function reconnection() {
-    const component = <WalletSwitchAccount />;
+    const component = <WalletSwitchAccount/>;
     const textArea = getStateHelpText();
     return wrapper(textArea, component);
   }
 
   function connect() {
     const textArea = getStateHelpText();
-    const component = <WalletConnection />;
+    const component = <WalletConnection/>;
     return wrapper(textArea, component);
   }
 
   function changeNetwork() {
     const textArea = getStateHelpText();
-    const component = <WalletSwitchChain />;
+    const component = <WalletSwitchChain/>;
     return wrapper(textArea, component);
   }
 
@@ -182,18 +185,24 @@ export function ZKPoHConnect({ isConnected, chain, isHuman, isRegistered, isRegi
     return wrapper(textArea, component);
   }
 
+
+ function logger<T extends ButtonActionProps>(Component: ComponentType<T>) {
+     return function ExtendedComponent(innerProps: T) {
+         function handleStateChange(state: ButtonActionState) {
+             onStateChange && onStateChange(state);
+         }
+         return <Component {...innerProps} theme={theme} onStateChange={handleStateChange} />;
+     };
+ }
+
+
   function wrapper(textArea: string, component: JSX.Element) {
-
-
     return (
-      <>
-        <Divider pt="1" borderColor="gray.500" />
-          <Tooltip label={textArea} placement='bottom-start'>
-            <Box alignItems='center' >
-              {component}
-            </Box>
-          </Tooltip>
-      </>
+        <>
+            <Tooltip label={textArea} placement="bottom-start">
+                <Box alignItems="center">{component}</Box>
+            </Tooltip>
+        </>
     );
   }
   return (

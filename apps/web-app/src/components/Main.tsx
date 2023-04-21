@@ -6,13 +6,14 @@ import { Network, SemaphoreEthers } from '@semaphore-protocol/data'
 import { Identity } from '@semaphore-protocol/identity'
 import { BigNumber } from "ethers/lib/ethers"
 import { formatBytes32String } from 'ethers/lib/utils.js'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import { ConnectionState, ConnectionStateType, ZKPoHConnect } from './ZKPoHConnect'
-
-
+import { ButtonActionState } from '@/widget/ButtonAction'
+import LogsContext from '@/context/LogsContext'
+import theme from "../styles/index"
 
 
 export default function Main() {
@@ -22,6 +23,10 @@ export default function Main() {
   const { disconnect } = useDisconnect();
   const contract = useZkProofOfHumanity();
 
+  const { setLogs } = useContext(LogsContext);
+  function handleLog(state: ButtonActionState) {
+      setLogs(state.logs);
+  }
 
   const [connectionStateType, setConnectionStateType] = useState<ConnectionStateType>()
   const [helpText, setHelpText] = useState<string>();
@@ -192,7 +197,7 @@ export default function Main() {
               </Stack>
             </RadioGroup>)}
 
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman}  isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
+            <ZKPoHConnect theme={theme}chain={chain} isConnected={isConnected} isHuman={isHuman}  isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} onLog={handleLog} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
           <Text fontSize="xs" align='center'>connection state: {connectionStateType}</Text>
           <Text><b>Likes/Total:</b> {likeCount}/{totalCount}</Text>
