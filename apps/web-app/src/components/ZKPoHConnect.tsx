@@ -1,10 +1,12 @@
+import { useZkProofOfHumanityRead } from "@/generated/zk-poh-contract";
+import { useIsRegisteredInPoH } from "@/hooks/useIsRegisteredInPoH";
 import { Box, Tooltip } from "@chakra-ui/react";
 import { Dict } from "@chakra-ui/utils";
 import { Identity } from "@semaphore-protocol/identity";
 import { BigNumber } from "ethers";
 import { ComponentType, ReactNode, useCallback, useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
-import { Chain } from "wagmi";
+import { Chain, useAccount, useNetwork } from "wagmi";
 import { ButtonActionProps, ButtonActionState, IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher, WalletConnect } from "zkpoh-button";
 
 const CONNECT_HELP_TEXT = "To interact with ZK Proof of Humanity, you'll need to connect to a wallet that supports this feature. Please ensure that you are connected to Metamask before proceeding.";
@@ -38,11 +40,6 @@ export interface ZKPoHAction {
 }
 
 export interface ZKPoHConnectProps  {
-  isConnected: boolean,
-  chain: ChainState,
-  isHuman: boolean | undefined,
-  isRegistered: boolean | undefined,
-  isRegisteredIdentity: boolean | undefined,
   children: ReactNode,
   theme?: Dict | undefined,
   signalCasterConfig: {
@@ -66,7 +63,28 @@ interface InputState {
 
 export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
-    const { isConnected, chain, isHuman, isRegistered, isRegisteredIdentity, onChangeState, onLog, children, signalCasterConfig, theme} = props;
+    const { onChangeState, onLog, children, signalCasterConfig, theme} = props;
+
+    const { address, isConnected } = useAccount()
+    const { chain } = useNetwork()
+    const {isHuman} = useIsRegisteredInPoH({address});
+    const {data:isRegistered}= useZkProofOfHumanityRead({
+        functionName: 'isRegistered',
+        args: [!address?"0x00":address], //TODO review
+        enabled: address?true:false,
+        watch:true
+    });
+
+
+  /////////// IS REGISTERED ENTITY
+  const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
+  const {data:isRegisteredIdentity}= useZkProofOfHumanityRead({
+        functionName: 'isRegistered',
+        args: [!_addressIdentity?"0x00":_addressIdentity], //TODO review
+        enabled: _addressIdentity?true:false,
+   });
+
+
     const [identity, setIdentity] = useState<Identity>();
     const isSupportedChain =!chain?.unsupported;
 
@@ -95,6 +113,7 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
       const state: ConnectionState = { stateType: 'IDENTITY_GENERATED', identity, address }
       onChangeState(state);
       setIdentity(identity);
+      setAddressIdentity(state.address);
     }
 
     // is not connected return connect button
@@ -144,6 +163,8 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
     const defaultState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: DEFAULT_HELP_TEXT},component: <Box>DEFAULT</Box>};
     return defaultState;
   },[children, identity, onChangeState, onLog, signalCasterConfig.castedMessage, signalCasterConfig.externalNullifier, signalCasterConfig.helpText, signalCasterConfig.signal, theme])
+
+
 
   useEffect(() => {
     const isIdentityGenerated = identity?true:false;

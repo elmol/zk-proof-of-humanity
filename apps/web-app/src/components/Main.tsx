@@ -223,11 +223,7 @@ export default function Main() {
            </Stack>
          </RadioGroup>)}
 
-         
-      
-         </Stack>
-         <Stack alignItems='flex-end' justifyContent='flex-end' h="100%">
-         <ZKPoHConnect theme={theme} chain={chain} isConnected={isConnected} isHuman={isHuman}  isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} onChangeState={handleChangeState} onLog={handleLog} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
+            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
    </Stack>
        </Stack>
