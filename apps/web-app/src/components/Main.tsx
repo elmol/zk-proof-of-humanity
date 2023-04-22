@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
-import { ConnectionState, ConnectionStateType, ZKPoHConnect } from '../widget/ZKPoHConnect'
+import { ConnectionState, ConnectionStateType, ZKPoHConnect } from 'zkpoh-button'
 import { ButtonActionState } from '@/widget/ButtonAction'
 import LogsContext from '@/context/LogsContext'
 import theme from "../styles/index"
@@ -84,6 +84,7 @@ export default function Main() {
   useEffect(() => {
       async function fetchData() {
           if (!chain) return;
+          if (!contract) return;
           const network = chain.network as Network | "localhost";
           console.log(contract.address);
          console.log("groupId:",groupId);
