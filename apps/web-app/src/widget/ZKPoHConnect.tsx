@@ -1,13 +1,11 @@
-import { useIsRegisteredInPoH } from "@/hooks/useIsRegisteredInPoH";
-import { useZkProofOfHumanityRead } from "@/hooks/useZkProofOfHumanityRead";
 import { Box, Tooltip } from "@chakra-ui/react";
 import { Dict } from "@chakra-ui/utils";
 import { Identity } from "@semaphore-protocol/identity";
 import { BigNumber } from "ethers";
-import { ComponentType, ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
-import { Chain, useAccount, useNetwork } from "wagmi";
-import { ButtonActionProps, ButtonActionState, IdentityGenerator, NewIdentityProps, Prover, ProverProps, Register, RegisterProps, WalletAccountSwitcher, WalletChainSwitcher, WalletConnect } from "zkpoh-button";
+import { useAccount, useNetwork } from "wagmi";
+import { ButtonActionState, IdentityGenerator, Prover, Register, WalletAccountSwitcher, WalletChainSwitcher, WalletConnect, useIsRegisteredInPoH, useZkProofOfHumanityRead } from 'zkpoh-button';
 
 const CONNECT_HELP_TEXT = "To interact with ZK Proof of Humanity, you'll need to connect to a wallet that supports this feature. Please ensure that you are connected to Metamask before proceeding.";
 const CHANGE_NETWORK_HELP_TEXT = "You are currently connected to a wrong network. To interact with ZK Proof of Humanity, you'll need to change to supported network. Please switch to Goerli network.";
@@ -17,13 +15,6 @@ const BURNER_ACCOUNT_RECONNECTION = "Your human account is registered in ZK Proo
 const HUMAN_ACCOUNT_HELP_TEXT = "You are not currently connected with an account registered in Proof of Humanity. To generate your identity and proceed, please connect with a human account.";
 const IDENTITY_REGENERATION_HELP_TEXT = "The private identity is not registered in ZK Proof of Humanity. Please connect with a registered human account to regenerate your private identity and proceed.";
 const DEFAULT_HELP_TEXT = "Default help text";
-
-
-type ChainState =
-  | (Chain & {
-    unsupported?: boolean | undefined;
-  })
-  | undefined;
 
 export type ConnectionStateType = "CAST_SIGNAL" | "IDENTITY_GENERATION" | "IDENTITY_GENERATED" | "INITIALIZED";
 
@@ -160,8 +151,6 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
     onChangeState(action.state)
   }, [getAction, identity, isConnected, isHuman, isRegistered, isRegisteredIdentity, isSupportedChain, onChangeState])
 
-
-
   const isIdentityGenerated = identity?true:false;
   const {component, state } = getAction({isConnected, isSupportedChain, isHuman , isIdentityGenerated , isRegistered, isRegisteredIdentity});
   return (
@@ -173,7 +162,6 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
           </NoSSR>
       </>
   );
-
 }
 
 

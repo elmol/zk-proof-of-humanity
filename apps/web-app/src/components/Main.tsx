@@ -1,5 +1,4 @@
-import { usePostLikeRead, useZkProofOfHumanity } from '@/generated/zk-poh-contract'
-import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
+import { usePostLikeRead } from '@/generated/zk-poh-contract'
 import colors from '@/styles/colors'
 import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, useColorModeValue,Box, SimpleGrid } from '@chakra-ui/react'
 import { Network, SemaphoreEthers } from '@semaphore-protocol/data'
@@ -10,12 +9,12 @@ import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
-import { ConnectionState, ConnectionStateType, ZKPoHConnect } from './ZKPoHConnect'
+import { ConnectionState, ConnectionStateType, ZKPoHConnect } from '../widget/ZKPoHConnect'
 import { ButtonActionState } from '@/widget/ButtonAction'
 import LogsContext from '@/context/LogsContext'
 import theme from "../styles/index"
 import Card from './Card'
-import { useZkProofOfHumanityRead } from '@/hooks/useZkProofOfHumanityRead'
+import { useZkProofOfHumanityRead,useIsRegisteredInPoH,useZkProofOfHumanity } from 'zkpoh-button'
 
 
 export default function Main() {
@@ -85,7 +84,6 @@ export default function Main() {
   useEffect(() => {
       async function fetchData() {
           if (!chain) return;
-          if (!contract) return;
           const network = chain.network as Network | "localhost";
           console.log(contract.address);
          console.log("groupId:",groupId);

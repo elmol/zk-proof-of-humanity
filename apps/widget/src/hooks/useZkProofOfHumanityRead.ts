@@ -1,6 +1,6 @@
-import { zkProofOfHumanityABI, zkProofOfHumanityAddress } from "@/generated/zk-poh-contract"
 import { UseContractReadConfig, useNetwork,useContractRead } from "wagmi"
 import { ReadContractResult } from "wagmi/actions"
+import { zkProofOfHumanityABI, zkProofOfHumanityAddress } from "../generated/contract"
 
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link zkProofOfHumanityABI}__.
