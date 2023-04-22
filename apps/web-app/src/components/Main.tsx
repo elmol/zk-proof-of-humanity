@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
-import { ConnectionState, ConnectionStateType, ZKPoHConnect } from 'zkpoh-button'
+import { ConnectionState, ConnectionStateType, ZKPoHConnect } from '../widget/ZKPoHConnect'
 import { ButtonActionState } from '@/widget/ButtonAction'
 import LogsContext from '@/context/LogsContext'
 import theme from "../styles/index"
@@ -20,15 +20,19 @@ import { useZkProofOfHumanityRead,useIsRegisteredInPoH,useZkProofOfHumanity } fr
 export default function Main() {
 
   const { address, isConnected } = useAccount()
-
   const { disconnect } = useDisconnect();
-  const contract = useZkProofOfHumanity();
+  const { chain } = useNetwork();
+
+
+  const zkPoHConfig= {
+    confirmationMessage:'I liked this message 👍',
+    helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
+  }
 
   const { setLogs } = useContext(LogsContext);
   function handleLog(state: ButtonActionState) {
       setLogs(state.logs);
   }
-
   const [connectionStateType, setConnectionStateType] = useState<ConnectionStateType>()
   const [helpText, setHelpText] = useState<string>();
   function handleChangeState(state:ConnectionState) {
@@ -40,8 +44,9 @@ export default function Main() {
     }
   }
 
-  const { chain } = useNetwork();
-  // zkPoH hooks
+
+  ///////////////// zkPoH hooks
+  const contract = useZkProofOfHumanity();
   const { isHuman } = useIsRegisteredInPoH({ address });
 
   const { data: groupId } = useZkProofOfHumanityRead({
@@ -50,6 +55,7 @@ export default function Main() {
   const { data: semaphoreAddress } = useZkProofOfHumanityRead({
       functionName: "semaphore",
   });
+  ////////////////////////
 
   const {data:message} = usePostLikeRead({
     functionName: 'message',
@@ -62,15 +68,8 @@ export default function Main() {
   });
 
 
-  function shortenAddress(address: string | undefined | any) {
-    if(!address) return '';
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
 
-  const signalCasterConfig= {
-    castedMessage:'I liked this message 👍',
-    helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.',
-  }
+
 
   const valueSignalDefault = 'LIKE';
   const [_identity, setIdentity] = useState<Identity>();
@@ -80,6 +79,11 @@ export default function Main() {
   const [noLikePercentage, setNoLikePercentage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalDefault);
+  function shortenAddress(address: string | undefined | any) {
+    if(!address) return '';
+    return `${address.slice(0, 6)}...${address.slice(-4)}`
+  }
+
 
   useEffect(() => {
       async function fetchData() {
@@ -210,8 +214,7 @@ export default function Main() {
          </RadioGroup>)}
          </Stack>
                 <Stack alignItems='flex-end' justifyContent='flex-end' h="100%">
-            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
-    ...signalCasterConfig}}>I like your message</ZKPoHConnect>
+            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={optionCastedSelected} externalNullifier={messageId} {...zkPoHConfig}>I like your message</ZKPoHConnect>
    </Stack>
        </Stack>
          </Card>
