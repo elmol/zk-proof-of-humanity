@@ -9,12 +9,11 @@ import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
-import { ConnectionState, ConnectionStateType, ZKPoHConnect } from '../widget/ZKPoHConnect'
 import { ButtonActionState } from '@/widget/ButtonAction'
 import LogsContext from '@/context/LogsContext'
 import theme from "../styles/index"
 import Card from './Card'
-import { useZkProofOfHumanityRead,useIsRegisteredInPoH,useZkProofOfHumanity } from 'zkpoh-button'
+import { useZkProofOfHumanityRead,useIsRegisteredInPoH,useZkProofOfHumanity, ConnectionState, ConnectionStateType, ZKPoHConnect  } from 'zkpoh-button'
 
 
 export default function Main() {
