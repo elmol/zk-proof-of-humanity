@@ -91,21 +91,9 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
   const getAction = useCallback((input:InputState):ZKPoHAction =>{
 
-    function logger<T extends ButtonActionProps>(Component: ComponentType<T>) {
-        return function ExtendedComponent(innerProps: T) {
-            function handleStateChange(state: ButtonActionState) {
-                onLog && onLog(state);
-            }
-            return <Component {...innerProps} theme={theme} onStateChange={handleStateChange} />;
-        };
+    function handleStateChange(state: ButtonActionState) {
+        onLog && onLog(state);
     }
-
-    const IdentityGeneration = logger<NewIdentityProps>(IdentityGenerator);
-    const Registration = logger<RegisterProps>(Register);
-    const Verification = logger<ProverProps>(Prover);
-    const WalletSwitchAccount = logger(WalletAccountSwitcher);
-    const WalletSwitchChain = logger(WalletChainSwitcher);
-    const WalletConnection = logger(WalletConnect);
 
     const {isConnected, isSupportedChain, isHuman , isIdentityGenerated , isRegistered, isRegisteredIdentity } = input;
 
@@ -118,44 +106,44 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
     // is not connected return connect button
     const isConnect = !isConnected;
-    const connectState: ZKPoHAction = {state: {stateType: "INITIALIZED", helpText: CONNECT_HELP_TEXT}, component: <WalletConnection /> };
+    const connectState: ZKPoHAction = {state: {stateType: "INITIALIZED", helpText: CONNECT_HELP_TEXT}, component: <WalletConnect theme={theme} onStateChange={handleStateChange}/> };
     if (isConnect) return connectState;
 
     // is not supported network return network switcher
     const isChangeNetwork = isConnected && !isSupportedChain;
-    const changeNetworkState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: CHANGE_NETWORK_HELP_TEXT}, component: <WalletSwitchChain/>};
+    const changeNetworkState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: CHANGE_NETWORK_HELP_TEXT}, component: <WalletChainSwitcher theme={theme} onStateChange={handleStateChange}/>};
     if (isChangeNetwork) return changeNetworkState;
 
     // is not connected with a human account and the identity was not generated return human account reconnection
     const isReconnectionHumanAccount = isConnected && isSupportedChain && !isHuman && !isIdentityGenerated;
-    const humanAccountState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: HUMAN_ACCOUNT_HELP_TEXT}, component: <WalletSwitchAccount/>};
+    const humanAccountState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: HUMAN_ACCOUNT_HELP_TEXT}, component: <WalletAccountSwitcher theme={theme} onStateChange={handleStateChange}/>};
     if (isReconnectionHumanAccount) return humanAccountState;
 
     // is connected with human account but the identity was not generated return identity generator
     const isIdentityGeneration = isConnected && isSupportedChain && isHuman && !isIdentityGenerated;
-    const identityGenerationState:ZKPoHAction  = {state: {stateType: 'IDENTITY_GENERATION', helpText: IDENTITY_GENERATION_HELP_TEXT}, component: <IdentityGeneration handleNewIdentity={handleNewIdentity} />};
+    const identityGenerationState:ZKPoHAction  = {state: {stateType: 'IDENTITY_GENERATION', helpText: IDENTITY_GENERATION_HELP_TEXT}, component: <IdentityGenerator handleNewIdentity={handleNewIdentity} theme={theme} onStateChange={handleStateChange} />};
     if (isIdentityGeneration) return identityGenerationState;
 
     // is connected with human account the identity was generated but not registered return registration
     const isRegistration = isConnected && isSupportedChain && isHuman && isIdentityGenerated && !isRegistered;
-    const registrationState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: REGISTRATION_HELP_TEXT}, component: identity?<Registration identity={identity} />: <Box>DEFAULT</Box>};
+    const registrationState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: REGISTRATION_HELP_TEXT}, component: identity?<Register identity={identity} theme={theme} onStateChange={handleStateChange}/>: <Box>DEFAULT</Box>};
     if (isRegistration) return registrationState;
 
     // is connected with human account and ready to signal return burner account reconnection
     const isReconnectionBurnerAccount = isConnected && isSupportedChain && isHuman && isIdentityGenerated && isRegistered;
-    const burnerAccountState:ZKPoHAction  = { state: {stateType: 'INITIALIZED', helpText: BURNER_ACCOUNT_RECONNECTION}, component: <WalletSwitchAccount/>};
+    const burnerAccountState:ZKPoHAction  = { state: {stateType: 'INITIALIZED', helpText: BURNER_ACCOUNT_RECONNECTION}, component: <WalletAccountSwitcher theme={theme} onStateChange={handleStateChange}/>};
     if (isReconnectionBurnerAccount) return burnerAccountState;
 
     // is not a registered identity generated return regenerate identity
     const isReconnectionHumanRegeneratePrivateIdentity =isConnected && isSupportedChain && !isHuman && isIdentityGenerated && !isRegisteredIdentity;
-    const humanRegenerationState:ZKPoHAction  = { state: {stateType: 'INITIALIZED', helpText: IDENTITY_REGENERATION_HELP_TEXT}, component: <WalletSwitchAccount/> };
+    const humanRegenerationState:ZKPoHAction  = { state: {stateType: 'INITIALIZED', helpText: IDENTITY_REGENERATION_HELP_TEXT}, component: <WalletAccountSwitcher theme={theme} onStateChange={handleStateChange}/> };
     if (isReconnectionHumanRegeneratePrivateIdentity) return humanRegenerationState;
 
     // is ready to cast signal return signal caster
     const isCastSignal = isConnected && isSupportedChain && !isHuman && isIdentityGenerated && isRegisteredIdentity;
     const castSignalState:ZKPoHAction  = {
         state: {stateType: 'CAST_SIGNAL', helpText: signalCasterConfig.helpText},
-        component: identity?<Verification identity={identity} signal={signalCasterConfig.signal} externalNullifier={signalCasterConfig.externalNullifier} verificationMessage={signalCasterConfig.castedMessage}>{children}</Verification>:<Box>DEFAULT</Box>
+        component: identity?<Prover identity={identity} signal={signalCasterConfig.signal} externalNullifier={signalCasterConfig.externalNullifier} verificationMessage={signalCasterConfig.castedMessage} theme={theme} onStateChange={handleStateChange}>{children}</Prover>:<Box>DEFAULT</Box>
       };
     if (isCastSignal) return castSignalState;
 
