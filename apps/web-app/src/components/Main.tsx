@@ -96,6 +96,8 @@ export default function Main() {
   const valueSignalDefault = 'LIKE';
   const [_identity, setIdentity] = useState<Identity>();
   const [likeCount, setLikeCount] = useState(0);
+  const [likePercentage, setLikePercentage] = useState(0);
+  const [noLikePercentage, setNoLikePercentage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalDefault);
 
@@ -125,13 +127,17 @@ export default function Main() {
               console.log(result);
               setLikeCount(result.length);
               setTotalCount(verifiedProofs.length)
+              const _likePercentage = result.length *100 / verifiedProofs.length;
+              setLikePercentage(_likePercentage);
+              const _nolikePercentage = (verifiedProofs.length - result.length) *100 / verifiedProofs.length;
+              setNoLikePercentage(_nolikePercentage);
+
 
           }
           return;
       }
       fetchData();
   }, [chain, contract, groupId, messageId, semaphoreAddress]);
-   console.log("*** Rendering Main ****")
    return (
      <>
 
@@ -160,14 +166,14 @@ export default function Main() {
         <Text color='secondaryGray.100' fontSize='md' fontWeight='900' >
           | <b>🔒 Identity:</b>
         </Text>
-        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Human Address:</b> </Text> <EtherScanLink  address={_addressIdentity}><Text fontSize='md'>{shortenAddress(_addressIdentity)} </Text></EtherScanLink>
-        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Identity Commitment:</b> </Text><Text fontSize='md'> {shortenAddress(_identity?.commitment.toString())} </Text>
+        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Human Address:</b> </Text> <EtherScanLink   address={_addressIdentity}><Text >{shortenAddress(_addressIdentity)} </Text></EtherScanLink>
+        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Identity Commitment:</b> </Text><Text fontSize='md' color="primary.400"> {shortenAddress(_identity?.commitment.toString())} </Text>
       </>
     )}
     {isConnected && contract && (
       <Text color='secondaryGray.100' fontWeight='800'>
         {" "}
-        | <b>Contract:</b>  <EtherScanLink  address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
+        | <b>Contract:</b>  <EtherScanLink address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
       </Text>
     )}
    {chain && <Text color='secondaryGray.100' fontWeight='800'> | <b>Network:</b> {chain.unsupported?"Wrong Network":chain.name}</Text>}
@@ -191,11 +197,11 @@ export default function Main() {
    <Card  alignItems='left' flexDirection='column' w='100%' mb='0px'>
      <NoSSR>
          <Stack display="flex" width="100%">
-         <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%'>
+         <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%' mb="5">
            Contract information:
          </Text>
-             <Text>{message}</Text>
-             <Text>{shortenAddress(messageId?.toString())}</Text>
+             <Text color={"secondaryGray.800"} fontWeight='600'>{message}</Text>
+             <Text color={"secondaryGray.800"} fontWeight='600'>{shortenAddress(messageId?.toString())}</Text>
          </Stack>
      </NoSSR>
    </Card>
@@ -211,18 +217,19 @@ export default function Main() {
      </Text>
      <Stack display="flex" width="100%">    
          
-       <Stack display="flex" width="100%" height="100%">
-             <Text>{helpText}</Text>
+       <Stack display="flex" width="95%" height="100%" mt="4">
+             <Text color={"secondaryGray.800"} fontWeight='600' >{helpText}</Text>
            
        </Stack>
        {connectionStateType=='CAST_SIGNAL' &&  (
          <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
            <Stack direction='column'>
-             <Radio value='LIKE'>I like</Radio>
-             <Radio value='NOTLIKE'>I do not like</Radio>
+             <Radio color={"secondaryGray.800"} value='LIKE'>I like</Radio>
+             <Radio color={"secondaryGray.800"} value='NOTLIKE'>I do not like</Radio>
            </Stack>
          </RadioGroup>)}
-
+         </Stack>
+                <Stack alignItems='flex-end' justifyContent='flex-end' h="100%">
             <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signalCasterConfig={ {signal:optionCastedSelected, externalNullifier: messageId,
     ...signalCasterConfig}}>I like your message</ZKPoHConnect>
    </Stack>
@@ -232,7 +239,7 @@ export default function Main() {
          <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%'>
            Result of the vote
          </Text>
-         <Stack alignItems='center' justifyContent='center' h="100%" w="50%">
+         <Stack alignItems='center' justifyContent='center' h="100%" w="60%">
            <Card
              bg={"secondaryGray.900"}
              flexDirection='column'
@@ -246,26 +253,26 @@ export default function Main() {
                <Flex align='center'>
                  <Box h='8px' w='8px' bg='green.500' borderRadius='50%' me='4px' />
                  <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
-                   Like
+                 I like
                  </Text>
                </Flex>
                <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'>
-                 63%
+                 {likePercentage}%
                </Text>
              </Flex>
              <Flex direction='column' py='5px' me='10px' w="50%" alignItems='center'>
                <Flex align='center'>
                  <Box h='8px' w='8px' bg='red.600' borderRadius='50%' me='4px' />
                  <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
-                   Not Like
+                 I do not like
                  </Text>
                </Flex>
-               <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'>
-                 25%
+               <Text  fontSize='lg' color='secondaryGray.100' fontWeight='900'>
+               {noLikePercentage}%
                </Text>
              </Flex>
              </Flex>
-             <Flex direction='column' alignItems='center'>
+             <Flex direction='column' alignItems='center' pt="5" >
                <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'><b>Total vote:</b> {totalCount}</Text>
              </Flex>
            </Card>
@@ -288,6 +295,6 @@ type EtherScanLinkTProps = {
 
 function EtherScanLink({children,address}:EtherScanLinkTProps ) {
   return (
-    <Link color={colors.primary[500]} href={`https://goerli.etherscan.io/address/${address}`} isExternal>{children}</Link>
+    <Link color={colors.primary[400]} href={`https://goerli.etherscan.io/address/${address}`} isExternal>{children}</Link>
   )
 }
