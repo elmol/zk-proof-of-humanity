@@ -1,4 +1,4 @@
-import { usePostLikeRead, useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
+import { usePostLikeRead, useZkProofOfHumanity } from '@/generated/zk-poh-contract'
 import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
 import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, useColorModeValue,Box, SimpleGrid } from '@chakra-ui/react'
@@ -15,6 +15,7 @@ import { ButtonActionState } from '@/widget/ButtonAction'
 import LogsContext from '@/context/LogsContext'
 import theme from "../styles/index"
 import Card from './Card'
+import { useZkProofOfHumanityRead } from '@/hooks/useZkProofOfHumanityRead'
 
 
 export default function Main() {
@@ -40,28 +41,15 @@ export default function Main() {
     }
   }
 
-  const { chain } = useNetwork()
-  const {isHuman} = useIsRegisteredInPoH({address});
+  const { chain } = useNetwork();
+  // zkPoH hooks
+  const { isHuman } = useIsRegisteredInPoH({ address });
 
-  /////////// IS REGISTERED ACCOUNT
-  const {data:groupId}= useZkProofOfHumanityRead({
-    functionName: 'groupId',
+  const { data: groupId } = useZkProofOfHumanityRead({
+      functionName: "groupId",
   });
-
-
-    /////////// IS REGISTERED ACCOUNT
-    const {data:semaphoreAddress}= useZkProofOfHumanityRead({
-        functionName: 'semaphore',
-      });
-
-
-
-  /////////// IS REGISTERED ACCOUNT
-  const {data:isRegistered}= useZkProofOfHumanityRead({
-    functionName: 'isRegistered',
-    args: [!address?"0x00":address], //TODO review
-    enabled: address?true:false,
-    watch:true
+  const { data: semaphoreAddress } = useZkProofOfHumanityRead({
+      functionName: "semaphore",
   });
 
   const {data:message} = usePostLikeRead({
@@ -74,13 +62,6 @@ export default function Main() {
     enabled: address && chain?.id==1337?true:false,
   });
 
-  /////////// IS REGISTERED ENTITY
-  const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
-  const {data:isRegisteredIdentity}= useZkProofOfHumanityRead({
-        functionName: 'isRegistered',
-        args: [!_addressIdentity?"0x00":_addressIdentity], //TODO review
-        enabled: _addressIdentity?true:false,
-   });
 
   function shortenAddress(address: string | undefined | any) {
     if(!address) return '';
@@ -88,13 +69,13 @@ export default function Main() {
   }
 
   const signalCasterConfig= {
-   // signal:'LIKE',
     castedMessage:'I liked this message 👍',
     helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.',
   }
 
   const valueSignalDefault = 'LIKE';
   const [_identity, setIdentity] = useState<Identity>();
+  const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
   const [likeCount, setLikeCount] = useState(0);
   const [likePercentage, setLikePercentage] = useState(0);
   const [noLikePercentage, setNoLikePercentage] = useState(0);
@@ -205,21 +186,21 @@ export default function Main() {
          </Stack>
      </NoSSR>
    </Card>
-     
 
 
-     
+
+
    <Card justifyContent='center' alignItems='left' flexDirection='column' w='100%' mb='0px'>
 
    <Stack direction='column' h="100%" >
      <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' mt='0px' lineHeight='100%'>
            Vote
      </Text>
-     <Stack display="flex" width="100%">    
-         
+     <Stack display="flex" width="100%">
+
        <Stack display="flex" width="95%" height="100%" mt="4">
              <Text color={"secondaryGray.800"} fontWeight='600' >{helpText}</Text>
-           
+
        </Stack>
        {connectionStateType=='CAST_SIGNAL' &&  (
          <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
@@ -280,7 +261,7 @@ export default function Main() {
        </Stack>
        </Card>
 
-       
+
        </SimpleGrid>
 </Container>
      </>

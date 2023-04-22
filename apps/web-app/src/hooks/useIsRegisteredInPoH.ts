@@ -1,10 +1,10 @@
-import { useZkProofOfHumanityRead } from "@/generated/zk-poh-contract";
 import { useContractRead } from "wagmi";
+import { useZkProofOfHumanityRead } from "./useZkProofOfHumanityRead";
 
 export function useIsRegisteredInPoH({address}:{address: `0x${string}` | undefined}) {
   const {data:pohAddress}= useZkProofOfHumanityRead({
     functionName: 'poh',
-  });  
+  });
   const { data:isHuman, isError, isLoading } = useContractRead({
     address: pohAddress,
     abi: [
@@ -33,4 +33,4 @@ export function useIsRegisteredInPoH({address}:{address: `0x${string}` | undefin
     enabled:pohAddress&&address?true:false
   })
   return {isHuman};
-} 
+}

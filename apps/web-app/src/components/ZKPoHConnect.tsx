@@ -1,5 +1,5 @@
-import { useZkProofOfHumanityRead } from "@/generated/zk-poh-contract";
 import { useIsRegisteredInPoH } from "@/hooks/useIsRegisteredInPoH";
+import { useZkProofOfHumanityRead } from "@/hooks/useZkProofOfHumanityRead";
 import { Box, Tooltip } from "@chakra-ui/react";
 import { Dict } from "@chakra-ui/utils";
 import { Identity } from "@semaphore-protocol/identity";
