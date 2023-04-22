@@ -1,4 +1,3 @@
-import { useZkProofOfHumanity, useZkProofOfHumanityRead } from "@/generated/zk-poh-contract";
 import colors from "@/styles/colors";
 import { Button, ChakraProvider, Icon, Link, Text, useBoolean } from "@chakra-ui/react";
 import { Network, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data";
@@ -18,6 +17,7 @@ import { useNetwork } from "wagmi";
 import theme from "../styles/index";
 
 import { ButtonActionProps } from "./ButtonAction";
+import { useZkProofOfHumanity, useZkProofOfHumanityRead } from "zkpoh-button";
 
 
 
