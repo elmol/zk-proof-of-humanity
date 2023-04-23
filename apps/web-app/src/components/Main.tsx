@@ -1,8 +1,6 @@
 import LogsContext from '@/context/LogsContext'
-import { useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
-import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
-import { Box, Button, ChakraProvider, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, Tooltip, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import { Identity } from '@semaphore-protocol/identity'
 import { useContext, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
@@ -10,52 +8,23 @@ import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import theme from "../styles/index"
 
-import { ButtonActionState, ConnectionState, ZKPoHConnect } from 'zkpoh-button'
 import { ethers } from 'ethers'
+import { ButtonActionState, ConnectionState, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity } from 'zkpoh-button'
 
 
 export default function Main() {
 
-  const { address, isConnected } = useAccount()
-  const { disconnect } = useDisconnect();
-
   const externalNullifier =  randomNullifier();
   const signal = "I'm human";
 
-
-  const contract = useZkProofOfHumanity();
-  function handleNewIdentity({identity,address} : {identity: Identity, address:`0x${string}`}):void {
-    setIdentity(identity);
-    setAddressIdentity(address);
-  }
-
+  const { address, isConnected } = useAccount()
+  const { disconnect } = useDisconnect();
   const { chain } = useNetwork()
+
+  // zkpoh hooks imported form lib
   const {isHuman} = useIsRegisteredInPoH({address});
+  const contract = useZkProofOfHumanity();
 
-  /////////// IS REGISTERED ACCOUNT
-  const {data:isRegistered}= useZkProofOfHumanityRead({
-    functionName: 'isRegistered',
-    args: [!address?"0x00":address], //TODO review
-    enabled: address?true:false,
-    watch:true
-  });
-
-  /////////// IS REGISTERED ENTITY
-  const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
-  const {data:isRegisteredIdentity}= useZkProofOfHumanityRead({
-        functionName: 'isRegistered',
-        args: [!_addressIdentity?"0x00":_addressIdentity], //TODO review
-        enabled: _addressIdentity?true:false,
-        watch:true
-   });
-
-  function shortenAddress(address: string | undefined | any) {
-    if(!address) return '';
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
-
-
-  const [_identity, setIdentity] = useState<Identity>();
 
   const { setLogs } = useContext(LogsContext);
   function handleLog(state: ButtonActionState) {
@@ -63,6 +32,8 @@ export default function Main() {
   }
 
   const [helpText, setHelpText] = useState<string>();
+  const [_identity, setIdentity] = useState<Identity>();
+  const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
   function handleChangeState(state:ConnectionState) {
     setHelpText(state.helpText);
     if(state.stateType=='IDENTITY_GENERATED'){
@@ -121,27 +92,6 @@ export default function Main() {
             </Text>
             <Divider pt="1" borderColor="gray.500" />
             <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={signal} externalNullifier={externalNullifier}>Verify</ZKPoHConnect>
-            <Divider pt="1" borderColor="gray.500" />
-            <
-                ChakraProvider theme={theme}>
-                  <Tooltip label={helpText} placement="bottom-start">
-                    <Box alignItems="center">
-                        <ChakraProvider theme={theme}>
-                                <Button colorScheme='primary' width="100%">TEST</Button>
-                        </ChakraProvider>
-                    </Box>
-                  </Tooltip>
-            </ChakraProvider>
-
-
-            <Divider pt="1" borderColor="gray.500" />
-            <ChakraProvider theme={theme}>
-            <Text pt="2" fontSize="md" textAlign="justify">
-                {helpText}
-            </Text>
-            <Divider pt="1" borderColor="gray.500" />
-            <Button colorScheme="primary"> Connect Wallet </Button>
-            </ChakraProvider>
          </Stack>
        </Container>
      </>
@@ -163,3 +113,8 @@ function EtherScanLink({children,address}:EtherScanLinkTProps ) {
 function randomNullifier() {
     return ethers.BigNumber.from(ethers.utils.randomBytes(32));
 }
+
+function shortenAddress(address: string | undefined | any) {
+    if(!address) return '';
+    return `${address.slice(0, 6)}...${address.slice(-4)}`
+  }
