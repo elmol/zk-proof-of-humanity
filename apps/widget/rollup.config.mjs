@@ -18,7 +18,6 @@ export default [
                 file: "dist/es/index.js",
                 format: "es",
                 sourcemap: true,
-                extends: true,
                 globals: {
                     wagmi: "client",
                 },
@@ -34,7 +33,6 @@ export default [
             {
                 file: "dist/index.d.ts",
                 format: "es",
-                extends: true,
                 globals: {
                     wagmi: "client",
                 },
