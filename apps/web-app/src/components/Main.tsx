@@ -2,7 +2,7 @@ import LogsContext from '@/context/LogsContext'
 import { useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
 import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
-import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, ChakraProvider, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, Tooltip, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import { Identity } from '@semaphore-protocol/identity'
 import { useContext, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
@@ -121,6 +121,27 @@ export default function Main() {
             </Text>
             <Divider pt="1" borderColor="gray.500" />
             <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={signal} externalNullifier={externalNullifier}>Verify</ZKPoHConnect>
+            <Divider pt="1" borderColor="gray.500" />
+            <
+                ChakraProvider theme={theme}>
+                  <Tooltip label={helpText} placement="bottom-start">
+                    <Box alignItems="center">
+                        <ChakraProvider theme={theme}>
+                                <Button colorScheme='primary' width="100%">TEST</Button>
+                        </ChakraProvider>
+                    </Box>
+                  </Tooltip>
+            </ChakraProvider>
+
+
+            <Divider pt="1" borderColor="gray.500" />
+            <ChakraProvider theme={theme}>
+            <Text pt="2" fontSize="md" textAlign="justify">
+                {helpText}
+            </Text>
+            <Divider pt="1" borderColor="gray.500" />
+            <Button colorScheme="primary"> Connect Wallet </Button>
+            </ChakraProvider>
          </Stack>
        </Container>
      </>
@@ -140,5 +161,5 @@ function EtherScanLink({children,address}:EtherScanLinkTProps ) {
 }
 
 function randomNullifier() {
-    return ethers.BigNumber.from(ethers.utils.randomBytes(32)).toString();
+    return ethers.BigNumber.from(ethers.utils.randomBytes(32));
 }

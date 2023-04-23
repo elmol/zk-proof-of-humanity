@@ -16750,7 +16750,6 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
-    zkpoh-button: ../widget/package-1682348883.tgz
   languageName: unknown
   linkType: soft
 
@@ -16763,19 +16762,6 @@ __metadata:
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
-
-"zkpoh-button@file:../widget/package-1682348883.tgz::locator=zk-poh-web%40workspace%3Aapps%2Fweb-app":
-  version: 0.1.50
-  resolution: "zkpoh-button@file:../widget/package-1682348883.tgz::locator=zk-poh-web%40workspace%3Aapps%2Fweb-app"
-  dependencies:
-    "@semaphore-protocol/data": ^3.4.0
-    "@semaphore-protocol/group": ^3.4.0
-    "@semaphore-protocol/identity": ^3.4.0
-    "@semaphore-protocol/proof": ^3.4.0
-    react-no-ssr: ^1.1.0
-  checksum: 5c6b80b94d1faa735b0bd9906e8589c82710ffdfde9c2fe2b65a85cc6f3a96b39fdcc6935683d454730af568c0f4c4897b459b6c5bd23155969d037028e2f080
-  languageName: node
-  linkType: hard
 
 "zkpoh-button@workspace:apps/widget":
   version: 0.0.0-use.local
