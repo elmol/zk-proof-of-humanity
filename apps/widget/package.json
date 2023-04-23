@@ -1,16 +1,17 @@
 {
     "name": "zkpoh-button",
-    "version": "0.1.52",
+    "version": "0.1.53",
     "description": "ZK Proof of Humanity Widget",
     "license": "MIT",
     "repository": "https://github.com/elmol/zk-proof-of-humanity",
     "homepage": "https://github.com/elmol/zk-proof-of-humanity",
-    "main": "dist/cjs/index.js",
-    "module": "dist/es/index.js",
+    "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
         "dist",
-        "src"
+        "src",
+        "LICENSE",
+        "README.md"
     ],
     "scripts": {
         "dev": "echo 'running widget'",
