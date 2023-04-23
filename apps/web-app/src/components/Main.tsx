@@ -1,22 +1,29 @@
+import LogsContext from '@/context/LogsContext'
 import { useZkProofOfHumanity, useZkProofOfHumanityRead } from '@/generated/zk-poh-contract'
 import { useIsRegisteredInPoH } from '@/hooks/useIsRegisteredInPoH'
 import colors from '@/styles/colors'
-import { Button, Container, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import { Identity } from '@semaphore-protocol/identity'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
-import { ZKPoHConnect } from './ZKPoHConnect'
+import theme from "../styles/index"
+
+import { ButtonActionState, ConnectionState, ZKPoHConnect } from 'zkpoh-button'
+import { ethers } from 'ethers'
 
 
 export default function Main() {
 
   const { address, isConnected } = useAccount()
-
   const { disconnect } = useDisconnect();
-  const contract = useZkProofOfHumanity();
 
+  const externalNullifier =  randomNullifier();
+  const signal = "I'm human";
+
+
+  const contract = useZkProofOfHumanity();
   function handleNewIdentity({identity,address} : {identity: Identity, address:`0x${string}`}):void {
     setIdentity(identity);
     setAddressIdentity(address);
@@ -24,7 +31,7 @@ export default function Main() {
 
   const { chain } = useNetwork()
   const {isHuman} = useIsRegisteredInPoH({address});
-  
+
   /////////// IS REGISTERED ACCOUNT
   const {data:isRegistered}= useZkProofOfHumanityRead({
     functionName: 'isRegistered',
@@ -49,6 +56,20 @@ export default function Main() {
 
 
   const [_identity, setIdentity] = useState<Identity>();
+
+  const { setLogs } = useContext(LogsContext);
+  function handleLog(state: ButtonActionState) {
+      setLogs(state.logs);
+  }
+
+  const [helpText, setHelpText] = useState<string>();
+  function handleChangeState(state:ConnectionState) {
+    setHelpText(state.helpText);
+    if(state.stateType=='IDENTITY_GENERATED'){
+        setIdentity(state.identity,);
+        setAddressIdentity(state.address);
+    }
+  }
 
    return (
      <>
@@ -75,7 +96,7 @@ export default function Main() {
            {isConnected && contract && (
              <Text>
                {" "}
-               | <b>Contract:</b>  <EtherScanLink  address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink> 
+               | <b>Contract:</b>  <EtherScanLink  address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
              </Text>
            )}
           {chain && <Text> | <b>Network:</b> {chain.unsupported?"Wrong Network":chain.name}</Text>}
@@ -95,7 +116,11 @@ export default function Main() {
 
        <Container maxW="sm" flex="1" display="flex" alignItems="center" mb="10%">
          <Stack display="flex" width="100%">
-            <ZKPoHConnect chain={chain} isConnected={isConnected} isHuman={isHuman} identity={_identity} isRegistered={isRegistered} isRegisteredIdentity={isRegisteredIdentity} handleNewIdentity={handleNewIdentity}></ZKPoHConnect>
+            <Text pt="2" fontSize="md" textAlign="justify">
+                {helpText}
+            </Text>
+            <Divider pt="1" borderColor="gray.500" />
+            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={signal} externalNullifier={externalNullifier}>Verify</ZKPoHConnect>
          </Stack>
        </Container>
      </>
@@ -105,11 +130,15 @@ export default function Main() {
 type EtherScanLinkTProps = {
   children: React.ReactNode;
   address: string
-  
+
 }
 
 function EtherScanLink({children,address}:EtherScanLinkTProps ) {
   return (
     <Link color={colors.primary[500]} href={`https://goerli.etherscan.io/address/${address}`} isExternal>{children}</Link>
   )
+}
+
+function randomNullifier() {
+    return ethers.BigNumber.from(ethers.utils.randomBytes(32)).toString();
 }
