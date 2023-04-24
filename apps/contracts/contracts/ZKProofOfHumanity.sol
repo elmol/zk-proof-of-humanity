@@ -44,12 +44,7 @@ contract ZKProofOfHumanity {
     //humans -> identityCommitment
     mapping(address => uint256) private identitiesMap;
 
-    constructor(
-        address semaphoreAddress,
-        address pohAddress,
-        uint256 _groupId,
-        uint256 _depth
-    ) {
+    constructor(address semaphoreAddress, address pohAddress, uint256 _groupId, uint256 _depth) {
         semaphore = ISemaphore(semaphoreAddress);
         poh = IProofOfHumanity(pohAddress);
         groupId = _groupId;
