@@ -9,7 +9,7 @@ import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import theme from "../styles/index"
 
 import { ethers } from 'ethers'
-import { ButtonActionState, ConnectionState, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity } from '@elmol/zkpoh-widget'
+import { ButtonActionState, ConnectionState, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity } from 'zkpoh-widget'
 
 
 export default function Main() {
