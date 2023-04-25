@@ -42,7 +42,7 @@ Or to give feedback
 
 Or to vote
 
-```JSX
+```html
 ...
 <ZKPoHConnect signal={ballot} externalNullifier={proposalId}>Vote</ZKPoHConnect>
 ...
