@@ -14,7 +14,6 @@
     },
     "dependencies": {
         "@chakra-ui/react": "^2.5.1",
-        "@elmol/zkpoh-widget": "../widget/package-1682384702.tgz",
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
         "@semaphore-protocol/data": "^3.4.0",

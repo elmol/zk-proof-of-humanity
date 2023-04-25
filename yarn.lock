@@ -1313,22 +1313,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@elmol/zkpoh-widget@file:../widget/package-1682384702.tgz::locator=zk-poh-web%40workspace%3Aapps%2Fweb-app":
-  version: 0.1.1
-  resolution: "@elmol/zkpoh-widget@file:../widget/package-1682384702.tgz::locator=zk-poh-web%40workspace%3Aapps%2Fweb-app"
-  dependencies:
-    "@semaphore-protocol/data": ^3.4.0
-    "@semaphore-protocol/group": ^3.4.0
-    "@semaphore-protocol/identity": ^3.4.0
-    "@semaphore-protocol/proof": ^3.4.0
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-no-ssr: ^1.1.0
-    wagmi: ^0.12.1
-  checksum: 1943a8350810e347b17915486e128066ee3e91db364178a15c241397b7311830142e09072025e9127ccb329e2495993b6866ee8b510ead2759338db5f35fd5dd
-  languageName: node
-  linkType: hard
-
 "@elmol/zkpoh-widget@workspace:apps/widget":
   version: 0.0.0-use.local
   resolution: "@elmol/zkpoh-widget@workspace:apps/widget"
@@ -16772,7 +16756,6 @@ __metadata:
   resolution: "zk-poh-web@workspace:apps/web-app"
   dependencies:
     "@chakra-ui/react": ^2.5.1
-    "@elmol/zkpoh-widget": ../widget/package-1682384702.tgz
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
     "@semaphore-protocol/data": ^3.4.0
