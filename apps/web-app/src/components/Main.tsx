@@ -1,6 +1,6 @@
 import { usePostLikeRead } from '@/generated/zk-poh-contract'
 import colors from '@/styles/colors'
-import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, useColorModeValue,Box, SimpleGrid } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, Image ,Box, SimpleGrid } from '@chakra-ui/react'
 import { Network, SemaphoreEthers } from '@semaphore-protocol/data'
 import { Identity } from '@semaphore-protocol/identity'
 import { BigNumber } from "ethers/lib/ethers"
@@ -66,18 +66,24 @@ export default function Main() {
     enabled: address && chain?.id==1337?true:false,
   });
 
+  const valueSignalC1= 'C1';
+  const valueSignalC2= 'C2';
+  const valueSignalC3= 'C3';
 
-
-
-
-  const valueSignalDefault = 'LIKE';
   const [_identity, setIdentity] = useState<Identity>();
   const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
-  const [likeCount, setLikeCount] = useState(0);
-  const [likePercentage, setLikePercentage] = useState(0);
-  const [noLikePercentage, setNoLikePercentage] = useState(0);
+
+  const [votesC1, setVotesC1] = useState(0);
+  const [votesC2, setVotesC2] = useState(0);
+  const [votesC3, setVotesC3] = useState(0);
+
+  const [votesPercentageC1, setVotesPercentageC1] = useState(0);
+  const [votesPercentageC2, setVotesPercentageC2] = useState(0);
+  const [votesPercentageC3, setVotesPercentageC3] = useState(0);
+  
+
   const [totalCount, setTotalCount] = useState(0);
-  const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalDefault);
+  const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalC1);
   function shortenAddress(address: string | undefined | any) {
     if(!address) return '';
     return `${address.slice(0, 6)}...${address.slice(-4)}`
@@ -103,18 +109,33 @@ export default function Main() {
               const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
               console.log(verifiedProofs);
 
-              const result = verifiedProofs.filter((obj:any) => {
-                  const signal32Bytes = formatBytes32String(valueSignalDefault);
+              const resultC1 = verifiedProofs.filter((obj:any) => {
+                  const signal32Bytes = formatBytes32String(valueSignalC1);
                   return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               });
-              console.log(result);
-              setLikeCount(result.length);
-              setTotalCount(verifiedProofs.length)
-              const _likePercentage = result.length *100 / verifiedProofs.length;
-              setLikePercentage(_likePercentage);
-              const _nolikePercentage = (verifiedProofs.length - result.length) *100 / verifiedProofs.length;
-              setNoLikePercentage(_nolikePercentage);
+              const resultC2 = verifiedProofs.filter((obj:any) => {
+                const signal32Bytes = formatBytes32String(valueSignalC2);
+                return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+              });
+              const resultC3 = verifiedProofs.filter((obj:any) => {
+                const signal32Bytes = formatBytes32String(valueSignalC3);
+                return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+              });
 
+
+
+              console.log(resultC1);
+            
+              setTotalCount(verifiedProofs.length)
+              setVotesC1(resultC1);
+              setVotesC2(resultC2);
+              setVotesC3(resultC3);
+              const _c1Percentage = resultC1.length *100 / verifiedProofs.length;
+              const _c2Percentage = resultC2.length *100 / verifiedProofs.length;
+              const _c3Percentage = resultC3.length *100 / verifiedProofs.length;
+              setVotesPercentageC1(isNaN(_c1Percentage)?0:_c1Percentage);
+              setVotesPercentageC2(isNaN(_c2Percentage)?0:_c2Percentage);
+              setVotesPercentageC3(isNaN(_c3Percentage)?0:_c3Percentage);
 
           }
           return;
@@ -181,7 +202,7 @@ export default function Main() {
      <NoSSR>
          <Stack display="flex" width="100%">
          <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%' mb="5">
-           Contract information:
+           Voting information
          </Text>
              <Text color={"secondaryGray.800"} fontWeight='600'>{message}</Text>
              <Text color={"secondaryGray.800"} fontWeight='600'>{shortenAddress(messageId?.toString())}</Text>
@@ -202,13 +223,61 @@ export default function Main() {
 
        <Stack display="flex" width="95%" height="100%" mt="4">
              <Text color={"secondaryGray.800"} fontWeight='600' >{helpText}</Text>
-
        </Stack>
        {connectionStateType=='CAST_SIGNAL' &&  (
-         <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected}>
-           <Stack direction='column'>
-             <Radio color={"secondaryGray.800"} value='LIKE'>I like</Radio>
-             <Radio color={"secondaryGray.800"} value='NOTLIKE'>I do not like</Radio>
+         <RadioGroup onChange={setOptionCastedSelected} value={optionCastedSelected} pt='10'>
+           <Stack direction='row'>
+            <Card  bg={"secondaryGray.600"}
+             height='200px'
+             px='5px'
+          
+             mx='auto'> 
+                <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
+                <Image
+                      borderRadius='full'
+                      boxSize='150px'
+                      src='./c1.jpg'
+                      alt='candidate1'
+                      p='3'
+                    />
+                <Radio color={"primary.800"} value={valueSignalC1} colorScheme='green'>
+                  
+                  Candidate 1</Radio>
+                </Flex>
+            </Card>
+            <Card bg={"secondaryGray.600"}
+             height='200px'
+             px='5px'
+          
+             mx='auto'>
+              <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
+                <Image
+                      borderRadius='full'
+                      boxSize='150px'
+                      src='./c2.jpg'
+                      alt='candidate 2'
+                      p='3'
+                    />
+              <Radio color={"primary.800"} colorScheme='red' value={valueSignalC2}>Candidate 2</Radio>
+              </Flex>
+            </Card>
+            <Card bg={"secondaryGray.600"}
+             height='200px'
+             px='5px'
+           
+             mx='auto'>
+               <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
+                <Image
+                      borderRadius='full'
+                      boxSize='150px'
+                      src='./c3.jpg'
+                      alt='candidate 3'
+                      p='3'
+                    />
+              <Radio color={"primary.800"} colorScheme='blue'  value={valueSignalC3}>Candidate 3</Radio>
+              </Flex>
+            
+            </Card>
            </Stack>
          </RadioGroup>)}
          </Stack>
@@ -221,7 +290,7 @@ export default function Main() {
          <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%'>
            Result of the vote
          </Text>
-         <Stack alignItems='center' justifyContent='center' h="100%" w="60%">
+         <Stack alignItems='center' justifyContent='center' h="100%" w="90%">
            <Card
              bg={"secondaryGray.900"}
              flexDirection='column'
@@ -235,34 +304,42 @@ export default function Main() {
                <Flex align='center'>
                  <Box h='8px' w='8px' bg='green.500' borderRadius='50%' me='4px' />
                  <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
-                 I like
+                 Candidate 1
                  </Text>
                </Flex>
                <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'>
-                 {likePercentage}%
+                ({votesPercentageC1}%)
                </Text>
              </Flex>
              <Flex direction='column' py='5px' me='10px' w="50%" alignItems='center'>
                <Flex align='center'>
                  <Box h='8px' w='8px' bg='red.600' borderRadius='50%' me='4px' />
                  <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
-                 I do not like
+                Candidate 2
                  </Text>
                </Flex>
                <Text  fontSize='lg' color='secondaryGray.100' fontWeight='900'>
-               {noLikePercentage}%
+                ({votesPercentageC2}%)
+               </Text>
+             </Flex>
+             <Flex direction='column' py='5px' me='10px' w="50%" alignItems='center'>
+               <Flex align='center'>
+                 <Box h='8px' w='8px' bg='blue.600' borderRadius='50%' me='4px' />
+                 <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
+                 Candidate 3
+                 </Text>
+               </Flex>
+               <Text  fontSize='lg' color='secondaryGray.100' fontWeight='900'>
+                ({votesPercentageC3}%)
                </Text>
              </Flex>
              </Flex>
              <Flex direction='column' alignItems='center' pt="5" >
-               <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'><b>Total vote:</b> {totalCount}</Text>
+               <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'><b>Total votes:</b> {totalCount}</Text>
              </Flex>
            </Card>
-
        </Stack>
        </Card>
-
-
        </SimpleGrid>
 </Container>
      </>

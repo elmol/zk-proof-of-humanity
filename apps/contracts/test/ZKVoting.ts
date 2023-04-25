@@ -1,12 +1,12 @@
 import { Group } from "@semaphore-protocol/group"
 import { expect } from "chai"
 import { ethers, run } from "hardhat"
-import { PostLike, ProofOfHumanityMock, ZKProofOfHumanity } from "../build/typechain"
+import { ZKVoting, ProofOfHumanityMock, ZKProofOfHumanity } from "../build/typechain"
 
-describe("PostLike", () => {
+describe("ZKVoting", () => {
     let pohContract: ProofOfHumanityMock
     let zkPoHContract: ZKProofOfHumanity
-    let contract: PostLike
+    let contract: ZKVoting
 
     const users: any = []
     const groupId = "42"
@@ -19,7 +19,7 @@ describe("PostLike", () => {
         pohContract = await PoHFactory.deploy()
         zkPoHContract = await run("deploy", { poh: pohContract.address, logs: false, group: groupId })
 
-        const ContractFactory = await ethers.getContractFactory("PostLike")
+        const ContractFactory = await ethers.getContractFactory("ZKVoting")
 
         contract = await ContractFactory.deploy(zkPoHContract.address, externalNullifer)
     })

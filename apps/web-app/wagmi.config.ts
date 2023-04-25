@@ -7,14 +7,14 @@ export default defineConfig({
     hardhat({
       artifacts: 'build/contracts',
       project: '../contracts',
-      include: ['ZKProofOfHumanity.json','PostLike.json'],
+      include: ['ZKProofOfHumanity.json','ZKVoting.json'],
       deployments: {
         ZKProofOfHumanity: {
           5: '0x611F0278dE9D2Bd4E38F15001B6410B4A915275f',
           31337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
           1337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
         },
-        PostLike: {
+        ZKVoting: {
             5: '0x611F0278dE9D2Bd4E38F15001B6410B4A915275f',
             31337: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
             1337: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',

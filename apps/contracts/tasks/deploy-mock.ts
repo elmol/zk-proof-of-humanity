@@ -10,15 +10,15 @@ task("deploy-mock", "Deploy zkpoh and poh mock contracts")
 
         const [, human] = await ethers.getSigners()
         await pohContract.addSubmissionManually(human.address)
-        const ContractFactory = await ethers.getContractFactory("PostLike")
+        const ContractFactory = await ethers.getContractFactory("ZKVoting")
         const externalNullifier = randomNullifier()
         const contract = await ContractFactory.deploy(zkPoHContract.address, externalNullifier)
 
         if (logs) {
             console.info(`ZKProofOfHumanity contract has been deployed to: ${zkPoHContract.address}`)
             console.info(`Human Account PoH Registered: ${human.address}`)
-            console.info(`Post Like contract has been deployed to: ${contract.address} `)
-            console.info(`Post Like message id: `, externalNullifier)
+            console.info(`Voting contract has been deployed to: ${contract.address} `)
+            console.info(`Voting message id: `, externalNullifier)
         }
         return { address: zkPoHContract.address, account: human.address }
     })
