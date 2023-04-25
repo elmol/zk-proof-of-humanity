@@ -1313,34 +1313,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@elmol/zkpoh-widget@workspace:apps/widget":
-  version: 0.0.0-use.local
-  resolution: "@elmol/zkpoh-widget@workspace:apps/widget"
-  dependencies:
-    "@rollup/plugin-commonjs": ^24.0.1
-    "@rollup/plugin-json": ^6.0.0
-    "@rollup/plugin-node-resolve": ^15.0.2
-    "@rollup/plugin-typescript": ^11.1.0
-    "@semaphore-protocol/data": ^3.4.0
-    "@semaphore-protocol/group": ^3.4.0
-    "@semaphore-protocol/identity": ^3.4.0
-    "@semaphore-protocol/proof": ^3.4.0
-    "@types/react": 18.0.33
-    "@types/react-dom": 18.0.11
-    "@types/react-no-ssr": ^1.1.3
-    "@wagmi/cli": ^0.1.11
-    ethers: ^5
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-no-ssr: ^1.1.0
-    rollup: ^3.20.2
-    rollup-plugin-dts: ^5.3.0
-    tslib: ^2.5.0
-    typescript: 5.0.4
-    wagmi: ^0.12.1
-  languageName: unknown
-  linkType: soft
-
 "@emotion/babel-plugin@npm:^11.10.6":
   version: 11.10.6
   resolution: "@emotion/babel-plugin@npm:11.10.6"
@@ -16788,6 +16760,34 @@ __metadata:
     "@types/node": ^17.0.9
     ts-node: ^10.8.1
     typescript: ^4.7.3
+  languageName: unknown
+  linkType: soft
+
+"zkpoh-widget@workspace:apps/widget":
+  version: 0.0.0-use.local
+  resolution: "zkpoh-widget@workspace:apps/widget"
+  dependencies:
+    "@rollup/plugin-commonjs": ^24.0.1
+    "@rollup/plugin-json": ^6.0.0
+    "@rollup/plugin-node-resolve": ^15.0.2
+    "@rollup/plugin-typescript": ^11.1.0
+    "@semaphore-protocol/data": ^3.4.0
+    "@semaphore-protocol/group": ^3.4.0
+    "@semaphore-protocol/identity": ^3.4.0
+    "@semaphore-protocol/proof": ^3.4.0
+    "@types/react": 18.0.33
+    "@types/react-dom": 18.0.11
+    "@types/react-no-ssr": ^1.1.3
+    "@wagmi/cli": ^0.1.11
+    ethers: ^5
+    react: 18.2.0
+    react-dom: 18.2.0
+    react-no-ssr: ^1.1.0
+    rollup: ^3.20.2
+    rollup-plugin-dts: ^5.3.0
+    tslib: ^2.5.0
+    typescript: 5.0.4
+    wagmi: ^0.12.1
   languageName: unknown
   linkType: soft
 
