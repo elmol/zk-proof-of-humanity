@@ -377,3 +377,11 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser.
+
+# 🧰 ZK Proof of Humanity Widget
+
+React library that enables easy integration with ZK Proof of Humanity for your projects.
+
+More information in [widget readme](apps/widget/README.md)
+
+You can find the npm package in <a href="https://www.npmjs.com/package/zkpoh-widget" style="color: #333; text-decoration: none;"><strong>📦 zkpoh-widget</strong></a>
