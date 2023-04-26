@@ -1,6 +1,7 @@
-import { usePostLikeRead } from '@/generated/zk-poh-contract'
+import LogsContext from '@/context/LogsContext'
+import { useZkVotingRead } from '@/generated/zk-voting'
 import colors from '@/styles/colors'
-import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Radio, RadioGroup, Spacer, Stack, Text, useBreakpointValue, Image ,Box, SimpleGrid } from '@chakra-ui/react'
+import { Box, Button, Container, Flex, HStack, Icon, IconButton, Image, Link, Radio, RadioGroup, SimpleGrid, Spacer, Stack, Text, useBreakpointValue } from '@chakra-ui/react'
 import { Network, SemaphoreEthers } from '@semaphore-protocol/data'
 import { Identity } from '@semaphore-protocol/identity'
 import { BigNumber } from "ethers/lib/ethers"
@@ -9,11 +10,9 @@ import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
 import { useAccount, useDisconnect, useNetwork } from 'wagmi'
-import { ButtonActionState } from '@/widget/ButtonAction'
-import LogsContext from '@/context/LogsContext'
+import { ButtonActionState, ConnectionState, ConnectionStateType, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity, useZkProofOfHumanityRead } from 'zkpoh-widget'
 import theme from "../styles/index"
 import Card from './Card'
-import { useZkProofOfHumanityRead,useIsRegisteredInPoH,useZkProofOfHumanity, ConnectionState, ConnectionStateType, ZKPoHConnect  } from 'zkpoh-button'
 
 
 export default function Main() {
@@ -56,12 +55,12 @@ export default function Main() {
   });
   ////////////////////////
 
-  const {data:message} = usePostLikeRead({
+  const {data:message} = useZkVotingRead({
     functionName: 'message',
     enabled: address && chain?.id==1337?true:false,
   });
 
-  const {data:messageId} = usePostLikeRead({
+  const {data:messageId} = useZkVotingRead({
     functionName: 'messageId',
     enabled: address && chain?.id==1337?true:false,
   });
@@ -80,7 +79,7 @@ export default function Main() {
   const [votesPercentageC1, setVotesPercentageC1] = useState(0);
   const [votesPercentageC2, setVotesPercentageC2] = useState(0);
   const [votesPercentageC3, setVotesPercentageC3] = useState(0);
-  
+
 
   const [totalCount, setTotalCount] = useState(0);
   const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalC1);
@@ -125,7 +124,7 @@ export default function Main() {
 
 
               console.log(resultC1);
-            
+
               setTotalCount(verifiedProofs.length)
               setVotesC1(resultC1);
               setVotesC2(resultC2);
@@ -230,8 +229,8 @@ export default function Main() {
             <Card  bg={"secondaryGray.600"}
              height='200px'
              px='5px'
-          
-             mx='auto'> 
+
+             mx='auto'>
                 <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
                 <Image
                       borderRadius='full'
@@ -241,14 +240,14 @@ export default function Main() {
                       p='3'
                     />
                 <Radio color={"primary.800"} value={valueSignalC1} colorScheme='green'>
-                  
+
                   Candidate 1</Radio>
                 </Flex>
             </Card>
             <Card bg={"secondaryGray.600"}
              height='200px'
              px='5px'
-          
+
              mx='auto'>
               <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
                 <Image
@@ -264,7 +263,7 @@ export default function Main() {
             <Card bg={"secondaryGray.600"}
              height='200px'
              px='5px'
-           
+
              mx='auto'>
                <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
                 <Image
@@ -276,13 +275,13 @@ export default function Main() {
                     />
               <Radio color={"primary.800"} colorScheme='blue'  value={valueSignalC3}>Candidate 3</Radio>
               </Flex>
-            
+
             </Card>
            </Stack>
          </RadioGroup>)}
          </Stack>
                 <Stack alignItems='flex-end' justifyContent='flex-end' h="100%">
-            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={optionCastedSelected} externalNullifier={messageId} {...zkPoHConfig}>I like your message</ZKPoHConnect>
+            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={optionCastedSelected} externalNullifier={messageId} {...zkPoHConfig}>Vote</ZKPoHConnect>
    </Stack>
        </Stack>
          </Card>
