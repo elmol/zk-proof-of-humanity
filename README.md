@@ -28,15 +28,14 @@
 </p>
 
 
-<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); margin-bottom: 1rem;">
-  <a href="https://www.npmjs.com/package/zkpoh-widget" style="font-size: 1.25rem; font-weight: bold; color: #333; text-decoration: none; margin-right: 1rem;">📦 zkpoh-widget</a>
-  <div style="display: flex;">
-    <a href="https://www.npmjs.com/package/zkpoh-widget">
-      <img src="https://img.shields.io/npm/v/zkpoh-widget.svg?style=flat-square" alt="npm version" style="margin-right: 0.5rem;" />
-    </a>
-  </div>
-</div>
-
+<p align="center">
+  <table style="border: 1px solid #eaeaea; border-radius: 4px; padding: 1rem;">
+    <tr>
+      <td><a href="https://www.npmjs.com/package/zkpoh-widget" style="color: #333; text-decoration: none;"><strong>📦 zkpoh-widget</strong></a></td>
+      <td><a href="https://www.npmjs.com/package/zkpoh-widget"><img src="https://img.shields.io/npm/v/zkpoh-widget.svg?style=flat-square" alt="npm version" /></a></td>
+    </tr>
+  </table>
+</p>
 
 ## Project Overview
 
