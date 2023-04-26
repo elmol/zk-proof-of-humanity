@@ -29,10 +29,11 @@
 
 
 <p align="center">
-  <table style="border: 1px solid #eaeaea; border-radius: 4px; padding: 1rem;">
+  <table align="center">
     <tr>
-      <td><a href="https://www.npmjs.com/package/zkpoh-widget" style="color: #333; text-decoration: none;"><strong>📦 zkpoh-widget</strong></a></td>
-      <td><a href="https://www.npmjs.com/package/zkpoh-widget"><img src="https://img.shields.io/npm/v/zkpoh-widget.svg?style=flat-square" alt="npm version" /></a></td>
+      <td><a href="https://www.npmjs.com/package/zkpoh-widget"><strong>📦 zkpoh-widget</strong></a></td>
+      <td>
+      <a href="https://www.npmjs.com/package/zkpoh-widget"><img src="https://img.shields.io/npm/v/zkpoh-widget.svg?style=flat-square" alt="npm version" /></a></td>
     </tr>
   </table>
 </p>
