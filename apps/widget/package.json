@@ -17,10 +17,7 @@
         "dev": "echo 'running widget'",
         "generate": "wagmi generate",
         "build": "rm -rf dist && rollup -c",
-        "publish": " npm publish --tolerate-republish --access public"
-    },
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com"
+        "publish": "yarn build && npm publish"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^24.0.1",

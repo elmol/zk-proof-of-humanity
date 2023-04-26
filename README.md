@@ -27,6 +27,44 @@
 
 </p>
 
+
+<div class="npm-package">
+   <a href="https://www.npmjs.com/package/zkpoh-widget" class="package-link"> 📦 zkpoh-widget</a>
+  <div class="badge-container">
+    <a href="https://www.npmjs.com/package/zkpoh-widget">
+      <img src="https://img.shields.io/npm/v/zkpoh-widget.svg?style=flat-square" alt="npm version" class="badge" />
+    </a>
+  </div>
+</div>
+
+<style>
+.npm-package {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+.package-link {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.badge-container {
+  display: flex;
+}
+
+.badge {
+  margin-right: 0.5rem;
+}
+</style>
+
 ## Project Overview
 
 <p style="text-align:center;">
