@@ -10,8 +10,7 @@
         "update": "yarn add ../widget/package.tgz",
         "dev:update": "bash widget-update.sh",
         "start": "next start",
-        "lint": "next lint",
-        "generate": "wagmi generate"
+        "lint": "next lint"
     },
     "dependencies": {
         "@chakra-ui/react": "^2.5.1",

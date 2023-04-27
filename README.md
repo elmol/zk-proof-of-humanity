@@ -386,3 +386,8 @@ React library that enables easy integration with ZK Proof of Humanity for your p
 More information in [widget readme](apps/widget/README.md)
 
 You can find the npm package in <a href="https://www.npmjs.com/package/zkpoh-widget" style="color: #333; text-decoration: none;"><strong>📦 zkpoh-widget</strong></a>
+
+## Contract address configuration
+
+- In `wagmi.config.ts` update the contract addresses for each supported network.
+- Run `yarn wagmi generate` to update the configuration.

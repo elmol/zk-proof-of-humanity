@@ -34,11 +34,6 @@ Install the dependencies:
 yarn
 ```
 
-### Contract address configuration
-
-- In `wagmi.config.ts` update the contract addresses for each supported network.
-- Run `yarn wagmi generate` to update the configuration.
-
 ## 📜 Usage
 
 ### Start the app
