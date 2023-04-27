@@ -9,7 +9,7 @@
         "dev:update": "cd apps/web-app && yarn dev:update",
         "dev:web-app": "yarn workspace zk-poh-web dev",
         "dev:contracts": "yarn workspace zk-poh-contracts dev",
-        "dev:remove": "cd apps/web-app && yarn remove @elmol/zkpoh-widget",
+        "dev:remove": "cd apps/web-app && yarn remove zkpoh-widget",
         "lint": "yarn workspaces foreach -pi run lint",
         "prettier": "yarn workspace zk-poh-contracts prettier",
         "prettier:write": "yarn workspace zk-poh-contracts prettier:fix"

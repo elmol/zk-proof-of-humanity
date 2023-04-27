@@ -16750,6 +16750,7 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
+    zkpoh-widget: 0.1.1
   languageName: unknown
   linkType: soft
 
@@ -16762,6 +16763,22 @@ __metadata:
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
+
+"zkpoh-widget@npm:0.1.1":
+  version: 0.1.1
+  resolution: "zkpoh-widget@npm:0.1.1"
+  dependencies:
+    "@semaphore-protocol/data": ^3.4.0
+    "@semaphore-protocol/group": ^3.4.0
+    "@semaphore-protocol/identity": ^3.4.0
+    "@semaphore-protocol/proof": ^3.4.0
+    react: 18.2.0
+    react-dom: 18.2.0
+    react-no-ssr: ^1.1.0
+    wagmi: ^0.12.1
+  checksum: c64cf59776bf2c99e0e214d0a69c42d38475aabc66ceffb0a536cbc73ab9afa21657015df3b44133b607929416859314945b5ff3f68d04840c1d34aafc8c8b94
+  languageName: node
+  linkType: hard
 
 "zkpoh-widget@workspace:apps/widget":
   version: 0.0.0-use.local
