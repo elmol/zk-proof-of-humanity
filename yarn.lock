@@ -16644,6 +16644,7 @@ __metadata:
     "@types/node": ^17.0.9
     ts-node: ^10.8.1
     typescript: ^4.7.3
+    zkpoh-widget: ^0.1.1
   languageName: unknown
   linkType: soft
 

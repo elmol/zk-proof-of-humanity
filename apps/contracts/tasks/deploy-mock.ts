@@ -12,7 +12,7 @@ task("deploy-mock", "Deploy zkpoh and poh mock contracts")
         await pohContract.addSubmissionManually(human.address)
         const ContractFactory = await ethers.getContractFactory("ZKVoting")
         const externalNullifier = randomNullifier()
-        const contract = await ContractFactory.deploy(zkPoHContract.address, externalNullifier)
+        const contract = await ContractFactory.deploy( externalNullifier)
 
         if (logs) {
             console.info(`ZKProofOfHumanity contract has been deployed to: ${zkPoHContract.address}`)
