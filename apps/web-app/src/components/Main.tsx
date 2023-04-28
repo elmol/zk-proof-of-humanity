@@ -55,15 +55,22 @@ export default function Main() {
   });
   ////////////////////////
 
-  const {data:message} = useZkVotingRead({
-    functionName: 'message',
+  const {data:pollIds} = useZkVotingRead({
+    functionName: 'getAllKeys',
     enabled: address && chain?.id==1337?true:false,
   });
 
-  const {data:messageId} = useZkVotingRead({
-    functionName: 'messageId',
-    enabled: address && chain?.id==1337?true:false,
+  const [pollId, setPollId] = useState<BigNumber| undefined>();
+
+  const {data:proposal} = useZkVotingRead({
+    functionName: 'polls',
+    args: [ pollId?pollId:BigNumber.from("0")],
+    enabled: address && chain?.id==1337?true:false && pollId,
   });
+
+  useEffect(() => {
+    setPollId(pollIds?pollIds[0]:undefined);
+  }, [pollIds])
 
   const valueSignalC1= 'C1';
   const valueSignalC2= 'C2';
@@ -110,15 +117,15 @@ export default function Main() {
 
               const resultC1 = verifiedProofs.filter((obj:any) => {
                   const signal32Bytes = formatBytes32String(valueSignalC1);
-                  return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+                  return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               });
               const resultC2 = verifiedProofs.filter((obj:any) => {
                 const signal32Bytes = formatBytes32String(valueSignalC2);
-                return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+                return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               });
               const resultC3 = verifiedProofs.filter((obj:any) => {
                 const signal32Bytes = formatBytes32String(valueSignalC3);
-                return obj.nullifierHash === messageId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+                return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               });
 
 
@@ -140,7 +147,7 @@ export default function Main() {
           return;
       }
       fetchData();
-  }, [chain, contract, groupId, messageId, semaphoreAddress]);
+  }, [chain, contract, groupId, pollId, semaphoreAddress]);
    return (
      <>
 
@@ -203,8 +210,8 @@ export default function Main() {
          <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%' mb="5">
            Voting information
          </Text>
-             <Text color={"secondaryGray.800"} fontWeight='600'>{message}</Text>
-             <Text color={"secondaryGray.800"} fontWeight='600'>{shortenAddress(messageId?.toString())}</Text>
+             <Text color={"secondaryGray.800"} fontWeight='600'>{proposal}</Text>
+             <Text color={"secondaryGray.800"} fontWeight='600'>{shortenAddress(pollId?.toString())}</Text>
          </Stack>
      </NoSSR>
    </Card>
@@ -281,7 +288,7 @@ export default function Main() {
          </RadioGroup>)}
          </Stack>
                 <Stack alignItems='flex-end' justifyContent='flex-end' h="100%">
-            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={optionCastedSelected} externalNullifier={messageId} {...zkPoHConfig}>Vote</ZKPoHConnect>
+            <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={optionCastedSelected} externalNullifier={pollId} {...zkPoHConfig}>Vote</ZKPoHConnect>
    </Stack>
        </Stack>
          </Card>
