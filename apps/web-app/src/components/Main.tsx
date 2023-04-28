@@ -13,6 +13,7 @@ import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import { ButtonActionState, ConnectionState, ConnectionStateType, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity, useZkProofOfHumanityRead } from 'zkpoh-widget'
 import theme from "../styles/index"
 import Card from './Card'
+import { useRouter } from 'next/router'
 
 
 export default function Main() {
@@ -54,6 +55,20 @@ export default function Main() {
       functionName: "semaphore",
   });
   ////////////////////////
+
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const pollId = router.query.pollId
+    if(!pollId) {
+        console.error("*** Invalid pollId");
+        return;
+    }
+    const pollIdBig = BigNumber.from(pollId);
+    console.log("*** Specific PollId: ", pollId)
+    setPollId(pollIdBig);
+  }, [router.query.pollId])
 
   const {data:pollIds} = useZkVotingRead({
     functionName: 'getAllKeys',
