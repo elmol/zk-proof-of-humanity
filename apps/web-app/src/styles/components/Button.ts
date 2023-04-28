@@ -15,15 +15,15 @@ const Button = {
         solid: (props: StyleFunctionProps): SystemStyleObject => {
             const { colorScheme: c } = props
 
-            if (c === "primary") {
-                const bg = `${c}.500`
+            if (c === "primary" || c === "blue") {
+                const bg = `primary.500`
                 const color = "white"
 
                 return {
                     bg,
                     color,
                     _hover: {
-                        bg: `${c}.600`,
+                        bg: `primary.600`,
                         _disabled: {
                             bg
                         }

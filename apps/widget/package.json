@@ -1,6 +1,6 @@
 {
     "name": "zkpoh-widget",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "ZK Proof of Humanity Widget",
     "license": "MIT",
     "repository": "https://github.com/elmol/zk-proof-of-humanity",
@@ -36,10 +36,10 @@
         "typescript": "5.0.4"
     },
     "dependencies": {
-        "@semaphore-protocol/data": "^3.4.0",
-        "@semaphore-protocol/group": "^3.4.0",
-        "@semaphore-protocol/identity": "^3.4.0",
-        "@semaphore-protocol/proof": "^3.4.0",
+        "@semaphore-protocol/data": "^3.7.0",
+        "@semaphore-protocol/group": "^3.7.0",
+        "@semaphore-protocol/identity": "^3.7.0",
+        "@semaphore-protocol/proof": "^3.7.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-no-ssr": "^1.1.0",
