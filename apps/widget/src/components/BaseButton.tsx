@@ -13,7 +13,7 @@ export interface ButtonProps {
 const BaseButton = (props: ButtonProps) => {
   return (
     <ChakraProvider theme={props.theme}>
-        <Button colorScheme='primary'  width="100%" isLoading={props.isLoading} onClick={props.onClick} loadingText="Check wallet">{props.children}</Button>
+        <Button colorScheme='blue'  width="100%" isLoading={props.isLoading} onClick={props.onClick} loadingText="Check wallet">{props.children}</Button>
     </ChakraProvider>
   )
 };
