@@ -9,58 +9,12 @@ import { formatBytes32String } from "ethers/lib/utils";
 import { useEffect, useState } from "react";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 
-import { UseContractConfig, UseContractReadConfig, useContract, useContractRead, useNetwork } from "wagmi";
 import { fetchSigner } from "@wagmi/core";
-import { ReadContractResult } from "wagmi/actions";
+import { useNetwork } from "wagmi";
 
 import { Button, ChakraProvider, Icon, Link, Text, useBoolean } from "@chakra-ui/react";
-import { zkProofOfHumanityABI, zkProofOfHumanityAddress } from "../generated/contract";
+import { useZkProofOfHumanity, useZkProofOfHumanityRead } from "../hooks";
 import { ButtonActionProps } from "./ButtonAction";
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link zkProofOfHumanityABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x611F0278dE9D2Bd4E38F15001B6410B4A915275f)
- * -
- * -
- */
-export function useZkProofOfHumanityRead<
-    TFunctionName extends string,
-    TSelectData = ReadContractResult<typeof zkProofOfHumanityABI, TFunctionName>
->(
-    config: Omit<UseContractReadConfig<typeof zkProofOfHumanityABI, TFunctionName, TSelectData>, "abi" | "address"> & {
-        chainId?: keyof typeof zkProofOfHumanityAddress;
-    } = {} as any
-) {
-    const { chain } = useNetwork();
-    const chainId = config.chainId ?? chain?.id;
-    return useContractRead({
-        abi: zkProofOfHumanityABI,
-        address: zkProofOfHumanityAddress[chainId as keyof typeof zkProofOfHumanityAddress],
-        ...config,
-    } as UseContractReadConfig<typeof zkProofOfHumanityABI, TFunctionName, TSelectData>);
-}
-
-/**
- * Wraps __{@link useContract}__ with `abi` set to __{@link zkProofOfHumanityABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x611F0278dE9D2Bd4E38F15001B6410B4A915275f)
- * -
- * -
- */
-export function useZkProofOfHumanity(
-    config: Omit<UseContractConfig, "abi" | "address"> & {
-        chainId?: keyof typeof zkProofOfHumanityAddress;
-    } = {} as any
-) {
-    const { chain } = useNetwork();
-    const chainId = config.chainId ?? chain?.id;
-    return useContract({
-        abi: zkProofOfHumanityABI,
-        address: zkProofOfHumanityAddress[chainId as keyof typeof zkProofOfHumanityAddress],
-        ...config,
-    });
-}
 
 export class ZkPoHApi {
     constructor(
@@ -94,6 +48,7 @@ interface Props {
     signal: string;
     externalNullifier: BigNumber | undefined;
     verificationMessage: string;
+    contractAddress?:`0x${string}` | undefined;
 }
 
 export interface ProverProps extends ButtonActionProps, Props {}
@@ -102,20 +57,23 @@ export function Prover(props: ProverProps) {
     const _identity = props.identity;
     const [_loading, setLoading] = useBoolean();
 
-    const zkpoh = useZkProofOfHumanity();
+    const zkpoh = useZkProofOfHumanity({contractAddress: props.contractAddress});
     const { chain } = useNetwork();
     // should be moved to register component
     const { data: groupId } = useZkProofOfHumanityRead({
+        contractAddress: props.contractAddress,
         functionName: "groupId",
     });
 
     // should be moved to register component
     const { data: depth } = useZkProofOfHumanityRead({
+        contractAddress: props.contractAddress,
         functionName: "depth",
     });
 
     // should be moved to register component
     const { data: semaphoreAddress } = useZkProofOfHumanityRead({
+        contractAddress: props.contractAddress,
         functionName: "semaphore",
     });
 

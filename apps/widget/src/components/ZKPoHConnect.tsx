@@ -48,6 +48,7 @@ export interface ZKPoHConnectProps  {
   theme?: Dict | undefined,
   confirmationMessage?: string,
   helpText?: string,
+  contractAddress?:`0x${string}` | undefined;
   onChangeState?: (state: ConnectionState) => void,
   onLog?: (state: ButtonActionState) => void,
 };
@@ -63,12 +64,13 @@ interface InputState {
 
 export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
-    const { onChangeState, onLog, children, externalNullifier,signal, confirmationMessage,helpText,theme} = props;
+    const { onChangeState, onLog, children, externalNullifier, signal, confirmationMessage, helpText, theme, contractAddress } = props;
 
     const { address, isConnected } = useAccount()
     const { chain } = useNetwork()
-    const {isHuman} = useIsRegisteredInPoH({address});
+    const {isHuman} = useIsRegisteredInPoH({address, contractAddress});
     const {data:isRegistered}= useZkProofOfHumanityRead({
+        contractAddress: contractAddress,
         functionName: 'isRegistered',
         args: [!address?"0x00":address], //TODO review
         enabled: address?true:false,
@@ -79,6 +81,7 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
   /////////// IS REGISTERED ENTITY
   const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
   const {data:isRegisteredIdentity}= useZkProofOfHumanityRead({
+        contractAddress: contractAddress,
         functionName: 'isRegistered',
         args: [!_addressIdentity?"0x00":_addressIdentity], //TODO review
         enabled: _addressIdentity?true:false,
@@ -126,7 +129,7 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
 
     // is connected with human account the identity was generated but not registered return registration
     const isRegistration = isConnected && isSupportedChain && isHuman && isIdentityGenerated && !isRegistered;
-    const registrationState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: REGISTRATION_HELP_TEXT}, component: identity?<Register identity={identity} theme={theme} onStateChange={handleStateChange}/>: <Box>DEFAULT</Box>};
+    const registrationState:ZKPoHAction  = {state: {stateType: 'INITIALIZED', helpText: REGISTRATION_HELP_TEXT}, component: identity?<Register identity={identity} theme={theme} contractAddress={contractAddress} onStateChange={handleStateChange}/>: <Box>DEFAULT</Box>};
     if (isRegistration) return registrationState;
 
     // is connected with human account and ready to signal return burner account reconnection
@@ -143,7 +146,7 @@ export function ZKPoHConnect(props: ZKPoHConnectProps) {
     const isCastSignal = isConnected && isSupportedChain && !isHuman && isIdentityGenerated && isRegisteredIdentity;
     const castSignalState:ZKPoHAction  = {
         state: {stateType: 'CAST_SIGNAL', helpText: helpText || SIGNALING_HELP_TEXT },
-        component: identity?<Prover identity={identity} signal={signal} externalNullifier={externalNullifier} verificationMessage={confirmationMessage|| DEFAULT_CONFIRMATION_MESSAGE} theme={theme} onStateChange={handleStateChange}>{children}</Prover>:<Box>DEFAULT</Box>
+        component: identity?<Prover identity={identity} signal={signal} externalNullifier={externalNullifier} verificationMessage={confirmationMessage|| DEFAULT_CONFIRMATION_MESSAGE} theme={theme} contractAddress={contractAddress} onStateChange={handleStateChange}>{children}</Prover>:<Box>DEFAULT</Box>
       };
     if (isCastSignal) return castSignalState;
 

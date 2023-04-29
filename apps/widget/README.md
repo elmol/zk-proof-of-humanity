@@ -113,6 +113,7 @@ export interface ZKPoHConnectProps  {
   theme?: Dict | undefined,
   confirmationMessage?: string,
   helpText?: string,
+  contractAddress?:`0x${string}` | undefined;
   onChangeState?: (state: ConnectionState) => void,
   onLog?: (state: ButtonActionState) => void,
 };
@@ -139,7 +140,10 @@ You can customize the `helpText` used on the 'prove' action, as well as the `con
   confirmationMessage?: string,
   helpText?: string,
 ```
+### custom contract address
 
-## Callbacks
+It is possible to define a custom contract address for the zk proof of humanity by setting the `contractAddress` property. By default, it is set to the deployment on goerli.
+
+### Callbacks
 
 If you want to receive updates on the state of the buttons or view logs of the actions being performed, you can configure the `onChangeState` and `onLog` callbacks. By passing these callbacks as props to the <ZKPoHConnect> component, you can get real-time updates on the state of the component and the actions being performed.

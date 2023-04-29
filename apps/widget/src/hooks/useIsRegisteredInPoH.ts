@@ -1,8 +1,9 @@
 import { useContractRead } from "wagmi";
 import { useZkProofOfHumanityRead } from "./useZkProofOfHumanityRead";
 
-export function useIsRegisteredInPoH({address}:{address: `0x${string}` | undefined}) {
+export function useIsRegisteredInPoH({address,contractAddress}:{address: `0x${string}` | undefined,  contractAddress?:`0x${string}` | undefined }) {
   const {data:pohAddress}= useZkProofOfHumanityRead({
+    contractAddress:contractAddress,
     functionName: 'poh',
   });
   const { data:isHuman, isError, isLoading } = useContractRead({

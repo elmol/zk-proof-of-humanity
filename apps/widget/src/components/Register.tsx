@@ -13,17 +13,18 @@ export function usePrepareRegister(
     config: Omit<
       UsePrepareContractWriteConfig<typeof zkProofOfHumanityABI, 'register'>,
       'abi' | 'address' | 'functionName'
-    > & { chainId?: keyof typeof zkProofOfHumanityAddress } = {} as any,
+    > & { chainId?: keyof typeof zkProofOfHumanityAddress,
+          contractAddress?:`0x${string}` | undefined } = {} as any,
   ) {
 
     const { chain } = useNetwork()
     const chainId = config.chainId ?? chain?.id
+    const address = config.contractAddress ?? zkProofOfHumanityAddress[
+        chainId as keyof typeof zkProofOfHumanityAddress
+    ]
     return usePrepareContractWrite({
       abi: zkProofOfHumanityABI,
-      address:
-        zkProofOfHumanityAddress[
-          chainId as keyof typeof zkProofOfHumanityAddress
-        ],
+      address: address,
       functionName: 'register',
       chainId: chainId,
       ...config,
@@ -32,13 +33,13 @@ export function usePrepareRegister(
 
 
 export interface RegisterProps extends ButtonActionProps {
-    identity:Identity
+    identity:Identity;
+    contractAddress?:`0x${string}` | undefined;
 }
 
-
 export function Register(props: RegisterProps) {
-
   const { config, error: prepareError } = usePrepareRegister({
+      contractAddress:props.contractAddress,
       args: [identityCommitment()],
       enabled: props.identity != undefined,
   });
