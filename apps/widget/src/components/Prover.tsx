@@ -156,7 +156,7 @@ export function Prover(props: ProverProps) {
         <>
             <ChakraProvider theme={props.theme}>
                 <Button
-                    colorScheme="primary"
+                    colorScheme="blue"
                     width="100%"
                     onClick={verifyHumanity}
                     isLoading={_loading}
