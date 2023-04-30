@@ -36,6 +36,9 @@
         "typescript": "5.0.4"
     },
     "dependencies": {
+        "@chakra-ui/react": "^2.5.1",
+        "@emotion/react": "^11.10.6",
+        "@emotion/styled": "^11.10.6",
         "@semaphore-protocol/data": "^3.7.0",
         "@semaphore-protocol/group": "^3.7.0",
         "@semaphore-protocol/identity": "^3.7.0",

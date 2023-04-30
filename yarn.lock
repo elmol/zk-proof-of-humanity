@@ -16805,6 +16805,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "zkpoh-widget@workspace:apps/widget"
   dependencies:
+    "@chakra-ui/react": ^2.5.1
+    "@emotion/react": ^11.10.6
+    "@emotion/styled": ^11.10.6
     "@rollup/plugin-commonjs": ^24.0.1
     "@rollup/plugin-json": ^6.0.0
     "@rollup/plugin-node-resolve": ^15.0.2

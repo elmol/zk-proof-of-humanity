@@ -70,7 +70,10 @@ The following dependencies are needed:
 "react": "18.2.0",
 "react-dom": "18.2.0",
 "react-no-ssr": "^1.1.0",
-"wagmi": "^0.12.1"
+"wagmi": "^0.12.1",
+"@chakra-ui/react": "^2.5.1",
+"@emotion/react": "^11.10.6",
+"@emotion/styled": "^11.10.6"
 ```
 
 ## ⚙️ Configuration
