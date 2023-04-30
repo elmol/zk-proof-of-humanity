@@ -2925,6 +2925,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@semaphore-protocol/data@npm:^3.7.0":
+  version: 3.9.0
+  resolution: "@semaphore-protocol/data@npm:3.9.0"
+  dependencies:
+    "@ethersproject/contracts": ^5.7.0
+    "@ethersproject/providers": ^5.7.0
+    axios: ^0.27.2
+  checksum: cd89d702ddd3b69c40bd647ece306e4d6ed46ab99e3419e72a04f7beb023dc0ad5a123a934f4dfaaf910980fbd28b53a494343a31d802a3ddda2fcb3ae086ae3
+  languageName: node
+  linkType: hard
+
 "@semaphore-protocol/group@npm:3.4.0":
   version: 3.4.0
   resolution: "@semaphore-protocol/group@npm:3.4.0"
@@ -2946,6 +2957,18 @@ __metadata:
     "@ethersproject/keccak256": ^5.7.0
     "@zk-kit/incremental-merkle-tree": 1.0.0
   checksum: 3f3f23c16a3422561e5d1a95e074aaba9f2061f49ff1bba533097fd74697104a782363e87d30350fa934312b8adebe9a83c78dde03acd2196c8969ee36ec8785
+  languageName: node
+  linkType: hard
+
+"@semaphore-protocol/group@npm:^3.7.0":
+  version: 3.9.0
+  resolution: "@semaphore-protocol/group@npm:3.9.0"
+  dependencies:
+    "@ethersproject/bignumber": ^5.7.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/keccak256": ^5.7.0
+    "@zk-kit/incremental-merkle-tree": 1.0.0
+  checksum: cb638ff221eebfc007a28c52570c898fc8d241ea32a670a03d7390d9b1b76c8721d65b2d3081a43931024c4416599a5fea4b561189496ad2fae50d31c1f5b5c2
   languageName: node
   linkType: hard
 
@@ -2990,6 +3013,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@semaphore-protocol/identity@npm:^3.7.0":
+  version: 3.9.0
+  resolution: "@semaphore-protocol/identity@npm:3.9.0"
+  dependencies:
+    "@ethersproject/bignumber": ^5.5.0
+    "@ethersproject/keccak256": ^5.7.0
+    "@ethersproject/random": ^5.5.1
+    "@ethersproject/strings": ^5.6.1
+    js-sha512: ^0.8.0
+  checksum: 6df444a26648e49d02112ac958a74d764f191ec913192127a932daa26826ceeb88c06340ad5b9a668480650ebaa9a7221a6715a249e0ede57443fee036af8a55
+  languageName: node
+  linkType: hard
+
 "@semaphore-protocol/proof@npm:3.4.0":
   version: 3.4.0
   resolution: "@semaphore-protocol/proof@npm:3.4.0"
@@ -3021,6 +3057,23 @@ __metadata:
     "@semaphore-protocol/group": 3.6.0
     "@semaphore-protocol/identity": 3.6.0
   checksum: b7a086fadb1c76186ea982b3478a6a2290dcdf6566cebf1fe4bb1005b058498e5e600db3a8066884c78d3f03f1dee10523fc65025fab5a95cd173c10e9c57253
+  languageName: node
+  linkType: hard
+
+"@semaphore-protocol/proof@npm:^3.7.0":
+  version: 3.9.0
+  resolution: "@semaphore-protocol/proof@npm:3.9.0"
+  dependencies:
+    "@ethersproject/bignumber": ^5.5.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/keccak256": ^5.7.0
+    "@ethersproject/strings": ^5.5.0
+    "@zk-kit/incremental-merkle-tree": 0.4.3
+    snarkjs: 0.4.13
+  peerDependencies:
+    "@semaphore-protocol/group": 3.9.0
+    "@semaphore-protocol/identity": 3.9.0
+  checksum: e8aa53a1f7d6fd3b62749e41a441981bb3f22917b3d5b8ebf9957283ae9122e8d609a4e3281fb971a39865c7e7c5b03f00f323cd6c81e5893e782a8193dea4a4
   languageName: node
   linkType: hard
 
@@ -16633,7 +16686,7 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
-    zkpoh-widget: ^0.1.1
+    zkpoh-widget: ^0.1.3
   languageName: unknown
   linkType: soft
 
@@ -16661,6 +16714,25 @@ __metadata:
     react-no-ssr: ^1.1.0
     wagmi: ^0.12.1
   checksum: c64cf59776bf2c99e0e214d0a69c42d38475aabc66ceffb0a536cbc73ab9afa21657015df3b44133b607929416859314945b5ff3f68d04840c1d34aafc8c8b94
+  languageName: node
+  linkType: hard
+
+"zkpoh-widget@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "zkpoh-widget@npm:0.1.3"
+  dependencies:
+    "@chakra-ui/react": ^2.5.1
+    "@emotion/react": ^11.10.6
+    "@emotion/styled": ^11.10.6
+    "@semaphore-protocol/data": ^3.7.0
+    "@semaphore-protocol/group": ^3.7.0
+    "@semaphore-protocol/identity": ^3.7.0
+    "@semaphore-protocol/proof": ^3.7.0
+    react: 18.2.0
+    react-dom: 18.2.0
+    react-no-ssr: ^1.1.0
+    wagmi: ^0.12.1
+  checksum: d205f2082c53a096eaa72278886deeaf1248bf6f733ddf7306353609cdf05e6bdcd7b8c737695cc7aaf378800d4780d3f16cabeddb1a5514814e8eac244227bd
   languageName: node
   linkType: hard
 

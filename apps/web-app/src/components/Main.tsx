@@ -114,6 +114,7 @@ export default function Main() {
   const signals = useZkProofOfHumanitySignals();
 
   useEffect(() => {
+
          if(!signals) return;
 
           const resultC1 = signals.filter((obj: any) => {
