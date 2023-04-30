@@ -14,6 +14,7 @@ import { ButtonActionState, ConnectionState, ConnectionStateType, ZKPoHConnect, 
 import theme from "../styles/index"
 import Card from './Card'
 import { useRouter } from 'next/router'
+import { useZkProofOfHumanitySignals } from './useZkProofOfHumanitySignals'
 
 
 export default function Main() {
@@ -110,69 +111,48 @@ export default function Main() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
-
-
+  const signals = useZkProofOfHumanitySignals();
 
   useEffect(() => {
+         if(!signals) return;
 
-     async function getSignals(network: string, semaphoreAddress: string | undefined, groupId: BigNumber) {
-        let semaphoreEthers = getSemaphoreEthers(network, semaphoreAddress)
-        return await semaphoreEthers.getGroupVerifiedProofs(groupId.toString())
-      }
+          const resultC1 = signals.filter((obj: any) => {
+              const signal32Bytes = formatBytes32String(valueSignalC1);
+              return (
+                  obj.nullifierHash === pollId?.toString() &&
+                  BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+              );
+          });
 
-      function getSemaphoreEthers(network: string, semaphoreAddress: string | undefined) {
-        if ("localhost" == network) {
-            return new SemaphoreEthers("http://localhost:8545", {
-                address: semaphoreAddress,
-            });
-        }
-       return new SemaphoreEthers(network);
-       }
+          const resultC2 = signals.filter((obj: any) => {
+              const signal32Bytes = formatBytes32String(valueSignalC2);
+              return (
+                  obj.nullifierHash === pollId?.toString() &&
+                  BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+              );
+          });
+          const resultC3 = signals.filter((obj: any) => {
+              const signal32Bytes = formatBytes32String(valueSignalC3);
+              return (
+                  obj.nullifierHash === pollId?.toString() &&
+                  BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+              );
+          });
 
-      async function fetchData() {
-         if (!chain) return;
-         if (!contract) return;
-         const network = chain.network as Network | "localhost";
-         console.log(contract.address);
-         console.log("groupId:",groupId);
-         if (!groupId) return;
-         if (network != "localhost") return;
+          console.log(resultC1);
 
-         const verifiedProofs = await getSignals(network, semaphoreAddress, groupId)
+          setTotalCount(signals.length);
+          setVotesC1(resultC1);
+          setVotesC2(resultC2);
+          setVotesC3(resultC3);
+          const _c1Percentage = (resultC1.length * 100) / signals.length;
+          const _c2Percentage = (resultC2.length * 100) / signals.length;
+          const _c3Percentage = (resultC3.length * 100) / signals.length;
+          setVotesPercentageC1(isNaN(_c1Percentage) ? 0 : _c1Percentage);
+          setVotesPercentageC2(isNaN(_c2Percentage) ? 0 : _c2Percentage);
+          setVotesPercentageC3(isNaN(_c3Percentage) ? 0 : _c3Percentage);
+  }, [pollId, signals]);
 
-         console.log(verifiedProofs);
-
-        const resultC1 = verifiedProofs.filter((obj:any) => {
-        const signal32Bytes = formatBytes32String(valueSignalC1);
-            return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
-        });
-
-        const resultC2 = verifiedProofs.filter((obj:any) => {
-        const signal32Bytes = formatBytes32String(valueSignalC2);
-        return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
-        });
-        const resultC3 = verifiedProofs.filter((obj:any) => {
-        const signal32Bytes = formatBytes32String(valueSignalC3);
-        return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
-        });
-
-        console.log(resultC1);
-
-        setTotalCount(verifiedProofs.length)
-        setVotesC1(resultC1);
-        setVotesC2(resultC2);
-        setVotesC3(resultC3);
-        const _c1Percentage = resultC1.length *100 / verifiedProofs.length;
-        const _c2Percentage = resultC2.length *100 / verifiedProofs.length;
-        const _c3Percentage = resultC3.length *100 / verifiedProofs.length;
-        setVotesPercentageC1(isNaN(_c1Percentage)?0:_c1Percentage);
-        setVotesPercentageC2(isNaN(_c2Percentage)?0:_c2Percentage);
-        setVotesPercentageC3(isNaN(_c3Percentage)?0:_c3Percentage);
-
-    return;
-      }
-      fetchData();
-  }, [chain, contract, groupId, pollId, semaphoreAddress]);
    return (
      <>
 
