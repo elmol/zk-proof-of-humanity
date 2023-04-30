@@ -75,6 +75,32 @@ The following dependencies are needed:
 "@emotion/react": "^11.10.6",
 "@emotion/styled": "^11.10.6"
 ```
+### Caveat: fs config
+
+fs configuration is required. `next.config.js` file should be updated to include fs configuration.
+
+example:
+
+```typescript
+/** @type {import('next').NextConfig} */
+const fs = require("fs")
+
+const nextConfig = {
+  reactStrictMode: true,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+        config.resolve.fallback = {
+            fs: false
+        }
+    }
+
+    return config
+  }
+}
+
+module.exports = nextConfig
+
+```
 
 ## ⚙️ Configuration
 ### Initial configuration
