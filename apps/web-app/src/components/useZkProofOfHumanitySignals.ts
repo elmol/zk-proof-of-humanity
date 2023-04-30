@@ -7,6 +7,7 @@ import { useZkProofOfHumanityProofVerified } from "./useZkProofOfHumanityEvent";
 
 export interface SignalsProps {
     contractAddress?: `0x${string}` | undefined;
+    externalNullifier?: BigNumber| undefined;
 }
 
 export function useZkProofOfHumanitySignals(props: SignalsProps={}) {
@@ -42,10 +43,16 @@ export function useZkProofOfHumanitySignals(props: SignalsProps={}) {
             if (!groupId) return;
             const network = chain.network as Network | "localhost";
             const signals = await getSignals(network, semaphoreAddress, groupId);
-            setSignals(signals);
+            const filtered: any = !props.externalNullifier
+                ? signals
+                : signals?.filter((signal: any) => {
+                      return signal.nullifierHash === props.externalNullifier?.toString();
+                  });
+
+            setSignals(filtered);
         }
         fetchData();
-    }, [chain, groupId, semaphoreAddress]);
+    }, [chain, groupId, props.externalNullifier, semaphoreAddress]);
 
     useZkProofOfHumanityProofVerified({
         contractAddress: props.contractAddress,

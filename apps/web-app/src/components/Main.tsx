@@ -111,7 +111,7 @@ export default function Main() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
-  const signals = useZkProofOfHumanitySignals();
+  const signals = useZkProofOfHumanitySignals({externalNullifier: pollId});
 
   useEffect(() => {
 
@@ -120,7 +120,6 @@ export default function Main() {
           const resultC1 = signals.filter((obj: any) => {
               const signal32Bytes = formatBytes32String(valueSignalC1);
               return (
-                  obj.nullifierHash === pollId?.toString() &&
                   BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               );
           });
@@ -128,14 +127,12 @@ export default function Main() {
           const resultC2 = signals.filter((obj: any) => {
               const signal32Bytes = formatBytes32String(valueSignalC2);
               return (
-                  obj.nullifierHash === pollId?.toString() &&
                   BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               );
           });
           const resultC3 = signals.filter((obj: any) => {
               const signal32Bytes = formatBytes32String(valueSignalC3);
               return (
-                  obj.nullifierHash === pollId?.toString() &&
                   BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               );
           });
