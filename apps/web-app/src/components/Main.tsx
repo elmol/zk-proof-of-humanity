@@ -111,55 +111,65 @@ export default function Main() {
   }
 
 
+
+
   useEffect(() => {
+
+     async function getSignals(network: string, semaphoreAddress: string | undefined, groupId: BigNumber) {
+        let semaphoreEthers = getSemaphoreEthers(network, semaphoreAddress)
+        return await semaphoreEthers.getGroupVerifiedProofs(groupId.toString())
+      }
+
+      function getSemaphoreEthers(network: string, semaphoreAddress: string | undefined) {
+        if ("localhost" == network) {
+            return new SemaphoreEthers("http://localhost:8545", {
+                address: semaphoreAddress,
+            });
+        }
+       return new SemaphoreEthers(network);
+       }
+
       async function fetchData() {
-          if (!chain) return;
-          if (!contract) return;
-          const network = chain.network as Network | "localhost";
-          console.log(contract.address);
+         if (!chain) return;
+         if (!contract) return;
+         const network = chain.network as Network | "localhost";
+         console.log(contract.address);
          console.log("groupId:",groupId);
-         let semaphoreEthers;
-          if ("localhost" == network) {
-              semaphoreEthers = new SemaphoreEthers("http://localhost:8545", {
-                  address: semaphoreAddress,
-              });
-          } else {
-             semaphoreEthers = new SemaphoreEthers(network);
-          }
-          if (groupId && network == "localhost") {
-              const verifiedProofs = await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
-              console.log(verifiedProofs);
+         if (!groupId) return;
+         if (network != "localhost") return;
 
-              const resultC1 = verifiedProofs.filter((obj:any) => {
-                  const signal32Bytes = formatBytes32String(valueSignalC1);
-                  return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
-              });
-              const resultC2 = verifiedProofs.filter((obj:any) => {
-                const signal32Bytes = formatBytes32String(valueSignalC2);
-                return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
-              });
-              const resultC3 = verifiedProofs.filter((obj:any) => {
-                const signal32Bytes = formatBytes32String(valueSignalC3);
-                return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
-              });
+         const verifiedProofs = await getSignals(network, semaphoreAddress, groupId)
 
+         console.log(verifiedProofs);
 
+        const resultC1 = verifiedProofs.filter((obj:any) => {
+        const signal32Bytes = formatBytes32String(valueSignalC1);
+            return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+        });
 
-              console.log(resultC1);
+        const resultC2 = verifiedProofs.filter((obj:any) => {
+        const signal32Bytes = formatBytes32String(valueSignalC2);
+        return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+        });
+        const resultC3 = verifiedProofs.filter((obj:any) => {
+        const signal32Bytes = formatBytes32String(valueSignalC3);
+        return obj.nullifierHash === pollId?.toString() && BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
+        });
 
-              setTotalCount(verifiedProofs.length)
-              setVotesC1(resultC1);
-              setVotesC2(resultC2);
-              setVotesC3(resultC3);
-              const _c1Percentage = resultC1.length *100 / verifiedProofs.length;
-              const _c2Percentage = resultC2.length *100 / verifiedProofs.length;
-              const _c3Percentage = resultC3.length *100 / verifiedProofs.length;
-              setVotesPercentageC1(isNaN(_c1Percentage)?0:_c1Percentage);
-              setVotesPercentageC2(isNaN(_c2Percentage)?0:_c2Percentage);
-              setVotesPercentageC3(isNaN(_c3Percentage)?0:_c3Percentage);
+        console.log(resultC1);
 
-          }
-          return;
+        setTotalCount(verifiedProofs.length)
+        setVotesC1(resultC1);
+        setVotesC2(resultC2);
+        setVotesC3(resultC3);
+        const _c1Percentage = resultC1.length *100 / verifiedProofs.length;
+        const _c2Percentage = resultC2.length *100 / verifiedProofs.length;
+        const _c3Percentage = resultC3.length *100 / verifiedProofs.length;
+        setVotesPercentageC1(isNaN(_c1Percentage)?0:_c1Percentage);
+        setVotesPercentageC2(isNaN(_c2Percentage)?0:_c2Percentage);
+        setVotesPercentageC3(isNaN(_c3Percentage)?0:_c3Percentage);
+
+    return;
       }
       fetchData();
   }, [chain, contract, groupId, pollId, semaphoreAddress]);
