@@ -16666,10 +16666,10 @@ __metadata:
     "@chakra-ui/react": ^2.5.1
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
-    "@semaphore-protocol/data": ^3.4.0
-    "@semaphore-protocol/group": ^3.4.0
-    "@semaphore-protocol/identity": ^3.4.0
-    "@semaphore-protocol/proof": ^3.4.0
+    "@semaphore-protocol/data": ^3.7.0
+    "@semaphore-protocol/group": ^3.7.0
+    "@semaphore-protocol/identity": ^3.7.0
+    "@semaphore-protocol/proof": ^3.7.0
     "@types/node": 18.14.6
     "@types/react": 18.0.28
     "@types/react-dom": 18.0.11

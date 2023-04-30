@@ -2,10 +2,10 @@ import LogsContext from '@/context/LogsContext'
 import { useZkVotingRead } from '@/generated/zk-voting'
 import colors from '@/styles/colors'
 import { Box, Button, Container, Flex, HStack, Icon, IconButton, Image, Link, Radio, RadioGroup, SimpleGrid, Spacer, Stack, Text, useBreakpointValue } from '@chakra-ui/react'
-import { Network, SemaphoreEthers } from '@semaphore-protocol/data'
 import { Identity } from '@semaphore-protocol/identity'
 import { BigNumber } from "ethers/lib/ethers"
 import { formatBytes32String } from 'ethers/lib/utils.js'
+import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import NoSSR from 'react-no-ssr'
@@ -13,7 +13,6 @@ import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import { ButtonActionState, ConnectionState, ConnectionStateType, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity, useZkProofOfHumanityRead } from 'zkpoh-widget'
 import theme from "../styles/index"
 import Card from './Card'
-import { useRouter } from 'next/router'
 import { useZkProofOfHumanitySignals } from './useZkProofOfHumanitySignals'
 
 
