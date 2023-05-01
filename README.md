@@ -251,9 +251,9 @@ Goerli Proof of Humanity test webapp: https://proof-of-humanity-web-elmol.vercel
 ### Deployment
 
 ```
-$ yarn deploy --poh 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 --semaphore 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 --network goerli
-ZKProofOfHumanity contract has been deployed to: 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f
-ZKProofOfHumanity groupId: 10751501845980352646290421047126323754464353897673667581659089592139261440434
+$ yarn deploy --poh 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 --semaphore 0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131 --network goerli
+ZKProofOfHumanity contract has been deployed to: 0x3575E04983C401f26fA02FC09f6EE97e44dF296B
+ZKProofOfHumanity groupId: 64529223205059941630256627722838976601664149149671692208634810640620297856220
 ZKProofOfHumanity depth: 20
 ZKProofOfHumanity deployed with account: 0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C
 Done in 17.88s.
@@ -266,13 +266,13 @@ yarn hardhat verify --network goerli <zkpoh-address> <semaphore-address> <poh-ad
 ```
 
 ```
-$ yarn hardhat verify --network goerli 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f 0x89490c95eD199D980Cdb4FF8Bac9977EDb41A7E7 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 10751501845980352646290421047126323754464353897673667581659089592139261440434 20
+$ yarn hardhat verify --network goerli 0x3575E04983C401f26fA02FC09f6EE97e44dF296B 0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131 0x29988D3e5E716fdFf6a7Bfb34fe05B5A4F3C9b52 64529223205059941630256627722838976601664149149671692208634810640620297856220 20
 Successfully submitted source code for contract
-contracts/ZKProofOfHumanity.sol:ZKProofOfHumanity at 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f
+contracts/ZKProofOfHumanity.sol:ZKProofOfHumanity at 0x3575E04983C401f26fA02FC09f6EE97e44dF296B
 for verification on the block explorer. Waiting for verification result...
 
 Successfully verified contract ZKProofOfHumanity on Etherscan.
-https://goerli.etherscan.io/address/0x611F0278dE9D2Bd4E38F15001B6410B4A915275f#code
+https://goerli.etherscan.io/address/0x3575E04983C401f26fA02FC09f6EE97e44dF296B#code
 Done in 139.57s.
 ```
 
@@ -283,32 +283,32 @@ Done in 139.57s.
 Registration of the human https://proof-of-humanity-web-elmol.vercel.app/profile/0x45756fed107d0aea575a2dc0d49a1c5156b0b796
 
 ```
-$ yarn run hardhat register --zkpoh "0x611F0278dE9D2Bd4E38F15001B6410B4A915275f" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" --network goerli
+$ yarn run hardhat register --zkpoh "0x3575E04983C401f26fA02FC09f6EE97e44dF296B" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" --network goerli
 
-👤 Human registration successfully DONE! ✅
-> zkPoHAdress: [ 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f ]
+👤 Human registration successfully DONE! ✅ 
+> zkPoHAdress: [ 0x3575E04983C401f26fA02FC09f6EE97e44dF296B ]
 > Account: [ 0x45756fED107d0aEA575a2dc0d49a1c5156b0b796 ]
 > 🔒 Identity: [ <<secret>> ]
 Done in 16.09s.
 
 ```
 
-https://goerli.etherscan.io/tx/0x41a22af5c4a5c44fc6b6487f45d9d33fb2133427484fe8b205cba71963ac8e46
+https://goerli.etherscan.io/tx/0xd0ae3d930b2cdcd59218607a8e2c7ec4b2c9a68deb94e089bc0fa599185a41c2
 
 **Verification and signal broadcasting**
 
 ```
-$ yarn run hardhat verify-proof --zkpoh "0x611F0278dE9D2Bd4E38F15001B6410B4A915275f" --signal "Hi ZKPoH" --externalnullifier "1" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" ----anon "0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C" --network goerli
+$ yarn run hardhat verify-proof --zkpoh "0x3575E04983C401f26fA02FC09f6EE97e44dF296B" --signal "Hi ZKPoH" --externalnullifier "1" --human "0x45756fED107d0aEA575a2dc0d49a1c5156b0b796" ----anon "0xaDa5168fA388d4bB6F6A1bd762a9B9a3d3033e0C" --network goerli
 
-👤 Human verification DONE! ✅
-> zkPoHAdress: [ 0x611F0278dE9D2Bd4E38F15001B6410B4A915275f ]
+👤 Human verification DONE! ✅ 
+> zkPoHAdress: [ 0x3575E04983C401f26fA02FC09f6EE97e44dF296B ]
 > 🔒 Identity: [ <<secret>> ]
 > ExternalNullifier: [ 1 ]
 > Signal: [ Hi ZKPoH ]
 Done in 53.85s.
 ```
 
-https://goerli.etherscan.io/tx/0xc83700c09a7654bb0fe9c215aafc8d1be694d125622e0b36809c95612ad9525a
+https://goerli.etherscan.io/tx/0x7939fc4ac22578eae1946ba09f7ae42b3dff89f7b074bb516ebd063a6dd46ed4
 
 ## 💰 Cost Analysis
 
