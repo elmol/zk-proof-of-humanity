@@ -5,6 +5,8 @@ import { Box, Button, Container, Flex, HStack, Icon, IconButton, Image, Link, Ra
 import { Identity } from '@semaphore-protocol/identity'
 import { BigNumber } from "ethers/lib/ethers"
 import { formatBytes32String } from 'ethers/lib/utils.js'
+import parse from 'html-react-parser'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
@@ -21,7 +23,6 @@ export default function Main() {
   const { disconnect } = useDisconnect();
   const { chain } = useNetwork();
 
-
   const zkPoHConfig= {
     confirmationMessage:'I liked this message 👍',
     helpText:'Your identity is registered in ZK Proof of Humanity and generated, so now you can like this message.'
@@ -37,8 +38,9 @@ export default function Main() {
     setConnectionStateType(state.stateType);
     setHelpText(state.helpText);
     if(state.stateType=='IDENTITY_GENERATED'){
-        setIdentity(state.identity,);
+        setIdentity(state.identity);
         setAddressIdentity(state.address);
+
     }
   }
 
@@ -54,7 +56,6 @@ export default function Main() {
       functionName: "semaphore",
   });
   ////////////////////////
-
 
   const router = useRouter()
 
@@ -86,24 +87,23 @@ export default function Main() {
     setPollId(pollIds?pollIds[0]:undefined);
   }, [pollIds])
 
-  const valueSignalC1= 'C1';
-  const valueSignalC2= 'C2';
-  const valueSignalC3= 'C3';
+  const valueSignalYes= 'YES';
+  const valueSignalNo= 'NO';
+
 
   const [_identity, setIdentity] = useState<Identity>();
   const [_addressIdentity, setAddressIdentity] = useState<`0x${string}` | undefined>();
 
-  const [votesC1, setVotesC1] = useState(0);
-  const [votesC2, setVotesC2] = useState(0);
-  const [votesC3, setVotesC3] = useState(0);
+  const [votesYes, setVotesYes] = useState(0);
+  const [votesNo, setVotesNo] = useState(0);
 
-  const [votesPercentageC1, setVotesPercentageC1] = useState(0);
-  const [votesPercentageC2, setVotesPercentageC2] = useState(0);
-  const [votesPercentageC3, setVotesPercentageC3] = useState(0);
+
+  const [votesPercentageYes, setVotesPercentageYes] = useState(0);
+  const [votesPercentageNo, setVotesPercentageNo] = useState(0);
 
 
   const [totalCount, setTotalCount] = useState(0);
-  const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalC1);
+  const [optionCastedSelected, setOptionCastedSelected] = useState<string>(valueSignalYes);
   function shortenAddress(address: string | undefined | any) {
     if(!address) return '';
     return `${address.slice(0, 6)}...${address.slice(-4)}`
@@ -115,39 +115,57 @@ export default function Main() {
 
          if(!signals) return;
 
-          const resultC1 = signals.filter((obj: any) => {
-              const signal32Bytes = formatBytes32String(valueSignalC1);
+          const resultYes = signals.filter((obj: any) => {
+              const signal32Bytes = formatBytes32String(valueSignalYes);
               return (
                   BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               );
           });
 
-          const resultC2 = signals.filter((obj: any) => {
-              const signal32Bytes = formatBytes32String(valueSignalC2);
-              return (
-                  BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
-              );
-          });
-          const resultC3 = signals.filter((obj: any) => {
-              const signal32Bytes = formatBytes32String(valueSignalC3);
+          const resultNo = signals.filter((obj: any) => {
+              const signal32Bytes = formatBytes32String(valueSignalNo);
               return (
                   BigNumber.from(signal32Bytes).eq(BigNumber.from(obj.signal))
               );
           });
 
-          console.log(resultC1);
+          console.log(resultYes);
 
           setTotalCount(signals.length);
-          setVotesC1(resultC1);
-          setVotesC2(resultC2);
-          setVotesC3(resultC3);
-          const _c1Percentage = (resultC1.length * 100) / signals.length;
-          const _c2Percentage = (resultC2.length * 100) / signals.length;
-          const _c3Percentage = (resultC3.length * 100) / signals.length;
-          setVotesPercentageC1(isNaN(_c1Percentage) ? 0 : _c1Percentage);
-          setVotesPercentageC2(isNaN(_c2Percentage) ? 0 : _c2Percentage);
-          setVotesPercentageC3(isNaN(_c3Percentage) ? 0 : _c3Percentage);
+          setVotesYes(resultYes);
+          setVotesNo(resultNo);
+
+          const _c1Percentage = (resultYes.length * 100) / signals.length;
+          const _c2Percentage = (resultNo.length * 100) / signals.length;
+
+          setVotesPercentageYes(isNaN(_c1Percentage) ? 0 : _c1Percentage);
+          setVotesPercentageNo(isNaN(_c2Percentage) ? 0 : _c2Percentage);
+
   }, [pollId, signals]);
+
+
+  function ListItem(props: { value: string }) {
+  // Correct! There is no need to specify the key here:
+  return (
+    <NextLink href={{
+      pathname: '/',
+      query: { pollId: props.value },
+
+    }} >
+      <Card  _hover={{
+    background: "secondaryGray.800",
+    color: "teal.500",
+  }} alignItems='left' flexDirection='column' w='100%' mb='0px'  bg={"secondaryGray.900"}
+    p='15px'
+    px='20px'
+    mt='15px'
+    mx='auto'>
+    <Text color={"secondaryGray.100"} fontWeight='600'>Id: {shortenAddress(props.value?.toString())}</Text>
+    </Card>
+    </NextLink>
+  )
+
+}
 
    return (
      <>
@@ -203,24 +221,37 @@ export default function Main() {
   </Card>
 </NoSSR>
 
-<Container flex="1" display="flex"   maxW={2800} bg={'gray.200'}>
-   <SimpleGrid columns={{ base: 1, md: 1, lg: 3, '2xl': 3 }} gap='20px' mb='120px'  mt='120px'>
+<Container flex="1" display="flex"  maxW='100%' bg={'gray.200'}>
+
+   <SimpleGrid columns={{ base: 1, md: 1, lg: 4, '2xl': 4 }} gap='20px' mb='20px'  mt='20px'>
+
+   <Card justifyContent='initial' alignItems='left' flexDirection='column' w='100%' mt='0px' h='100%' >
+   <NoSSR>
+    <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%' mb="5">
+    Proposals
+    </Text>
+
+      {pollIds && pollIds.map((number) => <ListItem key={number.toString()}
+               value={number.toString()} />)}
+    </NoSSR>
+  </Card>
+
    <Card  alignItems='left' flexDirection='column' w='100%' mb='0px'>
      <NoSSR>
          <Stack display="flex" width="100%">
          <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%' mb="5">
            Voting information
          </Text>
-             <Text color={"secondaryGray.800"} fontWeight='600'>{proposal}</Text>
-             <Text color={"secondaryGray.800"} fontWeight='600'>{shortenAddress(pollId?.toString())}</Text>
+             <Text color={"secondaryGray.800"} fontWeight='600'>Id: {shortenAddress(pollId?.toString())}</Text>
+             <Text color={"secondaryGray.900"} fontWeight='600'>Details:</Text>
+             <Text color={"secondaryGray.800"} fontWeight='600'>{ proposal?parse(proposal):""}</Text>
+
          </Stack>
      </NoSSR>
    </Card>
 
-
-
-
    <Card justifyContent='center' alignItems='left' flexDirection='column' w='100%' mb='0px'>
+
 
    <Stack direction='column' h="100%" >
      <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' mt='0px' lineHeight='100%'>
@@ -243,13 +274,13 @@ export default function Main() {
                 <Image
                       borderRadius='full'
                       boxSize='150px'
-                      src='./c1.jpg'
+                      src='./yes.png'
                       alt='candidate1'
                       p='3'
                     />
-                <Radio color={"primary.800"} value={valueSignalC1} colorScheme='green'>
+                <Radio color={"primary.800"} value={valueSignalYes} colorScheme='green'>
 
-                  Candidate 1</Radio>
+                  Yes</Radio>
                 </Flex>
             </Card>
             <Card bg={"secondaryGray.600"}
@@ -261,30 +292,14 @@ export default function Main() {
                 <Image
                       borderRadius='full'
                       boxSize='150px'
-                      src='./c2.jpg'
+                      src='./no.png'
                       alt='candidate 2'
                       p='3'
                     />
-              <Radio color={"primary.800"} colorScheme='red' value={valueSignalC2}>Candidate 2</Radio>
+              <Radio color={"primary.800"} colorScheme='red' value={valueSignalNo}>No</Radio>
               </Flex>
             </Card>
-            <Card bg={"secondaryGray.600"}
-             height='200px'
-             px='5px'
 
-             mx='auto'>
-               <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
-                <Image
-                      borderRadius='full'
-                      boxSize='150px'
-                      src='./c3.jpg'
-                      alt='candidate 3'
-                      p='3'
-                    />
-              <Radio color={"primary.800"} colorScheme='blue'  value={valueSignalC3}>Candidate 3</Radio>
-              </Flex>
-
-            </Card>
            </Stack>
          </RadioGroup>)}
          </Stack>
@@ -311,35 +326,25 @@ export default function Main() {
                <Flex align='center'>
                  <Box h='8px' w='8px' bg='green.500' borderRadius='50%' me='4px' />
                  <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
-                 Candidate 1
+                 Yes
                  </Text>
                </Flex>
                <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'>
-                ({votesPercentageC1}%)
+                ({votesPercentageYes}%)
                </Text>
              </Flex>
              <Flex direction='column' py='5px' me='10px' w="50%" alignItems='center'>
                <Flex align='center'>
                  <Box h='8px' w='8px' bg='red.600' borderRadius='50%' me='4px' />
                  <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
-                Candidate 2
+                No
                  </Text>
                </Flex>
                <Text  fontSize='lg' color='secondaryGray.100' fontWeight='900'>
-                ({votesPercentageC2}%)
+                ({votesPercentageNo}%)
                </Text>
              </Flex>
-             <Flex direction='column' py='5px' me='10px' w="50%" alignItems='center'>
-               <Flex align='center'>
-                 <Box h='8px' w='8px' bg='blue.600' borderRadius='50%' me='4px' />
-                 <Text fontSize='xs' color='secondaryGray.100' fontWeight='700' mb='5px'>
-                 Candidate 3
-                 </Text>
-               </Flex>
-               <Text  fontSize='lg' color='secondaryGray.100' fontWeight='900'>
-                ({votesPercentageC3}%)
-               </Text>
-             </Flex>
+
              </Flex>
              <Flex direction='column' alignItems='center' pt="5" >
                <Text fontSize='lg' color='secondaryGray.100' fontWeight='900'><b>Total votes:</b> {totalCount}</Text>
