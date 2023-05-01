@@ -30,6 +30,8 @@
         "typescript": "^4.7.3"
     },
     "dependencies": {
+        "html-react-parser": "^3.0.16",
+        "react-html-parser": "^2.0.2",
         "zkpoh-widget": "^0.1.1"
     }
 }
