@@ -1,6 +1,6 @@
 import LogsContext from '@/context/LogsContext'
 import colors from '@/styles/colors'
-import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
+import { Button, Container, Divider, Flex, HStack, Icon, IconButton, Link, List, ListItem, Spacer, Stack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import { Identity } from '@semaphore-protocol/identity'
 import { useContext, useState } from 'react'
 import { FaGithub } from "react-icons/fa"
@@ -9,7 +9,7 @@ import { useAccount, useDisconnect, useNetwork } from 'wagmi'
 import theme from "../styles/index"
 
 import { ethers } from 'ethers'
-import { ButtonActionState, ConnectionState, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity } from 'zkpoh-widget'
+import { ButtonActionState, ConnectionState, ZKPoHConnect, useIsRegisteredInPoH, useZkProofOfHumanity, useZkProofOfHumanitySignals } from 'zkpoh-widget'
 
 
 export default function Main() {
@@ -41,6 +41,8 @@ export default function Main() {
         setAddressIdentity(state.address);
     }
   }
+
+  const signals = useZkProofOfHumanitySignals();
 
    return (
      <>
@@ -92,6 +94,18 @@ export default function Main() {
             </Text>
             <Divider pt="1" borderColor="gray.500" />
             <ZKPoHConnect theme={theme} onChangeState={handleChangeState} onLog={handleLog} signal={signal} externalNullifier={externalNullifier}>Verify</ZKPoHConnect>
+
+            {(signals?.length>0?true:false)  && (
+            <>
+                <Divider pt="10" borderColor="gray.500" />
+                <List spacing={3} >
+                    {signals.slice(-5).map((signal:any) => (
+                    <ListItem key={signal.externalNullifier} fontSize='xs' >
+                            {shortenNullifier(signal.externalNullifier)} ✔
+                    </ListItem>))}
+                </List>
+            </>)}
+
          </Stack>
        </Container>
      </>
@@ -117,4 +131,9 @@ function randomNullifier() {
 function shortenAddress(address: string | undefined | any) {
     if(!address) return '';
     return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
+}
+
+function shortenNullifier(nullifier: string | undefined | any) {
+    if(!nullifier) return '';
+    return `${nullifier.slice(0, 24)}...${nullifier.slice(-24)}`
+}

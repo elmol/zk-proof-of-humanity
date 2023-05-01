@@ -2966,17 +2966,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semaphore-protocol/data@npm:^3.7.0":
-  version: 3.8.0
-  resolution: "@semaphore-protocol/data@npm:3.8.0"
-  dependencies:
-    "@ethersproject/contracts": ^5.7.0
-    "@ethersproject/providers": ^5.7.0
-    axios: ^0.27.2
-  checksum: a5f9038e134d2f2d1d2826e322f263af795d9f02e5f4e8b6e86283d6245cfe1feb7d46dbb2e65d79e51dd5dd968847b7bc2248d4fb148262eeffe374d2152a57
-  languageName: node
-  linkType: hard
-
 "@semaphore-protocol/group@npm:3.7.0":
   version: 3.7.0
   resolution: "@semaphore-protocol/group@npm:3.7.0"
@@ -2986,18 +2975,6 @@ __metadata:
     "@ethersproject/keccak256": ^5.7.0
     "@zk-kit/incremental-merkle-tree": 1.0.0
   checksum: 35043c0c9fd3d730727d251ef9553353879bcccb783881df42aa7fa3693762f630b285450926b6ba4aa394d2ece87a6d15a474dc3af8c63be47954c1c40ea677
-  languageName: node
-  linkType: hard
-
-"@semaphore-protocol/group@npm:^3.7.0":
-  version: 3.8.0
-  resolution: "@semaphore-protocol/group@npm:3.8.0"
-  dependencies:
-    "@ethersproject/bignumber": ^5.7.0
-    "@ethersproject/bytes": ^5.7.0
-    "@ethersproject/keccak256": ^5.7.0
-    "@zk-kit/incremental-merkle-tree": 1.0.0
-  checksum: cc785418efcd6000c457a5962a979932b8dd3f0f9e54b5dfefaacb49c51b0c50e2bbe4c3447bd1e94a9a497515e40ccbe4aec96c158f8d0b0881929bcee1af69
   languageName: node
   linkType: hard
 
@@ -3029,19 +3006,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semaphore-protocol/identity@npm:^3.7.0":
-  version: 3.8.0
-  resolution: "@semaphore-protocol/identity@npm:3.8.0"
-  dependencies:
-    "@ethersproject/bignumber": ^5.5.0
-    "@ethersproject/keccak256": ^5.7.0
-    "@ethersproject/random": ^5.5.1
-    "@ethersproject/strings": ^5.6.1
-    js-sha512: ^0.8.0
-  checksum: ff9c6912757378f80314ad42dc7f29d2a7d748d908ec04e81d4d6496475faf228c126400f4458bcfd2bd1d5dc4d28bd343047d6217079eafb4be150055fa2893
-  languageName: node
-  linkType: hard
-
 "@semaphore-protocol/proof@npm:3.7.0":
   version: 3.7.0
   resolution: "@semaphore-protocol/proof@npm:3.7.0"
@@ -3056,23 +3020,6 @@ __metadata:
     "@semaphore-protocol/group": 3.7.0
     "@semaphore-protocol/identity": 3.7.0
   checksum: 20f0a411953c7b3eccfbc1240489a9d73a549c6931af11aa130ab54383a10601553c87198d9552e434efe0ea09a109056e06f32661870df63a0bf29b0904287a
-  languageName: node
-  linkType: hard
-
-"@semaphore-protocol/proof@npm:^3.7.0":
-  version: 3.8.0
-  resolution: "@semaphore-protocol/proof@npm:3.8.0"
-  dependencies:
-    "@ethersproject/bignumber": ^5.5.0
-    "@ethersproject/bytes": ^5.7.0
-    "@ethersproject/keccak256": ^5.7.0
-    "@ethersproject/strings": ^5.5.0
-    "@zk-kit/incremental-merkle-tree": 0.4.3
-    snarkjs: 0.4.13
-  peerDependencies:
-    "@semaphore-protocol/group": 3.8.0
-    "@semaphore-protocol/identity": 3.8.0
-  checksum: 78b2781af480574cefdaa55b5ccf4929fa6d408e90225ad8e4798d5839098e9ea676bc937a669dc8ebd355a0447cbafd3d3c4ae70c61d760c90c31388b76aa11
   languageName: node
   linkType: hard
 
@@ -16771,7 +16718,7 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
-    zkpoh-widget: 0.1.3
+    zkpoh-widget: 0.1.4
   languageName: unknown
   linkType: soft
 
@@ -16785,22 +16732,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"zkpoh-widget@npm:0.1.3":
-  version: 0.1.3
-  resolution: "zkpoh-widget@npm:0.1.3"
+"zkpoh-widget@npm:0.1.4":
+  version: 0.1.4
+  resolution: "zkpoh-widget@npm:0.1.4"
   dependencies:
     "@chakra-ui/react": ^2.5.1
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
-    "@semaphore-protocol/data": ^3.7.0
-    "@semaphore-protocol/group": ^3.7.0
-    "@semaphore-protocol/identity": ^3.7.0
-    "@semaphore-protocol/proof": ^3.7.0
+    "@semaphore-protocol/data": 3.7.0
+    "@semaphore-protocol/group": 3.7.0
+    "@semaphore-protocol/identity": 3.7.0
+    "@semaphore-protocol/proof": 3.7.0
     react: 18.2.0
     react-dom: 18.2.0
     react-no-ssr: ^1.1.0
     wagmi: ^0.12.1
-  checksum: d205f2082c53a096eaa72278886deeaf1248bf6f733ddf7306353609cdf05e6bdcd7b8c737695cc7aaf378800d4780d3f16cabeddb1a5514814e8eac244227bd
+  checksum: 6ccb9d7bf762abada3ed6ec0583f9bc8d2c07877ec631a460d4bd4167566b446d4bbcc97de3ec7912589a0fbfec26e291723c208f9048329da109e06683d761d
   languageName: node
   linkType: hard
 
