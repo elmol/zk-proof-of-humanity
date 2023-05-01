@@ -2904,16 +2904,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semaphore-protocol/contracts@npm:3.4.0":
-  version: 3.4.0
-  resolution: "@semaphore-protocol/contracts@npm:3.4.0"
-  dependencies:
-    "@openzeppelin/contracts": 4.7.3
-    "@zk-kit/incremental-merkle-tree.sol": 1.3.3
-  checksum: 91b8c7575c6976f9b711f0a6f8f1fb03c40fecb3da8d6a735ada73618464cc6aaea79121821a1333128bb31ae31eadcb91bc1fc89d56b8df4dfaa790696825cd
-  languageName: node
-  linkType: hard
-
 "@semaphore-protocol/contracts@npm:3.7.0":
   version: 3.7.0
   resolution: "@semaphore-protocol/contracts@npm:3.7.0"
@@ -2935,14 +2925,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semaphore-protocol/data@npm:^3.4.0":
-  version: 3.6.0
-  resolution: "@semaphore-protocol/data@npm:3.6.0"
+"@semaphore-protocol/data@npm:^3.7.0":
+  version: 3.9.0
+  resolution: "@semaphore-protocol/data@npm:3.9.0"
   dependencies:
     "@ethersproject/contracts": ^5.7.0
     "@ethersproject/providers": ^5.7.0
     axios: ^0.27.2
-  checksum: d4f96b11d42bb2c27c5b6ee7c6ba80a1be618d8a99c5b55276563b6197878e388f4d89b4c0dc585f4f8f245944499ac9c025896dafb9a769a1d99141a7bedc2b
+  checksum: cd89d702ddd3b69c40bd647ece306e4d6ed46ab99e3419e72a04f7beb023dc0ad5a123a934f4dfaaf910980fbd28b53a494343a31d802a3ddda2fcb3ae086ae3
   languageName: node
   linkType: hard
 
@@ -16666,8 +16656,8 @@ __metadata:
     "@nomiclabs/hardhat-ethers": ^2.0.0
     "@nomiclabs/hardhat-etherscan": ^3.1.5
     "@openzeppelin/contracts": ^4.8.1
-    "@semaphore-protocol/contracts": 3.4.0
-    "@semaphore-protocol/data": ^3.4.0
+    "@semaphore-protocol/contracts": 3.7.0
+    "@semaphore-protocol/data": ^3.7.0
     "@semaphore-protocol/group": 3.7.0
     "@semaphore-protocol/hardhat": 3.7.0
     "@semaphore-protocol/identity": 3.7.0
@@ -16726,7 +16716,7 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
-    zkpoh-widget: ^0.1.4
+    zkpoh-widget: 0.1.6
   languageName: unknown
   linkType: soft
 
@@ -16740,9 +16730,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"zkpoh-widget@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "zkpoh-widget@npm:0.1.4"
+"zkpoh-widget@npm:0.1.6":
+  version: 0.1.6
+  resolution: "zkpoh-widget@npm:0.1.6"
   dependencies:
     "@chakra-ui/react": ^2.5.1
     "@emotion/react": ^11.10.6
@@ -16755,7 +16745,7 @@ __metadata:
     react-dom: 18.2.0
     react-no-ssr: ^1.1.0
     wagmi: ^0.12.1
-  checksum: 6ccb9d7bf762abada3ed6ec0583f9bc8d2c07877ec631a460d4bd4167566b446d4bbcc97de3ec7912589a0fbfec26e291723c208f9048329da109e06683d761d
+  checksum: 77226d42985a19f124797630110741d602c40b9c95e8b4bd3416c3cdfc34c74fd9846e26bd1784850631ab7f059a4da466f80d13b5360bdc2f5f1f3668ac4a28
   languageName: node
   linkType: hard
 
