@@ -1,14 +1,10 @@
-import { Group } from "@semaphore-protocol/group"
 import { expect } from "chai"
-import { ethers, run } from "hardhat"
-import { ZKVoting, ProofOfHumanityMock, ZKProofOfHumanity } from "../build/typechain"
+import { ethers } from "hardhat"
+import { ProofOfHumanityMock, ZKProofOfHumanity, ZKVoting } from "../build/typechain"
 
 describe("ZKVoting", () => {
-    let pohContract: ProofOfHumanityMock
-    let zkPoHContract: ZKProofOfHumanity
     let contract: ZKVoting
 
-    const groupId = "42"
     const pollId1 = randomNullifier()
     const pollId2 = randomNullifier();
     const proposal = "Should the kingdom allow dragons to roam freely within its borders?<br/>" +
@@ -17,38 +13,30 @@ describe("ZKVoting", () => {
 
 
     before(async () => {
-        // contracts deployment
-        const PoHFactory = await ethers.getContractFactory("ProofOfHumanityMock")
-        pohContract = await PoHFactory.deploy()
-        zkPoHContract = await run("deploy", { poh: pohContract.address, logs: false, group: groupId })
-
         const ContractFactory = await ethers.getContractFactory("ZKVoting")
-
-        contract = await ContractFactory.deploy(pollId1,proposal)
-    })
-
-    describe("# construction", () => {
-
-        it("Should be constructed with an init proposal", async () => {
-            expect(proposal).equal(await contract.polls(pollId1))
-        })
-
-        it("Should be constructed with an init poll ID (externalNullifier)", async () => {
-            const pollIds = await contract.getAllKeys()
-            expect(pollId1).equal(pollIds[0])
-        })
+        contract = await ContractFactory.deploy();
     })
 
     describe("# Add Polls", () => {
-        it("Should allow adding a poll to the mapping", async () => {
-            await contract.addToMapping(pollId2,"addpoll");
-            const amount = await contract.getAllKeys();
+
+        it("Should allow adding a poll", async () => {
+            await contract.addPoll(pollId1,proposal);
+            const amount = await contract.getPollIds();
+            expect(1).equal(amount.length);
+            const pollId = await contract.pollIds(0)
+            expect(pollId1).equal(pollId);
+            expect(proposal).equal(await contract.polls(pollId));
+        })
+
+        it("Should allow adding an other poll", async () => {
+            await contract.addPoll(pollId2,"proposal text 2");
+            const amount = await contract.getPollIds();
             expect(2).equal(amount.length)
         })
 
-        it("You should search by key in the mapping", async () => {
-             const _poll = await contract.polls(pollId2);
-             expect("addpoll").equal(_poll)
+        it("You should search by pollId", async () => {
+             const proposal = await contract.polls(pollId2);
+             expect("proposal text 2").equal(proposal)
         })
     })
 })

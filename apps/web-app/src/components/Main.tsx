@@ -71,7 +71,7 @@ export default function Main() {
   }, [router.query.pollId])
 
   const {data:pollIds} = useZkVotingRead({
-    functionName: 'getAllKeys',
+    functionName: 'getPollIds',
     enabled: address && chain?.id==1337?true:false,
   });
 
