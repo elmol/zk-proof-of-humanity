@@ -7,10 +7,10 @@ import { useZkProofOfHumanityProofVerified } from "./useZkProofOfHumanityProofVe
 
 export interface SignalsProps {
     contractAddress?: `0x${string}` | undefined;
-    externalNullifier?: BigNumber| undefined;
+    externalNullifier?: BigNumber | undefined;
 }
 
-export function useZkProofOfHumanitySignals(props: SignalsProps={}) {
+export function useZkProofOfHumanitySignals(props: SignalsProps = {}) {
     const [signals, setSignals] = useState<any>();
 
     const { chain } = useNetwork();
@@ -26,8 +26,12 @@ export function useZkProofOfHumanitySignals(props: SignalsProps={}) {
 
     const fetchSignals = useCallback(() => {
         async function getSignals(network: string, semaphoreAddress: string, groupId: BigNumber) {
-            let semaphoreEthers = getSemaphoreEthers(network, semaphoreAddress);
-            return await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
+            try {
+                let semaphoreEthers = getSemaphoreEthers(network, semaphoreAddress);
+                return await semaphoreEthers.getGroupVerifiedProofs(groupId.toString());
+            } catch (error) {
+                console.error("Error getting signals:", error);
+            }
         }
 
         function getSemaphoreEthers(network: string, semaphoreAddress: string) {
