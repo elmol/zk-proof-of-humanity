@@ -50,7 +50,7 @@ export function useZkProofOfHumanitySignals(props: SignalsProps = {}) {
             const filtered: any = !props.externalNullifier
                 ? signals
                 : signals?.filter((signal: any) => {
-                      return signal.nullifierHash === props.externalNullifier?.toString();
+                      return signal.externalNullifier == props.externalNullifier?.toString();
                   });
 
             setSignals(filtered);
