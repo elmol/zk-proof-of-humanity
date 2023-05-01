@@ -16708,7 +16708,7 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
-    zkpoh-widget: 0.1.5
+    zkpoh-widget: 0.1.6
   languageName: unknown
   linkType: soft
 
@@ -16722,9 +16722,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"zkpoh-widget@npm:0.1.5":
-  version: 0.1.5
-  resolution: "zkpoh-widget@npm:0.1.5"
+"zkpoh-widget@npm:0.1.6":
+  version: 0.1.6
+  resolution: "zkpoh-widget@npm:0.1.6"
   dependencies:
     "@chakra-ui/react": ^2.5.1
     "@emotion/react": ^11.10.6
@@ -16737,7 +16737,7 @@ __metadata:
     react-dom: 18.2.0
     react-no-ssr: ^1.1.0
     wagmi: ^0.12.1
-  checksum: 584c78126793355e5c4eac60fb913555ac8aed8f806130a2f6da7defd5884531f2c455aaa85f3e1b261a4b0a2599b61e9cbbdc9bc330f258acd609fd6ad899a1
+  checksum: 77226d42985a19f124797630110741d602c40b9c95e8b4bd3416c3cdfc34c74fd9846e26bd1784850631ab7f059a4da466f80d13b5360bdc2f5f1f3668ac4a28
   languageName: node
   linkType: hard
 
