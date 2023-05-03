@@ -383,7 +383,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 React library that enables easy integration with ZK Proof of Humanity for your projects.
 
-More information in [widget readme](apps/widget/README.md)
+More information in [**Widget readme**](apps/widget/README.md)
 
 You can find the npm package in <a href="https://www.npmjs.com/package/zkpoh-widget" style="color: #333; text-decoration: none;"><strong>📦 zkpoh-widget</strong></a>
 
@@ -391,3 +391,9 @@ You can find the npm package in <a href="https://www.npmjs.com/package/zkpoh-wid
 
 - In `wagmi.config.ts` update the contract addresses for each supported network.
 - Run `yarn wagmi generate` to update the configuration.
+
+## Building a Private Voting App with zkPoH: A Step-by-Step Guide
+
+In this step-by-step guide, we'll show you how to get started with zkPoH and use the zkpoh-widget React library to build anonymous voting systems that require proof of humanity. 
+
+[**Link to the step by step guide**](https://github.com/elmol/zk-proof-of-humanity-vote/blob/main/step-by-step-guide.md)
