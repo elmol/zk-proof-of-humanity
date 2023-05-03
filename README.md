@@ -97,6 +97,9 @@ yarn
   * [📜 Usage](#---usage)
     + [Start the app](#start-the-app)
     + [Dev mode](#dev-mode)
+- [🧰 ZK Proof of Humanity Widget](#zk-proof-of-humanity-widget)
+  * [🛠 Contract address configuration](#contract-address-configuration)
+  * [Building a Private Voting App with zkPoH: A Step-by-Step Guide](#building-a-private-voting-app-with-zkpoh-a-step-by-step-guide)
 
 # 💼 Smart Contracts
 Select contract directory `apps/contracts`
