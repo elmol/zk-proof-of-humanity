@@ -182,8 +182,9 @@ export default function Main() {
 
   <HStack align="center" justify="right"  px={{ base: 4 }}>
     <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-      <Text textAlign={useBreakpointValue({ base: "center", md: "left" })} fontFamily={"heading"} color='secondaryGray.100' fontSize='xl' fontWeight='700'>
-        🎭 <b>ZK Proof of Humanity </b>
+    <Image w='40px' h='40px' src='./icon_zk_vote.png' alt='Zk Vote' marginRight='5px' />
+      <Text marginTop='2' textAlign={useBreakpointValue({ base: "center", md: "left" })} fontFamily={"heading"} color='secondaryGray.100' fontSize='xl' fontWeight='700'>
+       <b>ZK Vote </b>
         <Link href="https://github.com/elmol/zk-proof-of-humanity" isExternal>
            <IconButton aria-label="Github repository" icon={<Icon boxSize={6} as={FaGithub} />} />
         </Link>
@@ -221,26 +222,26 @@ export default function Main() {
   </Card>
 </NoSSR>
 
-<Container flex="1" display="flex"  maxW='100%' bg={'gray.200'}>
+<Container flex="1" display="flex"  maxW={isConnected?'100%':'30%'} >
 
-   <SimpleGrid columns={{ base: 1, md: 1, lg: 4, '2xl': 4 }} gap='20px' mb='20px'  mt='20px'>
-
+   <SimpleGrid columns={{ base: 1, md: 1, lg: isConnected?4:1, '2xl':isConnected?4:1 }} gap='20px' mb='20px'  mt='20px'>
+   {isConnected && (
    <Card justifyContent='initial' alignItems='left' flexDirection='column' w='100%' mt='0px' h='100%' >
    <NoSSR>
     <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%' mb="5">
     Proposals
     </Text>
-
       {pollIds && pollIds.map((number) => <ListItem key={number.toString()}
                value={number.toString()} />)}
     </NoSSR>
   </Card>
-
+   )}
+ {isConnected && (
    <Card  alignItems='left' flexDirection='column' w='100%' mb='0px'>
      <NoSSR>
          <Stack display="flex" width="100%">
          <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%' mb="5">
-           Voting information
+         Proposal
          </Text>
              <Text color={"secondaryGray.800"} fontWeight='600'>Id: {shortenAddress(pollId?.toString())}</Text>
              <Text color={"secondaryGray.900"} fontWeight='600'>Details:</Text>
@@ -249,10 +250,8 @@ export default function Main() {
          </Stack>
      </NoSSR>
    </Card>
-
-   <Card justifyContent='center' alignItems='left' flexDirection='column' w='100%' mb='0px'>
-
-
+ )}
+   <Card justifyContent='center' alignItems='left' flexDirection='column'  mb='0px' h={isConnected?'100%':'30%'}>
    <Stack direction='column' h="100%" >
      <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' mt='0px' lineHeight='100%'>
            Vote
@@ -286,7 +285,6 @@ export default function Main() {
             <Card bg={"secondaryGray.600"}
              height='200px'
              px='5px'
-
              mx='auto'>
               <Flex direction='column' py='5px' me='10px' w="100%" alignItems='center' justifyContent='flex-end' h="100%">
                 <Image
@@ -308,6 +306,7 @@ export default function Main() {
    </Stack>
        </Stack>
          </Card>
+         {isConnected && (
          <Card justifyContent='center' alignItems='center' flexDirection='column' w='100%' mb='0px'>
          <Text me='auto' color={"secondaryGray.900"} fontSize='xl' fontWeight='700' lineHeight='100%'>
            Result of the vote
@@ -352,6 +351,7 @@ export default function Main() {
            </Card>
        </Stack>
        </Card>
+         )}
        </SimpleGrid>
 </Container>
      </>
