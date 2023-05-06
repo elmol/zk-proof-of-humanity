@@ -58,7 +58,7 @@ task("verify-proof", "Verify proof of humanity and save nullifier to avoid doubl
         const api =
             networkName === "localhost"
                 ? new ZkPoHApi(groupId.toString(), 20, "localhost", await zkPoHContract.semaphore())
-                : new ZkPoHApi(groupId.toString())
+                : new ZkPoHApi(groupId.toString(), 20, networkName === "sepolia" ? "sepolia" : "goerli")
 
         const externalNullifier = externalnullifier ? externalnullifier : api.groupId
         const signalFormatted = formatBytes32String(signal)
