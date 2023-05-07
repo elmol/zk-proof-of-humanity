@@ -16761,7 +16761,6 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
-    zkpoh-widget: 0.1.6
   languageName: unknown
   linkType: soft
 
@@ -16775,25 +16774,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"zkpoh-widget@npm:0.1.6":
-  version: 0.1.6
-  resolution: "zkpoh-widget@npm:0.1.6"
-  dependencies:
-    "@chakra-ui/react": ^2.5.1
-    "@emotion/react": ^11.10.6
-    "@emotion/styled": ^11.10.6
-    "@semaphore-protocol/data": 3.7.0
-    "@semaphore-protocol/group": 3.7.0
-    "@semaphore-protocol/identity": 3.7.0
-    "@semaphore-protocol/proof": 3.7.0
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-no-ssr: ^1.1.0
-    wagmi: ^0.12.1
-  checksum: 77226d42985a19f124797630110741d602c40b9c95e8b4bd3416c3cdfc34c74fd9846e26bd1784850631ab7f059a4da466f80d13b5360bdc2f5f1f3668ac4a28
-  languageName: node
-  linkType: hard
-
 "zkpoh-widget@workspace:apps/widget":
   version: 0.0.0-use.local
   resolution: "zkpoh-widget@workspace:apps/widget"
@@ -16805,10 +16785,10 @@ __metadata:
     "@rollup/plugin-json": ^6.0.0
     "@rollup/plugin-node-resolve": ^15.0.2
     "@rollup/plugin-typescript": ^11.1.0
-    "@semaphore-protocol/data": 3.7.0
-    "@semaphore-protocol/group": 3.7.0
-    "@semaphore-protocol/identity": 3.7.0
-    "@semaphore-protocol/proof": 3.7.0
+    "@semaphore-protocol/data": 3.9.0
+    "@semaphore-protocol/group": 3.9.0
+    "@semaphore-protocol/identity": 3.9.0
+    "@semaphore-protocol/proof": 3.9.0
     "@types/react": 18.0.33
     "@types/react-dom": 18.0.11
     "@types/react-no-ssr": ^1.1.3

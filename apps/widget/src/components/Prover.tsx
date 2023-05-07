@@ -1,4 +1,4 @@
-import { Network, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data";
+import { SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data";
 import { Group } from "@semaphore-protocol/group";
 import { Identity } from "@semaphore-protocol/identity";
 import { generateProof } from "@semaphore-protocol/proof";
@@ -20,7 +20,7 @@ export class ZkPoHApi {
     constructor(
         public readonly groupId: string,
         public readonly depth: number = 20,
-        public readonly network: Network | "localhost" = "goerli",
+        public readonly network: string | "localhost" = "goerli",
         public readonly semaphoreAddress: string | undefined = undefined
     ) {}
     async generateZKPoHProof(identity: Identity, externalNullifier: string, signal: string) {
@@ -98,7 +98,7 @@ export function Prover(props: ProverProps) {
         props.onStateChange && props.onStateChange({ logs: `Generating humanity proof...` });
         const groupIdString = groupId.toString();
         const depthNumber = depth.toNumber();
-        const network = chain.network as Network | "localhost";
+        const network = chain.network as string | "localhost";
         const signal32Bytes = formatBytes32String(props.signal);
 
         const api =

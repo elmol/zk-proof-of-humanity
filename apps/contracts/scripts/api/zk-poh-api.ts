@@ -1,7 +1,7 @@
+import { SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data"
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { generateProof } from "@semaphore-protocol/proof"
-import { Network, SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data"
 import { config } from "../../package.json"
 
 export class ZkPoHApi {
@@ -11,7 +11,7 @@ export class ZkPoHApi {
     constructor(
         public readonly groupId: string,
         public readonly depth: number = 20,
-        public readonly network: Network | "localhost" = "goerli",
+        public readonly network: string | "localhost" = "goerli",
         public readonly semaphoreAddress: string | undefined = undefined
     ) {}
     async generateZKPoHProof(identity: Identity, externalNullifier: string, signal: string) {

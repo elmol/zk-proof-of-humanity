@@ -63,10 +63,10 @@ Or just to prove that you are human.
 The following dependencies are needed:
 
 ```
-"@semaphore-protocol/data": "3.7.0",
-"@semaphore-protocol/group": "3.7.0",
-"@semaphore-protocol/identity": "3.7.0",
-"@semaphore-protocol/proof": "3.7.0",
+"@semaphore-protocol/data": "3.9.0",
+"@semaphore-protocol/group": "3.9.0",
+"@semaphore-protocol/identity": "3.9.0",
+"@semaphore-protocol/proof": "3.9.0",
 "react": "18.2.0",
 "react-dom": "18.2.0",
 "react-no-ssr": "^1.1.0",

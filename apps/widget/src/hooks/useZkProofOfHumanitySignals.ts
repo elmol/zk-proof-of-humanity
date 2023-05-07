@@ -1,4 +1,4 @@
-import { Network, SemaphoreEthers } from "@semaphore-protocol/data";
+import { SemaphoreEthers } from "@semaphore-protocol/data";
 import { BigNumber } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
@@ -45,7 +45,7 @@ export function useZkProofOfHumanitySignals(props: SignalsProps = {}) {
             if (!chain) return;
             if (!semaphoreAddress) return;
             if (!groupId) return;
-            const network = chain.network as Network | "localhost";
+            const network = chain.network as string | "localhost";
             const signals = await getSignals(network, semaphoreAddress, groupId);
             const filtered: any = !props.externalNullifier
                 ? signals
