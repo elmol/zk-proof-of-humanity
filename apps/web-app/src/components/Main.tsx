@@ -90,7 +90,7 @@ export default function Main() {
                                 {" "}
                                 - <b>Human Address:</b>{" "}
                             </Text>{" "}
-                            <EtherScanLink address={_addressIdentity}>
+                            <EtherScanLink address={_addressIdentity} network={chain?.network}>
                                 <Text fontSize="md">{shortenAddress(_addressIdentity)} </Text>
                             </EtherScanLink>
                             <Text fontSize="md">
@@ -104,7 +104,7 @@ export default function Main() {
                         <Text>
                             {" "}
                             | <b>Contract:</b>{" "}
-                            <EtherScanLink address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
+                            <EtherScanLink address={contract.address} network={chain?.network}>{shortenAddress(contract.address)}</EtherScanLink>
                         </Text>
                     )}
                     {chain && (
@@ -118,7 +118,7 @@ export default function Main() {
                             <Text>
                                 {" "}
                                 | <b>Connected to </b>{" "}
-                                <EtherScanLink address={address}>{shortenAddress(address)}</EtherScanLink>{" "}
+                                <EtherScanLink address={address} network={chain?.network}>{shortenAddress(address)}</EtherScanLink>{" "}
                                 {isHuman ? "🧑" : "🤖"} |{" "}
                             </Text>{" "}
                             <Button colorScheme="primary" size="xs" onClick={() => disconnect()}>
@@ -166,11 +166,12 @@ export default function Main() {
 type EtherScanLinkTProps = {
     children: React.ReactNode;
     address: string;
+    network: string | undefined;
 };
 
-function EtherScanLink({ children, address }: EtherScanLinkTProps) {
+function EtherScanLink({ children, address, network }: EtherScanLinkTProps) {
     return (
-        <Link color={colors.primary[500]} href={`https://goerli.etherscan.io/address/${address}`} isExternal>
+        <Link color={colors.primary[500]} href={`https://${network}.etherscan.io/address/${address}`} isExternal>
             {children}
         </Link>
     );

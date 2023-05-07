@@ -16708,7 +16708,6 @@ __metadata:
     react-no-ssr: ^1.1.0
     typescript: 4.9.5
     wagmi: ^0.12.1
-    zkpoh-widget: 0.1.7
   languageName: unknown
   linkType: soft
 
@@ -16721,25 +16720,6 @@ __metadata:
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
-
-"zkpoh-widget@npm:0.1.7":
-  version: 0.1.7
-  resolution: "zkpoh-widget@npm:0.1.7"
-  dependencies:
-    "@chakra-ui/react": ^2.5.1
-    "@emotion/react": ^11.10.6
-    "@emotion/styled": ^11.10.6
-    "@semaphore-protocol/data": 3.9.0
-    "@semaphore-protocol/group": 3.9.0
-    "@semaphore-protocol/identity": 3.9.0
-    "@semaphore-protocol/proof": 3.9.0
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-no-ssr: ^1.1.0
-    wagmi: ^0.12.1
-  checksum: 30b77e34ac7a49c63c7118cd0339337bd0cd2db8cb0a8ba641a3802cd16d411a271e7d8da7e2ab240a6d5cf033dc1d072206277ad7f3c70880ad85c889a8c1c5
-  languageName: node
-  linkType: hard
 
 "zkpoh-widget@workspace:apps/widget":
   version: 0.0.0-use.local

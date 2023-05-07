@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useConnect } from "wagmi";
-import { goerli, localhost } from "wagmi/chains";
+import { sepolia,goerli, localhost } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { ButtonActionProps } from "./ButtonAction";
 import BaseButton from "./BaseButton";
@@ -9,7 +9,7 @@ function WalletConnect(props: ButtonActionProps) {
     const { connect, error, isLoading } = useConnect({
         chainId: goerli.id,
         connector: new InjectedConnector({
-            chains: [goerli, localhost],
+            chains: [sepolia, goerli, localhost],
         }),
     });
 

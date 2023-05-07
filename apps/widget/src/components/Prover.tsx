@@ -104,7 +104,7 @@ export function Prover(props: ProverProps) {
         const api =
             network == "localhost"
                 ? new ZkPoHApi(groupIdString, depthNumber, network, semaphoreAddress)
-                : new ZkPoHApi(groupIdString, depthNumber);
+                : new ZkPoHApi(groupIdString, depthNumber, network);
 
         try {
             props.onStateChange && props.onStateChange({ logs: `Verifying your humanity...` });
@@ -168,7 +168,7 @@ export function Prover(props: ProverProps) {
                     <>
                         <Text align="center">
                             {props.verificationMessage} -{" "}
-                            <Link color="teal.500" href={`https://goerli.etherscan.io/tx/${transaction}`} isExternal>
+                            <Link color="teal.500" href={`https://${chain?.network as string}.etherscan.io/tx/${transaction}`} isExternal>
                                 see it <Icon boxSize={3} as={BsBoxArrowUpRight} />
                             </Link>
                         </Text>

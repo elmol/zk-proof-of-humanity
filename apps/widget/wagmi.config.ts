@@ -11,6 +11,7 @@ export default defineConfig({
       deployments: {
         ZKProofOfHumanity: {
           5: '0x3575E04983C401f26fA02FC09f6EE97e44dF296B',
+          11155111: '0xfB25B78ACcCCC730C4Ba7BF856Af95ef8a95165C',
           31337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
           1337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
         }
