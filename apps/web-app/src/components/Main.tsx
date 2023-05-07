@@ -72,7 +72,6 @@ export default function Main() {
 
   const {data:pollIds} = useZkVotingRead({
     functionName: 'getPollIds',
-    enabled: address && chain?.id==1337?true:false,
   });
 
   const [pollId, setPollId] = useState<BigNumber| undefined>();
@@ -80,7 +79,6 @@ export default function Main() {
   const {data:proposal} = useZkVotingRead({
     functionName: 'polls',
     args: [ pollId?pollId:BigNumber.from("0")],
-    enabled: address && chain?.id==1337?true:false && pollId,
   });
 
   useEffect(() => {
@@ -196,14 +194,14 @@ export default function Main() {
         <Text color='secondaryGray.100' fontSize='md' fontWeight='900' >
           | <b>🔒 Identity:</b>
         </Text>
-        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Human Address:</b> </Text> <EtherScanLink   address={_addressIdentity}><Text >{shortenAddress(_addressIdentity)} </Text></EtherScanLink>
+        <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Human Address:</b> </Text> <EtherScanLink   address={_addressIdentity} network={chain?.network}><Text >{shortenAddress(_addressIdentity)} </Text></EtherScanLink>
         <Text color='secondaryGray.100' fontSize='md' fontWeight='800'> - <b>Identity Commitment:</b> </Text><Text fontSize='md' color="primary.400"> {shortenAddress(_identity?.commitment.toString())} </Text>
       </>
     )}
     {isConnected && contract && (
       <Text color='secondaryGray.100' fontWeight='800'>
         {" "}
-        | <b>Contract:</b>  <EtherScanLink address={contract.address}>{shortenAddress(contract.address)}</EtherScanLink>
+        | <b>Contract:</b>  <EtherScanLink address={contract.address} network={chain?.network}>{shortenAddress(contract.address)}</EtherScanLink>
       </Text>
     )}
    {chain && <Text color='secondaryGray.100' fontWeight='800'> | <b>Network:</b> {chain.unsupported?"Wrong Network":chain.name}</Text>}
@@ -211,7 +209,7 @@ export default function Main() {
       <>
         <Text color='secondaryGray.100' fontWeight='800'>
           {" "}
-          | <b>Connected to </b> <EtherScanLink  address={address}>{shortenAddress(address)}</EtherScanLink> {isHuman ? "🧑" : "🤖"} |{" "}
+          | <b>Connected to </b> <EtherScanLink  address={address} network={chain?.network}>{shortenAddress(address)}</EtherScanLink> {isHuman ? "🧑" : "🤖"} |{" "}
         </Text >{" "}
         <Button colorScheme="primary" size="xs" onClick={() => disconnect()}>
           Disconnect
@@ -360,12 +358,13 @@ export default function Main() {
 
 type EtherScanLinkTProps = {
   children: React.ReactNode;
-  address: string
+  address: string,
+  network: string | undefined
 
 }
 
-function EtherScanLink({children,address}:EtherScanLinkTProps ) {
+function EtherScanLink({children,address, network}:EtherScanLinkTProps ) {
   return (
-    <Link color={colors.primary[400]} href={`https://goerli.etherscan.io/address/${address}`} isExternal>{children}</Link>
+    <Link color={colors.primary[400]} href={`https://${network}.etherscan.io/address/${address}`} isExternal>{children}</Link>
   )
 }
