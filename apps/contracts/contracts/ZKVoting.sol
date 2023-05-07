@@ -2,7 +2,6 @@
 pragma solidity ^0.8.4;
 
 contract ZKVoting {
-
     //pollId --> proposal text
     mapping(uint256 => string) public polls;
     uint256[] public pollIds;
