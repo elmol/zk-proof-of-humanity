@@ -5,7 +5,7 @@ import colors from "./colors"
 const styles: Styles = {
     global: (): SystemStyleObject => ({
         body: {
-            bg: colors.gray[100],
+            bg: colors.secondaryGray[200],
             color: "text.700"
         },
         "body, #__next": {
