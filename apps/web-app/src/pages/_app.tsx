@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
-                <title>ZK Proof of Humanity</title>
+                <title>ZK Proof of Humanity Vote</title>
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -40,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     justify="center"
                     spacing="2"
                     p="1"
+                    maxWidth='25%'
                 >
                     {_logs.endsWith("...") && <Spinner color="primary.900" />}
                     <Card   bg={"secondaryGray.900"}
