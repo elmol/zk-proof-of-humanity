@@ -140,6 +140,11 @@ export default function Main() {
         setVotesPercentageNo(isNaN(_c2Percentage) ? 0 : _c2Percentage);
     }, [count, pollId, votes]);
 
+    function viewAllPanels(){
+        if(isConnected && chain && !chain.unsupported) return true;
+        return false;
+    }
+
     return (
         <>
             <NoSSR>
@@ -158,6 +163,7 @@ export default function Main() {
                                 <b>ZK POH Vote </b>
                                 <Link href="https://github.com/elmol/zk-proof-of-humanity-vote" isExternal>
                                     <IconButton
+                                        backgroundColor={"secondaryGray.900"}
                                         aria-label="Github repository"
                                         icon={<Icon boxSize={4} as={FaGithub} />}
                                     />
@@ -222,14 +228,14 @@ export default function Main() {
             </NoSSR>
 
             <NoSSR>
-                <Container flex="1" display="flex" maxW={isConnected ? "100%" : "30%"}>
+                <Container flex="1" display="flex" maxW={viewAllPanels() ? "100%" : "30%"}>
                     <SimpleGrid
-                        columns={{ base: 1, md: 1, lg: isConnected ? 4 : 1, "2xl": isConnected ? 4 : 1 }}
+                        columns={{ base: 1, md: 1, lg: viewAllPanels() ? 4 : 1, "2xl": viewAllPanels() ? 4 : 1 }}
                         gap="20px"
                         mb="20px"
                         mt="20px"
                     >
-                        {isConnected && (
+                        {viewAllPanels() && (
                             <Card
                                 justifyContent="initial"
                                 alignItems="left"
@@ -254,7 +260,7 @@ export default function Main() {
                                     ))}
                             </Card>
                         )}
-                        {isConnected && (
+                        {viewAllPanels() && (
                             <Card alignItems="left" flexDirection="column" w="100%" mb="0px">
                                 <NoSSR>
                                     <Stack display="flex" width="100%">
@@ -286,7 +292,7 @@ export default function Main() {
                             alignItems="left"
                             flexDirection="column"
                             mb="0px"
-                            h={isConnected ? "100%" : "300px"}
+                            h={viewAllPanels() ? "100%" : "300px"}
                         >
                             <Stack direction="column" h="100%">
                                 <Text
@@ -378,7 +384,7 @@ export default function Main() {
                                 </Stack>
                             </Stack>
                         </Card>
-                        {isConnected && (
+                        {viewAllPanels() && (
                             <Card justifyContent="center" alignItems="center" flexDirection="column" w="100%" mb="0px">
                                 <Text
                                     me="auto"
