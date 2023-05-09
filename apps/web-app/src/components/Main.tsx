@@ -1,6 +1,5 @@
 import LogsContext from "@/context/LogsContext";
 import { useZkVotingRead } from "@/generated/zk-voting";
-import colors from "@/styles/colors";
 import {
     Box,
     Button,
@@ -40,6 +39,7 @@ import {
 import theme from "../styles/index";
 import Card from "./Card";
 import ListItem from "./ListItem";
+import { EtherScanLink } from "./EtherScanLink";
 
 export default function Main() {
     const { address, isConnected } = useAccount();
@@ -119,8 +119,7 @@ export default function Main() {
         (voteType: string) => {
             const ballot32Type = formatBytes32String(voteType);
             return votes?.reduce(
-                (n: number, vote: any) =>
-                    BigNumber.from(vote.signal).eq(BigNumber.from(ballot32Type)) ? n + 1 : n,
+                (n: number, vote: any) => (BigNumber.from(vote.signal).eq(BigNumber.from(ballot32Type)) ? n + 1 : n),
                 0
             );
         },
@@ -140,8 +139,8 @@ export default function Main() {
         setVotesPercentageNo(isNaN(_c2Percentage) ? 0 : _c2Percentage);
     }, [count, pollId, votes]);
 
-    function viewAllPanels(){
-        if(isConnected && chain && !chain.unsupported) return true;
+    function viewAllPanels() {
+        if (isConnected && chain && !chain.unsupported) return true;
         return false;
     }
 
@@ -452,19 +451,5 @@ export default function Main() {
                 </Container>
             </NoSSR>
         </>
-    );
-}
-
-type EtherScanLinkTProps = {
-    children: React.ReactNode;
-    address: string;
-    network: string | undefined;
-};
-
-function EtherScanLink({ children, address, network }: EtherScanLinkTProps) {
-    return (
-        <Link color={colors.primary[400]} href={`https://${network}.etherscan.io/address/${address}`} isExternal>
-            {children}
-        </Link>
     );
 }
