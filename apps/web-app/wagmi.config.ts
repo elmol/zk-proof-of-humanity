@@ -10,7 +10,7 @@ export default defineConfig({
       include: ['ZKVoting.json'],
       deployments: {
         ZKVoting: {
-            5: '0x611F0278dE9D2Bd4E38F15001B6410B4A915275f',
+            5: '0xbfdF33c66A1b334fD06d6655e8c389c416c2fd3a',
             31337: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
             1337: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
             11155111:'0x925a401C30309F8586ee68de29d615D80C188bE4'

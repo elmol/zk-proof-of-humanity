@@ -1,10 +1,10 @@
 import { publicProvider } from "@wagmi/core/providers/public";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { localhost, sepolia } from "wagmi/chains";
+import { localhost, sepolia, goerli } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import Main from "../components/Main";
 
-const { chains, provider } = configureChains([sepolia, localhost], [publicProvider()]);
+const { chains, provider } = configureChains([goerli,sepolia, localhost], [publicProvider()]);
 
 const client = createClient({
     autoConnect: true,
