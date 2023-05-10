@@ -91,7 +91,7 @@ yarn
     + [Tasks usage example in Goerli](#tasks-usage-example-in-goerli)
   * [💰 Cost Analysis](#-cost-analysis)
   * [📖 Contract Documentation](#-contract-documentation)
-- [🖥️ Web Application](#-web-application)
+- [🖥️ Web Application](#%EF%B8%8F-web-application)
     + [Demo](#demo)
   * [🛠 Contract address configuration](#contract-address-configuration)
   * [📜 Usage](#-usage)
@@ -315,8 +315,8 @@ https://goerli.etherscan.io/tx/0x7939fc4ac22578eae1946ba09f7ae42b3dff89f7b074bb5
 
 ## 💰 Cost Analysis
 
--   [Semaphore Gas Report](docs/semaphore-gas-report.out?raw=100)
--   [zkPoH Gas Report](docs/zkpoh-gas-report.out?raw=100)
+-   [Semaphore Gas Report](apps/contracts/docs/semaphore-gas-report.out?raw=100)
+-   [zkPoH Gas Report](apps/contracts/docs/zkpoh-gas-report.out?raw=100)
 
 ```
 ·-------------------------------------------------|---------------------------|-----------------|-----------------------------·
@@ -334,7 +334,7 @@ https://goerli.etherscan.io/tx/0x7939fc4ac22578eae1946ba09f7ae42b3dff89f7b074bb5
 
 ## 📖 Contract Documentation
 
-[ZK Proof of Humanity Documentation](docs/ZKProofOfHumanity.md)
+[ZK Proof of Humanity Documentation](apps/contracts/docs/ZKProofOfHumanity.md)
 
 
 # 🖥️ Web Application
